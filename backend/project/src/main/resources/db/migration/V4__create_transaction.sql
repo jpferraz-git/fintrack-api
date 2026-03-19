@@ -1,4 +1,4 @@
-CREATE TABLE transaction (
+CREATE TABLE transactions (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
 
     user_id UUID NOT NULL,
@@ -12,17 +12,17 @@ CREATE TABLE transaction (
 
     CONSTRAINT fk_transaction_user
         FOREIGN KEY (user_id)
-        REFERENCES usuario(user_id)
+        REFERENCES users(user_id)
         ON DELETE CASCADE,
 
     CONSTRAINT fk_transaction_asset
         FOREIGN KEY (asset_id)
-        REFERENCES ativo(asset_id)
+        REFERENCES assets(asset_id)
         ON DELETE CASCADE,
 
     CONSTRAINT fk_transaction_batch
         FOREIGN KEY (batch_id)
-        REFERENCES lote_importacao(batch_id)
+        REFERENCES batches(batch_id)
         ON DELETE SET NULL,
 
     CONSTRAINT chk_operation_type
