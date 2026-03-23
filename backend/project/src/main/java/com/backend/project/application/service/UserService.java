@@ -1,7 +1,7 @@
 package com.backend.project.application.service;
 
+import com.backend.project.domain.model.UserModel;
 import com.backend.project.domain.repository.UserRepository;
-import com.backend.project.infrastructure.entity.UserModel;
 import org.springframework.stereotype.Service;
 
 @Service
