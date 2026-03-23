@@ -7,15 +7,15 @@ import java.util.Date;
 public class TransactionModel {
 
     private UUID id;
-    private UUID user_id;
-    private UUID asset_id;
-    private UUID batch_id;
-    private String operation_type;
+    private UUID userId;
+    private UUID assetId;
+    private UUID batchId;
+    private String operationType;
     private int quantity;
-    private double unit_price;
-    private Date operation_date;
-    private Instant created_at;
-    private Instant updated_at;
+    private double unitPrice;
+    private Date operationDate;
+    private Instant createdAt;
+    private Instant updatedAt;
 
     public UUID getId() {
         return id;
@@ -25,36 +25,36 @@ public class TransactionModel {
         this.id = id;
     }
 
-    public UUID getUser_id() {
-        return user_id;
+    public UUID getUserId() {
+        return userId;
     }
 
-    public void setUser_id(UUID user_id) {
-        this.user_id = user_id;
+    public void setUserId(UUID userId) {
+        this.userId = userId;
     }
 
-    public UUID getAsset_id() {
-        return asset_id;
+    public UUID getAssetId() {
+        return assetId;
     }
 
-    public void setAsset_id(UUID asset_id) {
-        this.asset_id = asset_id;
+    public void setAssetId(UUID assetId) {
+        this.assetId = assetId;
     }
 
-    public UUID getBatch_id() {
-        return batch_id;
+    public UUID getBatchId() {
+        return batchId;
     }
 
-    public void setBatch_id(UUID batch_id) {
-        this.batch_id = batch_id;
+    public void setBatchId(UUID batchId) {
+        this.batchId = batchId;
     }
 
-    public String getOperation_type() {
-        return operation_type;
+    public String getOperationType() {
+        return operationType;
     }
 
-    public void setOperation_type(String operation_type) {
-        this.operation_type = operation_type;
+    public void setOperationType(String operationType) {
+        this.operationType = operationType;
     }
 
     public int getQuantity() {
@@ -65,35 +65,35 @@ public class TransactionModel {
         this.quantity = quantity;
     }
 
-    public double getUnit_price() {
-        return unit_price;
+    public double getUnitPrice() {
+        return unitPrice;
     }
 
-    public void setUnit_price(double unit_price) {
-        this.unit_price = unit_price;
+    public void setUnitPrice(double unitPrice) {
+        this.unitPrice = unitPrice;
     }
 
-    public Date getOperation_date() {
-        return operation_date;
+    public Date getOperationDate() {
+        return operationDate;
     }
 
-    public void setOperation_date(Date operation_date) {
-        this.operation_date = operation_date;
+    public void setOperationDate(Date operationDate) {
+        this.operationDate = operationDate;
     }
 
-    public Instant getCreated_at() {
-        return created_at;
+    public Instant getCreatedAt() {
+        return createdAt;
     }
 
-    public void setCreated_at(Instant created_at) {
-        this.created_at = created_at;
+    public void setCreatedAt(Instant createdAt) {
+        this.createdAt = createdAt;
     }
 
-    public Instant getUpdated_at() {
-        return updated_at;
+    public Instant getUpdatedAt() {
+        return updatedAt;
     }
 
-    public void setUpdated_at(Instant updated_at) {
-        this.updated_at = updated_at;
+    public void setUpdatedAt(Instant updatedAt) {
+        this.updatedAt = updatedAt;
     }
 }

@@ -5,35 +5,35 @@ import java.util.UUID;
 
 public class BatchModel {
 
-    private UUID batch_id;
-    private String upload_date;
-    private String file_name;
+    private UUID batchId;
+    private String uploadDate;
+    private String fileName;
     private String status;
-    private Instant created_at;
-    private Instant updated_at;
+    private Instant createdAt;
+    private Instant updatedAt;
 
-    public UUID getBatch_id() {
-        return batch_id;
+    public UUID getBatchId() {
+        return batchId;
     }
 
-    public void setBatch_id(UUID batch_id) {
-        this.batch_id = batch_id;
+    public void setBatchId(UUID batchId) {
+        this.batchId = batchId;
     }
 
-    public String getUpload_date() {
-        return upload_date;
+    public String getUploadDate() {
+        return uploadDate;
     }
 
-    public void setUpload_date(String upload_date) {
-        this.upload_date = upload_date;
+    public void setUploadDate(String uploadDate) {
+        this.uploadDate = uploadDate;
     }
 
-    public String getFile_name() {
-        return file_name;
+    public String getFileName() {
+        return fileName;
     }
 
-    public void setFile_name(String file_name) {
-        this.file_name = file_name;
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
     }
 
     public String getStatus() {
@@ -44,19 +44,19 @@ public class BatchModel {
         this.status = status;
     }
 
-    public Instant getCreated_at() {
-        return created_at;
+    public Instant getCreatedAt() {
+        return createdAt;
     }
 
-    public void setCreated_at(Instant created_at) {
-        this.created_at = created_at;
+    public void setCreatedAt(Instant createdAt) {
+        this.createdAt = createdAt;
     }
 
-    public Instant getUpdated_at() {
-        return updated_at;
+    public Instant getUpdatedAt() {
+        return updatedAt;
     }
 
-    public void setUpdated_at(Instant updated_at) {
-        this.updated_at = updated_at;
+    public void setUpdatedAt(Instant updatedAt) {
+        this.updatedAt = updatedAt;
     }
 }
