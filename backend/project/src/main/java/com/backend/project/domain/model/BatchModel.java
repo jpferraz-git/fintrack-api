@@ -12,6 +12,15 @@ public class BatchModel {
     private Instant createdAt;
     private Instant updatedAt;
 
+    public BatchModel(UUID batchId, String uploadDate, String fileName, String status, Instant createdAt, Instant updatedAt) {
+        this.batchId = batchId;
+        this.uploadDate = uploadDate;
+        this.fileName = fileName;
+        this.status = status;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
+
     public UUID getBatchId() {
         return batchId;
     }
