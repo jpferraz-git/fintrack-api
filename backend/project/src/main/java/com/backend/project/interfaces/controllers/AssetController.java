@@ -3,6 +3,8 @@ package com.backend.project.interfaces.controllers;
 
 import com.backend.project.application.service.AssetService;
 import com.backend.project.infrastructure.entity.AssetEntity;
+import com.backend.project.interfaces.dto.asset.AssetRequestDTO;
+import com.backend.project.interfaces.dto.asset.AssetResponseDTO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,7 +22,7 @@ public class AssetController {
     }
 
     @PostMapping
-    public ResponseEntity<AssetEntity> create(@RequestBody AssetEntity asset) {
+    public ResponseEntity<AssetResponseDTO> create(@RequestBody AssetRequestDTO asset) {
         return ResponseEntity.ok(assetService.create(asset));
     }
 }
