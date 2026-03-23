@@ -13,6 +13,15 @@ public class AssetModel {
     private Instant createdAt;
     private Instant updatedAt;
 
+    public AssetModel(UUID assetId, String ticker, String assetType, String companyName, Instant createdAt, Instant updatedAt) {
+        this.assetId = assetId;
+        this.ticker = ticker;
+        this.assetType = assetType;
+        this.companyName = companyName;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
+
     public UUID getAssetId() {
         return assetId;
     }
