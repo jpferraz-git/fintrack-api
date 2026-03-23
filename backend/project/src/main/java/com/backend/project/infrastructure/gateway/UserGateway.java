@@ -1,7 +1,7 @@
 package com.backend.project.infrastructure.gateway;
 
 import com.backend.project.domain.repository.UserRepository;
-import com.backend.project.infrastructure.entity.UserModel;
+import com.backend.project.domain.model.UserModel;
 import com.backend.project.infrastructure.springdata.UserJpaRepository;
 import org.springframework.stereotype.Component;
 
