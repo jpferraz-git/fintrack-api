@@ -13,6 +13,16 @@ public class UserModel {
     private Instant createdAt;
     private Instant updatedAt;
 
+
+    public UserModel(UUID userId, String name, String email, String password, Instant createdAt, Instant updatedAt) {
+        this.userId = userId;
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
+
     public UUID getUserId() {
         return userId;
     }
