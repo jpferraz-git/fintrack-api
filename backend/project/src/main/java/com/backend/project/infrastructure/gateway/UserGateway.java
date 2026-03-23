@@ -6,6 +6,8 @@ import com.backend.project.infrastructure.entity.UserEntity;
 import com.backend.project.infrastructure.springdata.UserJpaRepository;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 public class UserGateway implements UserRepository {
 
@@ -13,6 +15,11 @@ public class UserGateway implements UserRepository {
 
     public UserGateway(UserJpaRepository jpaRepository) {
         this.jpaRepository = jpaRepository;
+    }
+
+    @Override
+    public List<UserEntity> findAll() {
+        return jpaRepository.findAll();
     }
 
     @Override
