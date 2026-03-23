@@ -21,7 +21,7 @@ public class AssetService {
 
     public AssetResponseDTO create(AssetRequestDTO asset){
         AssetEntity saved = assetRepository.create(
-                assetMapper.toEntity(asset)
+                assetMapper.toEntity(assetMapper.toModel(asset))
         );
         return assetMapper.toResponse(saved);
     }

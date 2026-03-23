@@ -11,9 +11,9 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class UserService {
+
     private final UserRepository userRepository;
     private final UserMapper userMapper;
-
 
     public UserService(UserRepository userRepository, UserMapper userMapper) {
         this.userRepository = userRepository;
@@ -22,7 +22,7 @@ public class UserService {
 
     public UserResponseDTO create(UserRequestDTO user) {
         UserEntity saved = userRepository.create(
-                userMapper.toEntity(user)
+                userMapper.toEntity(userMapper.toModel(user))
         );
         return userMapper.toResponse(saved);
     }
