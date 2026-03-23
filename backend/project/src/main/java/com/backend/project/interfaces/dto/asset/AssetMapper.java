@@ -7,12 +7,12 @@ import org.springframework.stereotype.Component;
 @Component
 public class AssetMapper {
 
-    public AssetEntity toEntity(AssetRequestDTO dto){
+    public AssetEntity toEntity(AssetModel model){
         return new AssetEntity(
                 null,
-                dto.ticker(),
-                dto.assetType(),
-                dto.companyName(),
+                model.getTicker(),
+                model.getAssetType(),
+                model.getCompanyName(),
                 null,
                 null
         );
