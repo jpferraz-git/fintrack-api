@@ -17,7 +17,7 @@ public class UserMapper {
         );
     }
 
-    public UserResponseDTO toResponse (UserModel user){
+    public UserResponseDTO toResponse(UserModel user){
         return new UserResponseDTO(
                 user.getUserId(),
                 user.getName(),
