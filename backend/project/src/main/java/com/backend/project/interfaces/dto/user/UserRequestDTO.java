@@ -4,10 +4,7 @@ import java.time.Instant;
 import java.util.UUID;
 
 public record UserRequestDTO (
-    UUID userId,
     String name,
     String email,
-    String password,
-    Instant createdAt,
-    Instant updatedAt
+    String password
 ) {}

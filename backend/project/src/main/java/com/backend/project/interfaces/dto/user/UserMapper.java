@@ -8,12 +8,12 @@ public class UserMapper {
 
     public UserModel toModel(UserRequestDTO dto){
         return new UserModel(
-                dto.userId(),
+                null,
                 dto.name(),
                 dto.email(),
                 dto.password(),
                 null,
-                dto.updatedAt()
+                null
         );
     }
 
