@@ -2,7 +2,9 @@ package com.backend.project.infrastructure.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -14,7 +16,8 @@ import java.util.UUID;
 @Table(name = "users")
 @Getter
 @Setter
-
+@AllArgsConstructor
+@NoArgsConstructor
 public class UserEntity {
 
     @Id

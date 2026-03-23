@@ -1,11 +1,23 @@
 package com.backend.project.interfaces.dto.user;
 
 import com.backend.project.domain.model.UserModel;
+import com.backend.project.infrastructure.entity.UserEntity;
 import org.springframework.stereotype.Component;
 
 @Component
 public class UserMapper {
 
+    public UserEntity toEntity(UserRequestDTO dto){
+        return new UserEntity(
+                null,
+                dto.name(),
+                dto.email(),
+                dto.password(),
+                null,
+                null
+        );
+
+    }
     public UserModel toModel(UserRequestDTO dto){
         return new UserModel(
                 null,
@@ -17,7 +29,7 @@ public class UserMapper {
         );
     }
 
-    public UserResponseDTO toResponse(UserModel user){
+    public UserResponseDTO toResponse(UserEntity user){
         return new UserResponseDTO(
                 user.getUserId(),
                 user.getName(),

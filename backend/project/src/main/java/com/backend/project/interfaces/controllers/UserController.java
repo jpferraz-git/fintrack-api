@@ -1,7 +1,9 @@
 package com.backend.project.interfaces.controllers;
 
 import com.backend.project.application.service.UserService;
-import com.backend.project.infrastructure.entity.UserEntity;
+import com.backend.project.interfaces.dto.user.UserRequestDTO;
+import com.backend.project.interfaces.dto.user.UserResponseDTO;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,8 +21,9 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<UserEntity> createUser(@RequestBody UserEntity user) {
-        UserEntity newUser = userService.create(user);
-        return ResponseEntity.status(201).body(newUser);
+    public ResponseEntity<UserResponseDTO> createUser(@RequestBody UserRequestDTO user) {
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(userService.create(user));
     }
 }
