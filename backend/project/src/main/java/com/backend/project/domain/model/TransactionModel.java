@@ -17,6 +17,19 @@ public class TransactionModel {
     private Instant createdAt;
     private Instant updatedAt;
 
+    public TransactionModel(UUID id, UUID userId, UUID assetId, UUID batchId, String operationType, int quantity, double unitPrice, Date operationDate, Instant createdAt, Instant updatedAt) {
+        this.id = id;
+        this.userId = userId;
+        this.assetId = assetId;
+        this.batchId = batchId;
+        this.operationType = operationType;
+        this.quantity = quantity;
+        this.unitPrice = unitPrice;
+        this.operationDate = operationDate;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
+
     public UUID getId() {
         return id;
     }
