@@ -8,10 +8,9 @@ import com.backend.project.interfaces.dto.batch.BatchResponseDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/batch")
@@ -23,6 +22,10 @@ public class BatchController {
         this.batchService = batchService;
     }
 
+    @GetMapping
+    public ResponseEntity<List<BatchResponseDTO>> findAll() {
+        return ResponseEntity.ok(batchService.findAll());
+    }
 
     @PostMapping
     public ResponseEntity<BatchResponseDTO> create(@RequestBody BatchRequestDTO batch){

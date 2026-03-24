@@ -7,6 +7,7 @@ import com.backend.project.infrastructure.springdata.UserJpaRepository;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.UUID;
 
 @Component
 public class UserGateway implements UserRepository {
@@ -20,6 +21,11 @@ public class UserGateway implements UserRepository {
     @Override
     public List<UserEntity> findAll() {
         return jpaRepository.findAll();
+    }
+
+    @Override
+    public UserEntity getReferenceById(UUID id) {
+        return jpaRepository.getReferenceById(id);
     }
 
     @Override

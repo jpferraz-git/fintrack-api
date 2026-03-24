@@ -6,10 +6,9 @@ import com.backend.project.infrastructure.entity.AssetEntity;
 import com.backend.project.interfaces.dto.asset.AssetRequestDTO;
 import com.backend.project.interfaces.dto.asset.AssetResponseDTO;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/asset")
@@ -19,6 +18,11 @@ public class AssetController {
 
     public AssetController(AssetService assetService) {
         this.assetService = assetService;
+    }
+
+    @GetMapping
+    public ResponseEntity<List<AssetResponseDTO>> findAll() {
+        return ResponseEntity.ok(assetService.findAll());
     }
 
     @PostMapping

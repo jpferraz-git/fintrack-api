@@ -8,6 +8,8 @@ import com.backend.project.interfaces.dto.asset.AssetRequestDTO;
 import com.backend.project.interfaces.dto.asset.AssetResponseDTO;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class AssetService {
 
@@ -24,5 +26,11 @@ public class AssetService {
                 assetMapper.toEntity(assetMapper.toModel(asset))
         );
         return assetMapper.toResponse(saved);
+    }
+
+    public List<AssetResponseDTO> findAll(){
+        return assetRepository.findAll().stream()
+                .map(assetMapper::toResponse)
+                .toList();
     }
 }

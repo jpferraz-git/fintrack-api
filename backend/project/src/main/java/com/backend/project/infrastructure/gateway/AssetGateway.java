@@ -6,6 +6,9 @@ import com.backend.project.infrastructure.springdata.AssetJpaRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+import java.util.UUID;
+
 @Component
 @AllArgsConstructor
 public class AssetGateway implements AssetRepository {
@@ -15,5 +18,15 @@ public class AssetGateway implements AssetRepository {
     @Override
     public AssetEntity create(AssetEntity asset) {
         return jpaRepository.save(asset);
+    }
+
+    @Override
+    public AssetEntity getReferenceById(UUID uuid) {
+        return jpaRepository.getReferenceById(uuid);
+    }
+
+    @Override
+    public List<AssetEntity> findAll() {
+        return jpaRepository.findAll();
     }
 }

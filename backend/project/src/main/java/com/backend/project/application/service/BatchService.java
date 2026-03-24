@@ -8,6 +8,8 @@ import com.backend.project.interfaces.dto.batch.BatchRequestDTO;
 import com.backend.project.interfaces.dto.batch.BatchResponseDTO;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class BatchService {
 
@@ -25,5 +27,11 @@ public class BatchService {
         );
 
         return batchMapper.toResponse(saved);
+    }
+
+    public List<BatchResponseDTO> findAll() {
+        return batchRepository.findAll().stream()
+                .map(batchMapper::toResponse)
+                .toList();
     }
 }

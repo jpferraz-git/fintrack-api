@@ -6,6 +6,9 @@ import com.backend.project.infrastructure.entity.BatchEntity;
 import com.backend.project.infrastructure.springdata.BatchJpaRepository;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+import java.util.UUID;
+
 @Component
 public class BatchGateway implements BatchRepository {
 
@@ -18,5 +21,15 @@ public class BatchGateway implements BatchRepository {
     @Override
     public BatchEntity create(BatchEntity batch) {
         return jpaRepository.save(batch);
+    }
+
+    @Override
+    public BatchEntity getReferenceById(UUID id) {
+        return jpaRepository.getReferenceById(id);
+    }
+
+    @Override
+    public List<BatchEntity> findAll() {
+        return jpaRepository.findAll();
     }
 }
