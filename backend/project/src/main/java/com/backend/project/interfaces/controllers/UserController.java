@@ -36,4 +36,10 @@ public class UserController {
     public ResponseEntity<UserResponseDTO> updateUser(@PathVariable String email, @RequestBody UserRequestDTO user) {
         return ResponseEntity.ok(userService.update(email, user));
     }
+
+    @DeleteMapping
+    public ResponseEntity<Void> deleteUser(@RequestParam String email) {
+        userService.deleteByEmail(email);
+        return ResponseEntity.noContent().build();
+    }
 }

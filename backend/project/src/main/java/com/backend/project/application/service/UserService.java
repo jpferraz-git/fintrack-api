@@ -36,6 +36,15 @@ public class UserService {
         UserEntity updated = userRepository.update(user);
         return userMapper.toResponse(updated);
     }
+
+    public UserResponseDTO findByEmail(String email){
+        return userMapper.toResponse(userRepository.findByEmail(email));
+    }
+
+    public void deleteByEmail(String email){
+        userRepository.deleteByEmail(email);
+    }
+
     public List<UserResponseDTO> findAll() {
         return userRepository.findAll().stream()
                 .map(userMapper::toResponse)

@@ -10,6 +10,8 @@ public interface AssetRepository {
     AssetEntity create(AssetEntity asset);
     AssetEntity getReferenceById(UUID uuid);
     AssetEntity findByTicker(String ticker);
+
     AssetEntity update(AssetEntity asset);
+    void deleteByTicker(String ticker);
     List<AssetEntity> findAll();
 }

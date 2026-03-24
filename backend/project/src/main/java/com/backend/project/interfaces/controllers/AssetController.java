@@ -34,4 +34,10 @@ public class AssetController {
     public ResponseEntity<AssetResponseDTO> update(@PathVariable String ticker, @RequestBody AssetRequestDTO asset) {
         return ResponseEntity.ok(assetService.update(ticker, asset));
     }
+
+    @DeleteMapping
+    public ResponseEntity<Void> deleteByTicker(@RequestParam String ticker) {
+        assetService.deleteByTicker(ticker);
+        return ResponseEntity.noContent().build();
+    }
 }

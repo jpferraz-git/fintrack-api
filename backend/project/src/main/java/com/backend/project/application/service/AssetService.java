@@ -37,6 +37,10 @@ public class AssetService {
         return assetMapper.toResponse(updated);
     }
 
+    public void deleteByTicker(String ticker){
+        assetRepository.deleteByTicker(ticker);
+    }
+
     public List<AssetResponseDTO> findAll(){
         return assetRepository.findAll().stream()
                 .map(assetMapper::toResponse)
