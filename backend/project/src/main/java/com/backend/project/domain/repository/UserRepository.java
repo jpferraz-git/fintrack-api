@@ -8,5 +8,7 @@ import java.util.UUID;
 public interface UserRepository {
     UserEntity create(UserEntity user);
     UserEntity getReferenceById(UUID id);
+    UserEntity findByEmail(String email);
+    UserEntity update(UserEntity user);
     List<UserEntity> findAll();
 }

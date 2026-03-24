@@ -31,4 +31,9 @@ public class UserController {
                 .status(HttpStatus.CREATED)
                 .body(userService.create(user));
     }
+
+    @PutMapping("/{email}")
+    public ResponseEntity<UserResponseDTO> updateUser(@PathVariable String email, @RequestBody UserRequestDTO user) {
+        return ResponseEntity.ok(userService.update(email, user));
+    }
 }

@@ -24,6 +24,16 @@ public class UserGateway implements UserRepository {
     }
 
     @Override
+    public UserEntity findByEmail(String email) {
+        return jpaRepository.findByEmail(email);
+    }
+
+    @Override
+    public UserEntity update(UserEntity user) {
+        return jpaRepository.save(user);
+    }
+
+    @Override
     public UserEntity getReferenceById(UUID id) {
         return jpaRepository.getReferenceById(id);
     }

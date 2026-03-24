@@ -29,4 +29,9 @@ public class AssetController {
     public ResponseEntity<AssetResponseDTO> create(@RequestBody AssetRequestDTO asset) {
         return ResponseEntity.ok(assetService.create(asset));
     }
+
+    @PutMapping("/{ticker}")
+    public ResponseEntity<AssetResponseDTO> update(@PathVariable String ticker, @RequestBody AssetRequestDTO asset) {
+        return ResponseEntity.ok(assetService.update(ticker, asset));
+    }
 }

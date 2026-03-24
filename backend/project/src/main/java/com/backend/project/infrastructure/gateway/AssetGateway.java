@@ -20,6 +20,17 @@ public class AssetGateway implements AssetRepository {
         return jpaRepository.save(asset);
     }
 
+
+    @Override
+    public AssetEntity findByTicker(String ticker) {
+        return jpaRepository.findByTicker(ticker);
+    }
+
+    @Override
+    public AssetEntity update(AssetEntity asset) {
+        return jpaRepository.save(asset);
+    }
+
     @Override
     public AssetEntity getReferenceById(UUID uuid) {
         return jpaRepository.getReferenceById(uuid);

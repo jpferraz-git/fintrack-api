@@ -28,6 +28,7 @@ public class BatchGateway implements BatchRepository {
         return jpaRepository.getReferenceById(id);
     }
 
+
     @Override
     public List<BatchEntity> findAll() {
         return jpaRepository.findAll();

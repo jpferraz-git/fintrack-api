@@ -28,6 +28,15 @@ public class AssetService {
         return assetMapper.toResponse(saved);
     }
 
+    public AssetResponseDTO update(String ticker, AssetRequestDTO asset){
+        AssetEntity assetEntity = assetRepository.findByTicker(ticker);
+        assetEntity.setTicker(asset.ticker());
+        assetEntity.setAssetType(asset.assetType());
+        assetEntity.setCompanyName(asset.companyName());
+        AssetEntity updated = assetRepository.update(assetEntity);
+        return assetMapper.toResponse(updated);
+    }
+
     public List<AssetResponseDTO> findAll(){
         return assetRepository.findAll().stream()
                 .map(assetMapper::toResponse)

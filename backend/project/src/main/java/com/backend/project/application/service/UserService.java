@@ -28,6 +28,14 @@ public class UserService {
         return userMapper.toResponse(saved);
     }
 
+    public UserResponseDTO update(String email, UserRequestDTO dto){
+        UserEntity user = userRepository.findByEmail(email);
+        user.setName(dto.name());
+        user.setEmail(dto.email());
+        user.setPassword(dto.password());
+        UserEntity updated = userRepository.update(user);
+        return userMapper.toResponse(updated);
+    }
     public List<UserResponseDTO> findAll() {
         return userRepository.findAll().stream()
                 .map(userMapper::toResponse)
