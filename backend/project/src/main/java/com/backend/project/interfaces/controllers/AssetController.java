@@ -2,9 +2,9 @@ package com.backend.project.interfaces.controllers;
 
 
 import com.backend.project.application.service.AssetService;
-import com.backend.project.infrastructure.entity.AssetEntity;
 import com.backend.project.interfaces.dto.asset.AssetRequestDTO;
 import com.backend.project.interfaces.dto.asset.AssetResponseDTO;
+import com.backend.project.interfaces.swagger.AssetControllerSwagger;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,7 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/asset")
-public class AssetController {
+public class AssetController implements AssetControllerSwagger {
 
     private final AssetService assetService;
 
