@@ -9,6 +9,8 @@ import org.springframework.boot.persistence.autoconfigure.EntityScan;
 public class ProjectApplication {
 
 	public static void main(String[] args) {
+		System.out.println(new org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder(12).encode("admin"));
+
 		SpringApplication.run(ProjectApplication.class, args);
 	}
 

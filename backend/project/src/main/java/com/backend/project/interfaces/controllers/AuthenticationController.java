@@ -1,9 +1,12 @@
 package com.backend.project.interfaces.controllers;
 
+import com.backend.project.application.service.TokenService;
+import com.backend.project.domain.model.UserModel;
 import com.backend.project.domain.repository.RoleRepository;
 import com.backend.project.domain.repository.UserRepository;
 import com.backend.project.infrastructure.entity.UserEntity;
 import com.backend.project.interfaces.dto.authentication.AuthenticationDTO;
+import com.backend.project.interfaces.dto.authentication.LoginResponseDTO;
 import com.backend.project.interfaces.dto.register.RegisterDTO;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,17 +28,22 @@ public class AuthenticationController {
     private AuthenticationManager authenticationManager;
 
     @Autowired
+    private TokenService tokenService;
+
+    @Autowired
     private UserRepository userRepository;
 
     @Autowired
     private RoleRepository roleRepository;
 
-    @PostMapping("/login")
-    public ResponseEntity<String> login (@RequestBody @Valid AuthenticationDTO dto){
-        var usernamePassword = new UsernamePasswordAuthenticationToken(dto.email(), dto.password());
-        var auth = authenticationManager.authenticate(usernamePassword);
 
-        return ResponseEntity.ok("User authenticated successfully");
+    @PostMapping("/login")
+    public ResponseEntity<LoginResponseDTO> login(@RequestBody @Valid AuthenticationDTO dto){
+        var usernamePassword = new UsernamePasswordAuthenticationToken(dto.email(), dto.password());
+        var auth = this.authenticationManager.authenticate(usernamePassword);
+        var token = tokenService.generateToken((UserEntity) auth.getPrincipal());
+
+        return ResponseEntity.ok(new LoginResponseDTO(token));
     }
 
     @PostMapping("/register")
@@ -48,8 +56,9 @@ public class AuthenticationController {
         UserEntity newUser = new UserEntity(
                 dto.email(),
                 encryptedPassword,
-                roleRepository.findByName(dto.role().getRole())
+                roleRepository.findByName(dto.role())
         );
+        System.out.println(newUser);
         this.userRepository.create(newUser);
         return ResponseEntity.ok().body("User registered successfully");
     }
