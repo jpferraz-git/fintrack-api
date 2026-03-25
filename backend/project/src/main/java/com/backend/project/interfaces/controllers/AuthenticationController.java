@@ -1,7 +1,6 @@
 package com.backend.project.interfaces.controllers;
 
 import com.backend.project.application.service.TokenService;
-import com.backend.project.domain.model.UserModel;
 import com.backend.project.domain.repository.RoleRepository;
 import com.backend.project.domain.repository.UserRepository;
 import com.backend.project.infrastructure.entity.UserEntity;
@@ -51,7 +50,7 @@ public class AuthenticationController {
         if (this.userRepository.findByEmail(dto.email()) != null) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Email already in use");
         }
-
+        //TODO Jogar isso aqui para a service
         String encryptedPassword = new BCryptPasswordEncoder(12).encode(dto.password());
         UserEntity newUser = new UserEntity(
                 dto.email(),
