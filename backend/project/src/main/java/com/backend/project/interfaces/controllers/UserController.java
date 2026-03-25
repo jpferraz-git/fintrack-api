@@ -20,7 +20,6 @@ public class UserController implements UserControllerSwagger {
         this.userService = userService;
     }
 
-
     @GetMapping
     public ResponseEntity<List<UserResponseDTO>> findAll() {
         return ResponseEntity.ok(userService.findAll());
