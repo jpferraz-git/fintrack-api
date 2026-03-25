@@ -27,5 +27,4 @@ public class RoleEntity {
 
     private String description;
 
-
 }
