@@ -1,6 +1,8 @@
 package com.backend.project.application.service;
 
+import com.backend.project.domain.repository.RoleRepository;
 import com.backend.project.domain.repository.UserRepository;
+import com.backend.project.infrastructure.entity.RoleEntity;
 import com.backend.project.infrastructure.entity.UserEntity;
 import com.backend.project.interfaces.dto.user.UserMapper;
 import com.backend.project.interfaces.dto.user.UserRequestDTO;
@@ -14,17 +16,21 @@ import java.util.List;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
     private final UserMapper userMapper;
 
-    public UserService(UserRepository userRepository, UserMapper userMapper) {
+    public UserService(UserRepository userRepository, RoleRepository roleRepository, UserMapper userMapper) {
         this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
         this.userMapper = userMapper;
     }
 
     public UserResponseDTO create(UserRequestDTO user) {
+        RoleEntity role = roleRepository.findByName(user.role().getRole());
         UserEntity saved = userRepository.create(
                 userMapper.toEntity(userMapper.toModel(user))
         );
+
         return userMapper.toResponse(saved);
     }
 

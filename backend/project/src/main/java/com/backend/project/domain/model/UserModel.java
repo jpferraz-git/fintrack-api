@@ -10,15 +10,22 @@ public class UserModel {
     private String name;
     private String email;
     private String password;
+    private Role role;
     private Instant createdAt;
     private Instant updatedAt;
 
+    public UserModel(String email, String password, Role role) {
+        this.email = email;
+        this.password = password;
+        this.role = role;
+    }
 
-    public UserModel(UUID userId, String name, String email, String password, Instant createdAt, Instant updatedAt) {
+    public UserModel(UUID userId, String name, String email, String password, Role role, Instant createdAt, Instant updatedAt) {
         this.userId = userId;
         this.name = name;
         this.email = email;
         this.password = password;
+        this.role = role;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
@@ -53,6 +60,14 @@ public class UserModel {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 
     public Instant getCreatedAt() {
