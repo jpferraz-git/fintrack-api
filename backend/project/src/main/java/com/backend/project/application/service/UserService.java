@@ -26,10 +26,10 @@ public class UserService {
     }
 
     public UserResponseDTO create(UserRequestDTO user) {
-        RoleEntity role = roleRepository.findByName(user.role().getRole());
-        UserEntity saved = userRepository.create(
-                userMapper.toEntity(userMapper.toModel(user))
-        );
+        RoleEntity role = roleRepository.findByName(user.role());
+        UserEntity saved = userMapper.toEntity(userMapper.toModel(user));
+        saved.setRole(role);
+        saved = userRepository.create(saved);
 
         return userMapper.toResponse(saved);
     }
