@@ -1,7 +1,10 @@
 package com.backend.project.infrastructure.security;
 
+import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.backend.project.application.service.TokenService;
 import com.backend.project.domain.repository.UserRepository;
+import com.backend.project.exception.MissingJwtTokenException;
+import com.backend.project.exception.UserNotFoundException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -18,19 +21,27 @@ import java.io.IOException;
 @Component
 public class SecurityFilter extends OncePerRequestFilter {
 
-    @Autowired
-    TokenService tokenService;
+    private final TokenService tokenService;
 
-    @Autowired
-    UserRepository userRepository;
+    private final UserRepository userRepository;
+
+    public SecurityFilter(TokenService tokenService, UserRepository userRepository) {
+        this.tokenService = tokenService;
+        this.userRepository = userRepository;
+    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         var token = this.recoverToken(request);
-        if(token != null){
+        if(token == null){
+            throw new MissingJwtTokenException("Token not provided");
+        } else {
             var email = tokenService.validateToken(token);
-            UserDetails user = userRepository.findByEmail(email);
 
+            UserDetails user = userRepository.findByEmail(email);
+            if (user == null) {
+                throw new UserNotFoundException(email);
+            }
             var authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }

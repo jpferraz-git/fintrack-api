@@ -4,11 +4,11 @@ import com.backend.project.domain.repository.RoleRepository;
 import com.backend.project.domain.repository.UserRepository;
 import com.backend.project.infrastructure.entity.RoleEntity;
 import com.backend.project.infrastructure.entity.UserEntity;
-import com.backend.project.infrastructure.utils.SecurityUtils;
 import com.backend.project.interfaces.dto.user.UserMapper;
 import com.backend.project.interfaces.dto.user.UserRequestDTO;
 import com.backend.project.interfaces.dto.user.UserResponseDTO;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,18 +20,18 @@ public class UserService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final UserMapper userMapper;
-    private final SecurityUtils utils;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository, RoleRepository roleRepository, UserMapper userMapper, SecurityUtils utils) {
+    public UserService(UserRepository userRepository, RoleRepository roleRepository, UserMapper userMapper, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.userMapper = userMapper;
-        this.utils = utils;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public UserResponseDTO create(UserRequestDTO user) {
         UserEntity saved = userMapper.toEntity(userMapper.toModel(user));
-        saved.setPassword(utils.passwordEncoder(user.password()));
+        saved.setPassword(passwordEncoder.encode(saved.getPassword()));
         saved.setRole(roleRepository.findByName(user.role()));
         saved = userRepository.create(saved);
         return userMapper.toResponse(saved);
