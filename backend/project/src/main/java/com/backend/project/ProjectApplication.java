@@ -8,8 +8,6 @@ import org.springframework.boot.persistence.autoconfigure.EntityScan;
 @EntityScan(basePackages = "com.backend.project.infrastructure.entity")
 public class ProjectApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(ProjectApplication.class, args);
-	}
+	public static void main(String[] args) { SpringApplication.run(ProjectApplication.class, args); }
 
 }

@@ -31,11 +31,12 @@ public class UserEntity implements UserDetails {
     @Column(name="user_id", updatable = false, nullable = false)
     private UUID userId;
     private String name;
+
     @Email
     private String email;
     private String password;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "role_id", nullable = false)
     private RoleEntity role;
 
@@ -75,9 +76,8 @@ public class UserEntity implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        if(this.role.getName() == Role.ADMIN) return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"));
 
-        return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+        return List.of(new SimpleGrantedAuthority("USER"));
     }
 
     @Override

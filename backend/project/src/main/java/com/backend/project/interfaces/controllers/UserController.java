@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/users")
 public class UserController implements UserControllerSwagger {
 
     private final UserService userService;
@@ -19,7 +19,6 @@ public class UserController implements UserControllerSwagger {
     public UserController(UserService userService) {
         this.userService = userService;
     }
-
 
     @GetMapping
     public ResponseEntity<List<UserResponseDTO>> findAll() {

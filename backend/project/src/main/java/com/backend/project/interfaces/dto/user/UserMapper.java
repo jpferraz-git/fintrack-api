@@ -19,7 +19,7 @@ public class UserMapper {
                 model.getName(),
                 model.getEmail(),
                 model.getPassword(),
-                roleRepository.findByName(model.getRole().getRole()),
+                roleRepository.findByName(model.getRole()),
                 null,
                 null
         );
