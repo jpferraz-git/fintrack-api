@@ -1,6 +1,8 @@
 package com.backend.project.application.service;
 
 import com.backend.project.infrastructure.external.binance.BinanceIntegration;
+import com.backend.project.interfaces.dto.binance.BinancePriceResponseDTO;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -12,7 +14,11 @@ public class BinanceService {
         this.binanceIntegration = binanceIntegration;
     }
 
-    public String getPrice(String symbol) {
+    public BinancePriceResponseDTO getPrice(String symbol) {
         return binanceIntegration.getPrice(symbol);
+    }
+
+    public String get24hPrice(String symbol){
+        return binanceIntegration.get24hTicker(symbol);
     }
 }
