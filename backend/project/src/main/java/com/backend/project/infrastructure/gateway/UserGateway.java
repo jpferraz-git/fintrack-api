@@ -25,11 +25,7 @@ public class UserGateway implements UserRepository {
 
     @Override
     public UserEntity findByEmail(String email) {
-        UserEntity user = jpaRepository.findByEmail(email);
-        if (user == null) {
-            throw new UserNotFoundException(email);
-        }
-        return user;
+        return jpaRepository.findByEmail(email);
     }
 
     @Override
@@ -39,8 +35,7 @@ public class UserGateway implements UserRepository {
 
     @Override
     public void deleteByEmail(String email) {
-        UserEntity user = findByEmail(email);
-        jpaRepository.delete(user);
+        jpaRepository.delete(findByEmail(email));
     }
 
     @Override
