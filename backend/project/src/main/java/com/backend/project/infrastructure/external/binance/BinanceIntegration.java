@@ -1,6 +1,6 @@
 package com.backend.project.infrastructure.external.binance;
 
-import com.backend.project.interfaces.dto.binance.BinancePriceResponseDTO;
+import com.backend.project.interfaces.dto.binance.price.BinancePriceResponseDTO;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 
