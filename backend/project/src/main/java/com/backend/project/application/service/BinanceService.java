@@ -1,8 +1,7 @@
 package com.backend.project.application.service;
 
 import com.backend.project.infrastructure.external.binance.BinanceIntegration;
-import com.backend.project.interfaces.dto.binance.BinancePriceResponseDTO;
-import org.springframework.http.ResponseEntity;
+import com.backend.project.interfaces.dto.binance.price.BinancePriceResponseDTO;
 import org.springframework.stereotype.Service;
 
 @Service
