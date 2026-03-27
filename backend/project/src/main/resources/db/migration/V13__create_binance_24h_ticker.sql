@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS binance_24h_tickers (
-    id BIGINT GENERATED ALWAYS AS PRIMARY KEY,
+    id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     symbol VARCHAR(20) NOT NULL,
     price_change DECIMAL(28,8),
     price_change_percent DECIMAL(28,8),
