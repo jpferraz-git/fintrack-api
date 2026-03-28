@@ -13,13 +13,13 @@ import java.util.List;
 public class BinanceIntegration {
 
     private final WebClient webClient;
-    private final BinanceKlinesParser binanceKlinesParser;
+    private final BinanceParser binanceParser;
 
-    public BinanceIntegration(WebClient.Builder builder, BinanceKlinesParser binanceKlinesParser){
+    public BinanceIntegration(WebClient.Builder builder, BinanceParser binanceParser){
         this.webClient = builder
                 .baseUrl("https://api.binance.com/api/v3")
                 .build();
-        this.binanceKlinesParser = binanceKlinesParser;
+        this.binanceParser = binanceParser;
     }
 
     public BinancePriceResponseDTO getPrice(String symbol){
@@ -55,7 +55,7 @@ public class BinanceIntegration {
                 .bodyToMono(new ParameterizedTypeReference<List<List<Object>>>() {})
                 .block();
 
-        return binanceKlinesParser.parse(rawKlines);
+        return binanceParser.parseKlines(rawKlines);
     }
 
 }
