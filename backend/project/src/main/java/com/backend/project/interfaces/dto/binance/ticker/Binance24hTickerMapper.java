@@ -2,7 +2,11 @@ package com.backend.project.interfaces.dto.binance.ticker;
 
 import com.backend.project.domain.model.Binance24hTickerModel;
 import com.backend.project.infrastructure.entity.Binance24hTickerEntity;
+import org.springframework.stereotype.Component;
 
+import java.time.Instant;
+
+@Component
 public class Binance24hTickerMapper {
 
     public Binance24hTickerEntity toBinance24hTickerEntity(Binance24hTickerModel model) {
@@ -26,6 +30,27 @@ public class Binance24hTickerMapper {
         );
     }
 
+    public Binance24hTickerResponseDTO toBinance24hTickerResponseDTO(Binance24hTickerRequestDTO dto) {
+        return new Binance24hTickerResponseDTO(
+                dto.symbol(),
+                dto.priceChange(),
+                dto.priceChangePercent(),
+                dto.weightedAvgPrice(),
+                dto.prevClosePrice(),
+                dto.lastPrice(),
+                dto.lastQty(),
+                dto.bidPrice(),
+                dto.lowPrice(),
+                dto.volume(),
+                dto.quoteVolume(),
+                Instant.ofEpochSecond(dto.openTime()),
+                Instant.ofEpochSecond(dto.closeTime()),
+                dto.firstId(),
+                dto.lastId(),
+                dto.count()
+        );
+    }
+
     public Binance24hTickerModel toBinance24hTickerModel(Binance24hTickerRequestDTO dto) {
         return new Binance24hTickerModel(
                 dto.symbol(),
@@ -39,36 +64,13 @@ public class Binance24hTickerMapper {
                 dto.lowPrice(),
                 dto.volume(),
                 dto.quoteVolume(),
-                dto.openTime(),
-                dto.closeTime(),
+                Instant.ofEpochSecond(dto.openTime()),
+                Instant.ofEpochSecond(dto.closeTime()),
                 dto.firstId(),
                 dto.lastId(),
                 dto.count()
         );
     }
 
-    public Binance24hTickerResponseDTO toBinance24hTickerResponseDTO(Binance24hTickerEntity entity) {
-        return new Binance24hTickerResponseDTO(
-                entity.getId(),
-                entity.getSymbol(),
-                entity.getPriceChange(),
-                entity.getPriceChangePercent(),
-                entity.getWeightedAvgPrice(),
-                entity.getPrevClosePrice(),
-                entity.getLastPrice(),
-                entity.getLastQty(),
-                entity.getBidPrice(),
-                entity.getLowPrice(),
-                entity.getVolume(),
-                entity.getQuoteVolume(),
-                entity.getOpenTime(),
-                entity.getCloseTime(),
-                entity.getFirstId(),
-                entity.getLastId(),
-                entity.getCount(),
-                entity.getCreatedAt(),
-                entity.getUpdatedAt()
-        );
-    }
 }
 

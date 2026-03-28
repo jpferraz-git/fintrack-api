@@ -2,7 +2,12 @@ package com.backend.project.interfaces.dto.binance.klines;
 
 import com.backend.project.domain.model.BinanceKlinesModel;
 import com.backend.project.infrastructure.entity.BinanceKlinesEntity;
+import org.springframework.stereotype.Component;
 
+import java.time.Instant;
+import java.util.List;
+
+@Component
 public class BinanceKlinesMapper {
 
     public BinanceKlinesEntity toBinanceKlinesEntity(BinanceKlinesModel model) {
@@ -21,15 +26,36 @@ public class BinanceKlinesMapper {
         );
     }
 
-    public BinanceKlinesModel toBinanceKlinesModel(BinanceKlinesRequestDTO dto) {
-        return new BinanceKlinesModel(
-                dto.openTime(),
+//
+//    public BinanceKlinesModel toBinanceKlinesModel(BinanceKlinesRequestDTO dto) {
+//        return new BinanceKlinesModel(
+//                dto.openTime(),
+//                dto.open(),
+//                dto.high(),
+//                dto.low(),
+//                dto.close(),
+//                dto.volume(),
+//                dto.closeTime(),
+//                dto.quoteAssetVolume(),
+//                dto.numberOfTrades(),
+//                dto.takerBuyBaseAssetVolume(),
+//                dto.takerBuyQuoteAssetVolume()
+//        );
+//    }
+
+    public BinanceKlinesResponseDTO toBinanceKlinesResponseDTO(BinanceKlinesRequestDTO dto) {
+        return toResponseKlines(dto);
+    }
+
+    public BinanceKlinesResponseDTO toResponseKlines(BinanceKlinesRequestDTO dto) {
+        return new BinanceKlinesResponseDTO(
+                Instant.ofEpochMilli(dto.openTime()),
                 dto.open(),
                 dto.high(),
                 dto.low(),
                 dto.close(),
                 dto.volume(),
-                dto.closeTime(),
+                Instant.ofEpochMilli(dto.closeTime()),
                 dto.quoteAssetVolume(),
                 dto.numberOfTrades(),
                 dto.takerBuyBaseAssetVolume(),
@@ -37,23 +63,9 @@ public class BinanceKlinesMapper {
         );
     }
 
-    public BinanceKlinesResponseDTO toBinanceKlinesResponseDTO(BinanceKlinesEntity entity) {
-        return new BinanceKlinesResponseDTO(
-                entity.getId(),
-                entity.getOpenTime(),
-                entity.getOpen(),
-                entity.getHigh(),
-                entity.getLow(),
-                entity.getClose(),
-                entity.getVolume(),
-                entity.getCloseTime(),
-                entity.getQuoteAssetVolume(),
-                entity.getNumberOfTrades(),
-                entity.getTakerBuyBaseAssetVolume(),
-                entity.getTakerBuyQuoteAssetVolume(),
-                entity.getCreated_at(),
-                entity.getUpdated_at()
-        );
+    public List<BinanceKlinesResponseDTO> toResponseKlines(List<BinanceKlinesRequestDTO> dtos) {
+        return dtos.stream().map(this::toResponseKlines).toList();
     }
+
 }
 

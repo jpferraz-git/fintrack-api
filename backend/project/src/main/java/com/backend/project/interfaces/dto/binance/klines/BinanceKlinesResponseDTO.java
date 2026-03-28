@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 import java.time.Instant;
 
 public record BinanceKlinesResponseDTO(
-        Long id,
         Instant openTime,
         BigDecimal open,
         BigDecimal high,
@@ -15,9 +14,7 @@ public record BinanceKlinesResponseDTO(
         BigDecimal quoteAssetVolume,
         Integer numberOfTrades,
         BigDecimal takerBuyBaseAssetVolume,
-        BigDecimal takerBuyQuoteAssetVolume,
-        Instant created_at,
-        Instant updated_at
+        BigDecimal takerBuyQuoteAssetVolume
 ) {
 }
 

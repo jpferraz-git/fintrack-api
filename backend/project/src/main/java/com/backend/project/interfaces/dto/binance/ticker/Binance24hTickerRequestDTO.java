@@ -1,7 +1,6 @@
 package com.backend.project.interfaces.dto.binance.ticker;
 
 import java.math.BigDecimal;
-import java.time.Instant;
 
 public record Binance24hTickerRequestDTO(
         String symbol,
@@ -15,8 +14,8 @@ public record Binance24hTickerRequestDTO(
         BigDecimal lowPrice,
         BigDecimal volume,
         BigDecimal quoteVolume,
-        Instant openTime,
-        Instant closeTime,
+        Long openTime,
+        Long closeTime,
         Long firstId,
         Long lastId,
         Long count

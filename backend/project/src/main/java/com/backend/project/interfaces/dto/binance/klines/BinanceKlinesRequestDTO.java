@@ -1,16 +1,15 @@
 package com.backend.project.interfaces.dto.binance.klines;
 
 import java.math.BigDecimal;
-import java.time.Instant;
 
 public record BinanceKlinesRequestDTO(
-        Instant openTime,
+        Long openTime,
         BigDecimal open,
         BigDecimal high,
         BigDecimal low,
         BigDecimal close,
         BigDecimal volume,
-        Instant closeTime,
+        Long closeTime,
         BigDecimal quoteAssetVolume,
         Integer numberOfTrades,
         BigDecimal takerBuyBaseAssetVolume,
