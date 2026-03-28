@@ -43,6 +43,22 @@ public class Binance24hTickerEntity {
     private Instant updatedAt;
 
     public Binance24hTickerEntity(String symbol, BigDecimal priceChange, BigDecimal priceChangePercent, BigDecimal weightedAvgPrice, BigDecimal prevClosePrice, BigDecimal lastPrice, BigDecimal lastQty, BigDecimal bidPrice, BigDecimal lowPrice, BigDecimal volume, BigDecimal quoteVolume, Instant openTime, Instant closeTime, Long firstId, Long lastId, Long count) {
+        this.symbol = symbol;
+        this.priceChange = priceChange;
+        this.priceChangePercent = priceChangePercent;
+        this.weightedAvgPrice = weightedAvgPrice;
+        this.prevClosePrice = prevClosePrice;
+        this.lastPrice = lastPrice;
+        this.lastQty = lastQty;
+        this.bidPrice = bidPrice;
+        this.lowPrice = lowPrice;
+        this.volume = volume;
+        this.quoteVolume = quoteVolume;
+        this.openTime = openTime;
+        this.closeTime = closeTime;
+        this.firstId = firstId;
+        this.lastId = lastId;
+        this.count = count;
     }
 }
 
