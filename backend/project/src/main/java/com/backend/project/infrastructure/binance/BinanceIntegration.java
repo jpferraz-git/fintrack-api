@@ -1,4 +1,4 @@
-package com.backend.project.infrastructure.external.binance;
+package com.backend.project.infrastructure.binance;
 
 import com.backend.project.interfaces.dto.binance.klines.BinanceKlinesRequestDTO;
 import com.backend.project.interfaces.dto.binance.price.BinancePriceResponseDTO;
@@ -54,7 +54,6 @@ public class BinanceIntegration {
                 .retrieve()
                 .bodyToMono(new ParameterizedTypeReference<List<List<Object>>>() {})
                 .block();
-
         return binanceParser.parseKlines(rawKlines);
     }
 
