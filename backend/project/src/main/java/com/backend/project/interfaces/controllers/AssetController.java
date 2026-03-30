@@ -5,16 +5,17 @@ import com.backend.project.application.service.AssetService;
 import com.backend.project.application.Result;
 import com.backend.project.interfaces.dto.asset.AssetRequestDTO;
 import com.backend.project.interfaces.dto.asset.AssetResponseDTO;
-import com.backend.project.interfaces.swagger.AssetControllerSwagger;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static com.backend.project.interfaces.controllers.utils.Normalizer.resolveStatus;
+
 @RestController
 @RequestMapping("/asset")
-public class AssetController implements AssetControllerSwagger {
+public class AssetController {
 
     private final AssetService assetService;
 
@@ -52,19 +53,5 @@ public class AssetController implements AssetControllerSwagger {
             return ResponseEntity.noContent().build();
         }
         return ResponseEntity.status(resolveStatus(result.getMessage())).body(result);
-    }
-
-    private HttpStatus resolveStatus(String message) {
-        if (message == null || message.isBlank()) {
-            return HttpStatus.INTERNAL_SERVER_ERROR;
-        }
-        String normalized = message.toLowerCase();
-        if (normalized.contains("not found") || normalized.contains("does not exist")) {
-            return HttpStatus.NOT_FOUND;
-        }
-        if (normalized.contains("already exists") || normalized.contains("already in use")) {
-            return HttpStatus.CONFLICT;
-        }
-        return HttpStatus.INTERNAL_SERVER_ERROR;
     }
 }

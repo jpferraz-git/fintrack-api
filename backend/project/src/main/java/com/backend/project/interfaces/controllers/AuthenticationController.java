@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import static com.backend.project.interfaces.controllers.utils.Normalizer.resolveStatus;
+
 @RestController
 @RequestMapping("/auth")
 public class AuthenticationController implements AuthenticationControllerSwagger {
@@ -36,16 +38,5 @@ public class AuthenticationController implements AuthenticationControllerSwagger
             return ResponseEntity.ok().body(result.getValue());
         }
         return ResponseEntity.status(resolveStatus(result.getMessage())).body(result);
-    }
-
-    private HttpStatus resolveStatus(String message) {
-        if (message == null || message.isBlank()) {
-            return HttpStatus.INTERNAL_SERVER_ERROR;
-        }
-        String normalized = message.toLowerCase();
-        if (normalized.contains("already exists") || normalized.contains("already in use")) {
-            return HttpStatus.CONFLICT;
-        }
-        return HttpStatus.INTERNAL_SERVER_ERROR;
     }
 }

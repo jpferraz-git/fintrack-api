@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static com.backend.project.interfaces.controllers.utils.Normalizer.resolveStatus;
+
 @RestController
 @RequestMapping("/transaction")
 public class TransactionController {
@@ -33,20 +35,6 @@ public class TransactionController {
             return ResponseEntity.status(HttpStatus.CREATED).body(result.getValue());
         }
         return ResponseEntity.status(resolveStatus(result.getMessage())).body(result);
-    }
-
-    private HttpStatus resolveStatus(String message) {
-        if (message == null || message.isBlank()) {
-            return HttpStatus.INTERNAL_SERVER_ERROR;
-        }
-        String normalized = message.toLowerCase();
-        if (normalized.contains("already exists") || normalized.contains("already in use")) {
-            return HttpStatus.CONFLICT;
-        }
-        if (normalized.contains("not found") || normalized.contains("does not exist")) {
-            return HttpStatus.NOT_FOUND;
-        }
-        return HttpStatus.INTERNAL_SERVER_ERROR;
     }
 
 }
