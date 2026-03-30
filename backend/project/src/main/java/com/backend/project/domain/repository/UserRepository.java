@@ -13,6 +13,8 @@ public interface UserRepository {
 
     UserEntity findByEmail(String email);
 
+    boolean existsByEmail(String email);
+
     UserEntity update(UserEntity user);
 
     void deleteByEmail(String email);
