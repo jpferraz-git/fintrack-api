@@ -1,5 +1,6 @@
 package com.backend.project.interfaces.controllers;
 
+import com.backend.project.application.Result;
 import com.backend.project.application.service.BinanceService;
 import com.backend.project.exception.GlobalExceptionHandler;
 import com.backend.project.interfaces.dto.binance.klines.BinanceKlinesResponseDTO;
@@ -48,7 +49,7 @@ class BinanceControllerTest {
                 Instant.now()
         );
 
-        when(binanceService.getPrice("BTCUSDT")).thenReturn(response);
+        when(binanceService.getPrice("BTCUSDT")).thenReturn(Result.ok(response));
 
         mockMvc.perform(get("/binance/price").param("symbol", "BTCUSDT"))
                 .andExpect(status().isOk())
@@ -77,7 +78,7 @@ class BinanceControllerTest {
                 3L
         );
 
-        when(binanceService.get24hPrice("BTCUSDT")).thenReturn(response);
+        when(binanceService.get24hPrice("BTCUSDT")).thenReturn(Result.ok(response));
 
         mockMvc.perform(get("/binance/24h").param("symbol", "BTCUSDT"))
                 .andExpect(status().isOk())
@@ -101,7 +102,7 @@ class BinanceControllerTest {
                 new BigDecimal("3900000.00")
         );
 
-        when(binanceService.getKlines("BTCUSDT", "1m")).thenReturn(response);
+        when(binanceService.getKlines("BTCUSDT", "1m")).thenReturn(Result.ok(response));
 
         mockMvc.perform(get("/binance/klines")
                         .param("symbol", "BTCUSDT")
@@ -121,7 +122,7 @@ class BinanceControllerTest {
                 Instant.now()
         );
 
-        when(binanceService.scheduledPriceUpdate()).thenReturn(List.of(btc));
+        when(binanceService.scheduledPriceUpdate()).thenReturn(Result.ok(List.of(btc)));
 
         mockMvc.perform(get("/binance/price"))
                 .andExpect(status().isOk())
@@ -129,13 +130,14 @@ class BinanceControllerTest {
     }
 
     @Test
-    void getPriceShouldReturnInternalServerErrorWhenServiceThrowsUnexpectedException() throws Exception {
-        when(binanceService.getPrice("BTCUSDT")).thenThrow(new RuntimeException("Boom"));
+    void getPriceShouldReturnNotFoundWhenPriceDoesNotExist() throws Exception {
+        when(binanceService.getPrice("BTCUSDT")).thenReturn(Result.fail("Price not found"));
 
         mockMvc.perform(get("/binance/price").param("symbol", "BTCUSDT"))
-                .andExpect(status().isInternalServerError())
-                .andExpect(jsonPath("$.status").value(500))
-                .andExpect(jsonPath("$.message").value("Unexpected error"));
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.status").value("FAILURE"))
+                .andExpect(jsonPath("$.success").value(false))
+                .andExpect(jsonPath("$.message").value("Price not found"));
     }
 }
 

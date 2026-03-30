@@ -1,8 +1,7 @@
 package com.backend.project.interfaces.controllers;
 
+import com.backend.project.application.Result;
 import com.backend.project.application.service.AssetService;
-import com.backend.project.exception.AssetAlreadyExistsException;
-import com.backend.project.exception.AssetNotFoundException;
 import com.backend.project.exception.GlobalExceptionHandler;
 import com.backend.project.interfaces.dto.asset.AssetRequestDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -16,7 +15,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -47,13 +45,14 @@ class AssetControllerTest {
         AssetRequestDTO request = new AssetRequestDTO("BTC", "CRYPTO", "Bitcoin");
 
         when(assetService.create(any(AssetRequestDTO.class)))
-                .thenThrow(new AssetAlreadyExistsException("BTC"));
+                .thenReturn(Result.fail("Asset with ticker 'BTC' already exists."));
 
         mockMvc.perform(post("/asset")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isConflict())
-                .andExpect(jsonPath("$.status").value(409))
+                .andExpect(jsonPath("$.status").value("FAILURE"))
+                .andExpect(jsonPath("$.success").value(false))
                 .andExpect(jsonPath("$.message").value("Asset with ticker 'BTC' already exists."));
     }
 
@@ -62,23 +61,26 @@ class AssetControllerTest {
         AssetRequestDTO request = new AssetRequestDTO("XYZ", "CRYPTO", "Unknown Coin");
 
         when(assetService.update(any(String.class), any(AssetRequestDTO.class)))
-                .thenThrow(new AssetNotFoundException("XYZ"));
+                .thenReturn(Result.fail("Asset with ticker 'XYZ' does not exist."));
 
         mockMvc.perform(put("/asset/XYZ")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$.status").value(404))
+                .andExpect(jsonPath("$.status").value("FAILURE"))
+                .andExpect(jsonPath("$.success").value(false))
                 .andExpect(jsonPath("$.message").value("Asset with ticker 'XYZ' does not exist."));
     }
 
     @Test
     void deleteShouldReturnNotFoundWhenAssetDoesNotExist() throws Exception {
-        doThrow(new AssetNotFoundException("XYZ")).when(assetService).deleteByTicker("XYZ");
+        when(assetService.deleteByTicker("XYZ"))
+                .thenReturn(Result.fail("Asset with ticker 'XYZ' does not exist."));
 
         mockMvc.perform(delete("/asset").param("ticker", "XYZ"))
                 .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$.status").value(404))
+                .andExpect(jsonPath("$.status").value("FAILURE"))
+                .andExpect(jsonPath("$.success").value(false))
                 .andExpect(jsonPath("$.message").value("Asset with ticker 'XYZ' does not exist."));
     }
 }

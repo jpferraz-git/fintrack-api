@@ -1,18 +1,17 @@
 package com.backend.project.interfaces.controllers;
 
 import com.backend.project.application.Result;
-import com.backend.project.application.service.UserService;
-import com.backend.project.domain.model.Role;
+import com.backend.project.application.service.BatchService;
 import com.backend.project.exception.GlobalExceptionHandler;
-import com.backend.project.interfaces.dto.user.UserRequestDTO;
-import com.backend.project.interfaces.dto.user.UserResponseDTO;
+import com.backend.project.interfaces.dto.batch.BatchRequestDTO;
+import com.backend.project.interfaces.dto.batch.BatchResponseDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.http.MediaType;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
@@ -27,62 +26,61 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(MockitoExtension.class)
-class UserControllerTest {
+class BatchControllerTest {
 
     private MockMvc mockMvc;
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Mock
-    private UserService userService;
+    private BatchService batchService;
 
     @BeforeEach
     void setup() {
-        UserController userController = new UserController(userService);
-        mockMvc = MockMvcBuilders.standaloneSetup(userController)
+        BatchController batchController = new BatchController(batchService);
+        mockMvc = MockMvcBuilders.standaloneSetup(batchController)
                 .setControllerAdvice(new GlobalExceptionHandler())
                 .build();
     }
 
     @Test
-    void createUserShouldReturnCreated() throws Exception {
-        UserRequestDTO request = new UserRequestDTO("Joao", "joao@test.com", "123456", Role.USER);
-        UserResponseDTO response = new UserResponseDTO(
+    void createBatchShouldReturnCreated() throws Exception {
+        BatchRequestDTO request = new BatchRequestDTO("input.csv", "PENDING");
+        BatchResponseDTO response = new BatchResponseDTO(
                 UUID.randomUUID(),
-                "Joao",
-                "joao@test.com",
-                "encoded-password",
-                Role.USER,
+                "2026-03-30",
+                "input.csv",
+                "PENDING",
                 Instant.now(),
                 Instant.now()
         );
 
-        when(userService.create(any(UserRequestDTO.class))).thenReturn(Result.ok(response));
+        when(batchService.create(any(BatchRequestDTO.class))).thenReturn(Result.ok(response));
 
-        mockMvc.perform(post("/users")
+        mockMvc.perform(post("/batch")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.name").value("Joao"))
-                .andExpect(jsonPath("$.email").value("joao@test.com"));
+                .andExpect(jsonPath("$.fileName").value("input.csv"))
+                .andExpect(jsonPath("$.status").value("PENDING"));
 
-        verify(userService).create(any(UserRequestDTO.class));
+        verify(batchService).create(any(BatchRequestDTO.class));
     }
 
     @Test
-    void createUserShouldReturnConflictWhenEmailAlreadyExists() throws Exception {
-        UserRequestDTO request = new UserRequestDTO("Joao", "joao@test.com", "123456", Role.USER);
+    void createBatchShouldReturnConflictWhenAlreadyExists() throws Exception {
+        BatchRequestDTO request = new BatchRequestDTO("input.csv", "PENDING");
 
-        when(userService.create(any(UserRequestDTO.class)))
-                .thenReturn(Result.fail("User with email 'joao@test.com' already exists."));
+        when(batchService.create(any(BatchRequestDTO.class)))
+                .thenReturn(Result.fail("Batch with identifier 'input.csv' already exists."));
 
-        mockMvc.perform(post("/users")
+        mockMvc.perform(post("/batch")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isConflict())
                 .andExpect(jsonPath("$.status").value("FAILURE"))
                 .andExpect(jsonPath("$.success").value(false))
-                .andExpect(jsonPath("$.message").value("User with email 'joao@test.com' already exists."));
+                .andExpect(jsonPath("$.message").value("Batch with identifier 'input.csv' already exists."));
     }
 }
 
