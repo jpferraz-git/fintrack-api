@@ -1,7 +1,6 @@
 package com.backend.project.application.service;
 
-import com.backend.project.exception.BinanceKlinesNotFoundException;
-import com.backend.project.infrastructure.external.binance.BinanceIntegration;
+import com.backend.project.infrastructure.binance.BinanceIntegration;
 import com.backend.project.interfaces.dto.binance.klines.BinanceKlinesMapper;
 import com.backend.project.interfaces.dto.binance.klines.BinanceKlinesRequestDTO;
 import com.backend.project.interfaces.dto.binance.klines.BinanceKlinesResponseDTO;
@@ -57,9 +56,6 @@ public class BinanceService {
 
     public BinanceKlinesResponseDTO getKlines(String symbol, String interval){
         List<BinanceKlinesRequestDTO> dtos = binanceIntegration.getKlines(symbol, interval);
-        if (dtos.isEmpty()) {
-            throw new BinanceKlinesNotFoundException(symbol, interval);
-        }
         return binanceKlinesMapper.toResponseKlines(dtos.getLast());
     }
 }
