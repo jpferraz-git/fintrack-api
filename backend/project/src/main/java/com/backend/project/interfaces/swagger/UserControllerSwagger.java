@@ -31,7 +31,7 @@ public interface UserControllerSwagger {
             @ApiResponse(responseCode = "400", description = "Invalid request payload", content = @Content),
             @ApiResponse(responseCode = "409", description = "User already exists", content = @Content)
     })
-    ResponseEntity<UserResponseDTO> createUser(
+    ResponseEntity<?> createUser(
             @io.swagger.v3.oas.annotations.parameters.RequestBody(
                     description = "User payload to create",
                     required = true,
@@ -45,7 +45,7 @@ public interface UserControllerSwagger {
             @ApiResponse(responseCode = "400", description = "Invalid request payload", content = @Content),
             @ApiResponse(responseCode = "404", description = "User not found", content = @Content)
     })
-    ResponseEntity<UserResponseDTO> updateUser(
+    ResponseEntity<?> updateUser(
             @Parameter(description = "Email used to identify the user", example = "user@example.com", required = true)
             String email,
             @io.swagger.v3.oas.annotations.parameters.RequestBody(
@@ -59,7 +59,7 @@ public interface UserControllerSwagger {
             @ApiResponse(responseCode = "204", description = "User deleted successfully", content = @Content),
             @ApiResponse(responseCode = "404", description = "User not found", content = @Content)
     })
-    ResponseEntity<Void> deleteUser(
+    ResponseEntity<?> deleteUser(
             @Parameter(description = "Email of the user to delete", example = "user@example.com", required = true)
             String email);
 }

@@ -1,13 +1,12 @@
 package com.backend.project.application.service;
 
+import com.backend.project.application.Result;
 import com.backend.project.domain.repository.RoleRepository;
 import com.backend.project.domain.repository.UserRepository;
-import com.backend.project.infrastructure.entity.RoleEntity;
 import com.backend.project.infrastructure.entity.UserEntity;
 import com.backend.project.interfaces.dto.user.UserMapper;
 import com.backend.project.interfaces.dto.user.UserRequestDTO;
 import com.backend.project.interfaces.dto.user.UserResponseDTO;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -29,29 +28,51 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public UserResponseDTO create(UserRequestDTO user) {
-        UserEntity saved = userMapper.toEntity(userMapper.toModel(user));
-        saved.setPassword(passwordEncoder.encode(saved.getPassword()));
-        saved.setRole(roleRepository.findByName(user.role()));
-        saved = userRepository.create(saved);
-        return userMapper.toResponse(saved);
+    public Result<UserResponseDTO> create(UserRequestDTO user) {
+        try {
+            UserEntity saved = userMapper.toEntity(userMapper.toModel(user));
+            saved.setPassword(passwordEncoder.encode(saved.getPassword()));
+            saved.setRole(roleRepository.findByName(user.role()));
+            saved = userRepository.create(saved);
+            return Result.ok(userMapper.toResponse(saved));
+        } catch (Exception ex) {
+            return Result.fail(ex.getMessage());
+        }
     }
 
-    public UserResponseDTO update(String email, UserRequestDTO dto){
+    public Result<UserResponseDTO> update(String email, UserRequestDTO dto){
         UserEntity user = userRepository.findByEmail(email);
-        user.setName(dto.name());
-        user.setEmail(dto.email());
-        user.setPassword(dto.password());
-        UserEntity updated = userRepository.update(user);
-        return userMapper.toResponse(updated);
+        if (user == null) {
+            return Result.fail("User with email '" + email + "' does not exist.");
+        }
+
+        try {
+            user.setName(dto.name());
+            user.setEmail(dto.email());
+            user.setPassword(dto.password());
+            UserEntity updated = userRepository.update(user);
+            return Result.ok(userMapper.toResponse(updated));
+        } catch (Exception ex) {
+            return Result.fail(ex.getMessage());
+        }
     }
 
-    public UserResponseDTO findByEmail(String email){
-        return userMapper.toResponse(userRepository.findByEmail(email));
+    public Result<UserResponseDTO> findByEmail(String email){
+        UserEntity user = userRepository.findByEmail(email);
+        if (user == null) {
+            return Result.fail("User with email '" + email + "' does not exist.");
+        }
+        return Result.ok(userMapper.toResponse(user));
     }
 
-    public void deleteByEmail(String email){
+    public Result<Void> deleteByEmail(String email){
+        UserEntity user = userRepository.findByEmail(email);
+        if (user == null) {
+            return Result.fail("User with email '" + email + "' does not exist.");
+        }
+
         userRepository.deleteByEmail(email);
+        return Result.ok(null);
     }
 
     public List<UserResponseDTO> findAll() {

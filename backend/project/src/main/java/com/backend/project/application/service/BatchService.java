@@ -1,6 +1,7 @@
 package com.backend.project.application.service;
 
 
+import com.backend.project.application.Result;
 import com.backend.project.domain.repository.BatchRepository;
 import com.backend.project.infrastructure.entity.BatchEntity;
 import com.backend.project.interfaces.dto.batch.BatchMapper;
@@ -21,12 +22,15 @@ public class BatchService {
         this.batchMapper = batchMapper;
     }
 
-    public BatchResponseDTO create(BatchRequestDTO batch) {
-        BatchEntity saved = batchRepository.create(
-                batchMapper.toEntity(batchMapper.toModel(batch))
-        );
-
-        return batchMapper.toResponse(saved);
+    public Result<BatchResponseDTO> create(BatchRequestDTO batch) {
+        try {
+            BatchEntity saved = batchRepository.create(
+                    batchMapper.toEntity(batchMapper.toModel(batch))
+            );
+            return Result.ok(batchMapper.toResponse(saved));
+        } catch (Exception ex) {
+            return Result.fail(ex.getMessage());
+        }
     }
 
     public List<BatchResponseDTO> findAll() {

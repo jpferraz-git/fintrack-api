@@ -1,6 +1,7 @@
 package com.backend.project.application.service;
 
 
+import com.backend.project.application.Result;
 import com.backend.project.domain.repository.TransactionRepository;
 import com.backend.project.infrastructure.entity.TransactionEntity;
 import com.backend.project.interfaces.dto.transaction.TransactionMapper;
@@ -21,11 +22,15 @@ public class TransactionService {
         this.transactionMapper = transactionMapper;
     }
 
-    public TransactionResponseDTO create(TransactionRequestDTO transaction) {
-        TransactionEntity saved = transactionRepository.create(
-                transactionMapper.toEntity(transactionMapper.toModel(transaction))
-        );
-        return transactionMapper.toResponse(saved);
+    public Result<TransactionResponseDTO> create(TransactionRequestDTO transaction) {
+        try {
+            TransactionEntity saved = transactionRepository.create(
+                    transactionMapper.toEntity(transactionMapper.toModel(transaction))
+            );
+            return Result.ok(transactionMapper.toResponse(saved));
+        } catch (Exception ex) {
+            return Result.fail(ex.getMessage());
+        }
     }
 
     public List<TransactionResponseDTO> findAll() {

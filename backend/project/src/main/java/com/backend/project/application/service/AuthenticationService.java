@@ -1,8 +1,8 @@
 package com.backend.project.application.service;
 
+import com.backend.project.application.Result;
 import com.backend.project.domain.repository.RoleRepository;
 import com.backend.project.domain.repository.UserRepository;
-import com.backend.project.exception.EmailAlreadyInUseException;
 import com.backend.project.infrastructure.entity.UserEntity;
 import com.backend.project.interfaces.dto.authentication.AuthenticationDTO;
 import com.backend.project.interfaces.dto.authentication.LoginResponseDTO;
@@ -38,20 +38,23 @@ public class AuthenticationService {
         return new LoginResponseDTO(token);
     }
     
-    public String register(RegisterDTO dto){
+    public Result<String> register(RegisterDTO dto){
         if (this.userRepository.findByEmail(dto.email()) != null) {
-            throw new EmailAlreadyInUseException(dto.email());
+            return Result.fail("Email '" + dto.email() + "' is already in use.");
         }
-        
-        String encryptedPassword = new BCryptPasswordEncoder(12).encode(dto.password());
-        UserEntity newUser = new UserEntity(
-                dto.email(),
-                encryptedPassword,
-                roleRepository.findByName(dto.role())
-        );
-        System.out.println(newUser);
-        this.userRepository.create(newUser);
-        return "User registered successfully";
+
+        try {
+            String encryptedPassword = new BCryptPasswordEncoder(12).encode(dto.password());
+            UserEntity newUser = new UserEntity(
+                    dto.email(),
+                    encryptedPassword,
+                    roleRepository.findByName(dto.role())
+            );
+            this.userRepository.create(newUser);
+            return Result.ok("User registered successfully");
+        } catch (Exception ex) {
+            return Result.fail(ex.getMessage());
+        }
     }
     
 }
