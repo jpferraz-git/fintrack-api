@@ -2,10 +2,12 @@ package com.backend.project.infrastructure.gateway;
 
 import com.backend.project.domain.model.Role;
 import com.backend.project.domain.repository.RoleRepository;
+import com.backend.project.exception.RoleNotFoundException;
 import com.backend.project.infrastructure.entity.RoleEntity;
 import com.backend.project.infrastructure.springdata.RoleJpaRepository;
-import jakarta.persistence.Column;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 public class RoleGateway implements RoleRepository {
@@ -17,12 +19,16 @@ public class RoleGateway implements RoleRepository {
     }
 
     @Override
-    public void findAll() {
-        roleJpaRepository.findAll();
+    public List<RoleEntity> findAll() {
+        return roleJpaRepository.findAll();
     }
 
     @Override
     public RoleEntity findByName(Role name) {
-        return roleJpaRepository.findByName(name);
+        RoleEntity role = roleJpaRepository.findByName(name);
+        if (role == null) {
+            throw new RoleNotFoundException(name);
+        }
+        return role;
     }
 }

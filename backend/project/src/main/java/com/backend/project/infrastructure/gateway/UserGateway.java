@@ -1,9 +1,11 @@
 package com.backend.project.infrastructure.gateway;
 
 import com.backend.project.domain.repository.UserRepository;
+import com.backend.project.exception.UserAlreadyExistsException;
 import com.backend.project.exception.UserNotFoundException;
 import com.backend.project.infrastructure.entity.UserEntity;
 import com.backend.project.infrastructure.springdata.UserJpaRepository;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -25,12 +27,29 @@ public class UserGateway implements UserRepository {
 
     @Override
     public UserEntity findByEmail(String email) {
-        return jpaRepository.findByEmail(email);
+        UserEntity user = jpaRepository.findByEmail(email);
+        if (user == null) {
+            throw new UserNotFoundException(email);
+        }
+        return user;
+    }
+
+    @Override
+    public boolean existsByEmail(String email) {
+        return jpaRepository.existsByEmail(email);
     }
 
     @Override
     public UserEntity update(UserEntity user) {
-        return jpaRepository.save(user);
+        if (user.getUserId() == null || !jpaRepository.existsById(user.getUserId())) {
+            throw new UserNotFoundException(user.getEmail());
+        }
+
+        try {
+            return jpaRepository.save(user);
+        } catch (DataIntegrityViolationException ex) {
+            throw new UserAlreadyExistsException(user.getEmail());
+        }
     }
 
     @Override
@@ -40,11 +59,15 @@ public class UserGateway implements UserRepository {
 
     @Override
     public UserEntity getReferenceById(UUID id) {
-        return jpaRepository.getReferenceById(id);
+        return jpaRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException(id));
     }
 
     @Override
     public UserEntity create(UserEntity user) {
+        if (jpaRepository.existsByEmail(user.getEmail())) {
+            throw new UserAlreadyExistsException(user.getEmail());
+        }
         return jpaRepository.save(user);
     }
 }
