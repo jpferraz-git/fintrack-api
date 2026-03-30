@@ -1,7 +1,5 @@
 package com.backend.project.application;
 
-import jdk.jshell.Snippet;
-
 public class Result<T> {
 
     public enum Status{
@@ -12,30 +10,34 @@ public class Result<T> {
     private final T value;
     private final String message;
     private final Status status;
+    private final boolean success;
 
-    private Result(T value, String message, Status status) {
+    public Result(T value, String message, Status status, boolean success) {
         this.value = value;
         this.message = message;
         this.status = status;
+        this.success = success;
     }
 
     public static <T> Result<T> loading(String message){
-        return new Result<>(null, message, Status.LOADING);
+        return new Result<>(null, message, Status.LOADING, true);
     }
 
     public static <T> Result<T> ok(T value){
-        return new Result<>(value, null, Status.SUCCESS);
+        return new Result<>(value, null, Status.SUCCESS, true);
     }
 
     public static <T> Result<T> fail(String message){
-        return new Result<>(null, message,Status.FAILURE);
+        return new Result<>(null, message,Status.FAILURE, false);
     }
 
-    public Status isFailure() { return Status.FAILURE; }
-    public Status isSuccess() { return Status.SUCCESS; }
-    public Status isLoading() { return Status.LOADING; }
+    public boolean isFailure() { return status == Status.FAILURE; }
+    public boolean isSuccess() { return status == Status.SUCCESS; }
+    public boolean isOk() { return isSuccess(); }
+    public boolean isLoading() { return status == Status.LOADING; }
     public T getValue() { return value; }
 
     public String getMessage() { return message; }
     public Status getStatus() { return status; }
+
 }
