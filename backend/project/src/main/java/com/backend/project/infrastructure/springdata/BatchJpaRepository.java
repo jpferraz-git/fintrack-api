@@ -7,4 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.UUID;
 
 public interface BatchJpaRepository extends JpaRepository<BatchEntity, UUID> {
+
+	BatchEntity findByFileName(String fileName);
 }
