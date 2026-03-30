@@ -31,7 +31,7 @@ public interface AssetControllerSwagger {
             @ApiResponse(responseCode = "400", description = "Invalid request payload", content = @Content),
             @ApiResponse(responseCode = "409", description = "Asset already exists", content = @Content)
     })
-    ResponseEntity<AssetResponseDTO> create(
+    ResponseEntity<?> create(
             @io.swagger.v3.oas.annotations.parameters.RequestBody(
                     description = "Asset payload to create",
                     required = true,
@@ -45,7 +45,7 @@ public interface AssetControllerSwagger {
             @ApiResponse(responseCode = "400", description = "Invalid request payload", content = @Content),
             @ApiResponse(responseCode = "404", description = "Asset not found", content = @Content)
     })
-    ResponseEntity<AssetResponseDTO> update(
+    ResponseEntity<?> update(
             @Parameter(description = "Ticker symbol used to identify the asset", example = "AAPL", required = true)
             String ticker,
             @io.swagger.v3.oas.annotations.parameters.RequestBody(
@@ -59,7 +59,7 @@ public interface AssetControllerSwagger {
             @ApiResponse(responseCode = "204", description = "Asset deleted successfully", content = @Content),
             @ApiResponse(responseCode = "404", description = "Asset not found", content = @Content)
     })
-    ResponseEntity<Void> deleteByTicker(
+    ResponseEntity<?> deleteByTicker(
             @Parameter(description = "Ticker symbol of the asset to delete", example = "AAPL", required = true)
             String ticker);
 }

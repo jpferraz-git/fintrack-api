@@ -2,8 +2,10 @@ package com.backend.project.infrastructure.gateway;
 
 
 import com.backend.project.domain.repository.TransactionRepository;
+import com.backend.project.exception.TransactionAlreadyExistsException;
 import com.backend.project.infrastructure.entity.TransactionEntity;
 import com.backend.project.infrastructure.springdata.TransactionJpaRepository;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -19,7 +21,11 @@ public class TransactionGateway implements TransactionRepository {
 
     @Override
     public TransactionEntity create(TransactionEntity transaction) {
-        return jpaRepository.save(transaction);
+        try {
+            return jpaRepository.save(transaction);
+        } catch (DataIntegrityViolationException ex) {
+            throw new TransactionAlreadyExistsException("transaction");
+        }
     }
 
     @Override

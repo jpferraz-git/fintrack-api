@@ -1,8 +1,8 @@
 package com.backend.project.application.service;
 
+import com.backend.project.application.Result;
 import com.backend.project.domain.repository.AssetRepository;
 import com.backend.project.infrastructure.entity.AssetEntity;
-import com.backend.project.infrastructure.entity.UserEntity;
 import com.backend.project.interfaces.dto.asset.AssetMapper;
 import com.backend.project.interfaces.dto.asset.AssetRequestDTO;
 import com.backend.project.interfaces.dto.asset.AssetResponseDTO;
@@ -21,24 +21,37 @@ public class AssetService {
         this.assetMapper = assetMapper;
     }
 
-    public AssetResponseDTO create(AssetRequestDTO asset){
-        AssetEntity saved = assetRepository.create(
-                assetMapper.toEntity(assetMapper.toModel(asset))
-        );
-        return assetMapper.toResponse(saved);
+    public Result<AssetResponseDTO> create(AssetRequestDTO asset){
+        try {
+            AssetEntity saved = assetRepository.create(
+                    assetMapper.toEntity(assetMapper.toModel(asset))
+            );
+            return Result.ok(assetMapper.toResponse(saved));
+        } catch (Exception ex) {
+            return Result.fail(ex.getMessage());
+        }
     }
 
-    public AssetResponseDTO update(String ticker, AssetRequestDTO asset){
-        AssetEntity assetEntity = assetRepository.findByTicker(ticker);
-        assetEntity.setTicker(asset.ticker());
-        assetEntity.setAssetType(asset.assetType());
-        assetEntity.setCompanyName(asset.companyName());
-        AssetEntity updated = assetRepository.update(assetEntity);
-        return assetMapper.toResponse(updated);
+    public Result<AssetResponseDTO> update(String ticker, AssetRequestDTO asset){
+        try {
+            AssetEntity assetEntity = assetRepository.findByTicker(ticker);
+            assetEntity.setTicker(asset.ticker());
+            assetEntity.setAssetType(asset.assetType());
+            assetEntity.setCompanyName(asset.companyName());
+            AssetEntity updated = assetRepository.update(assetEntity);
+            return Result.ok(assetMapper.toResponse(updated));
+        } catch (Exception ex) {
+            return Result.fail(ex.getMessage());
+        }
     }
 
-    public void deleteByTicker(String ticker){
-        assetRepository.deleteByTicker(ticker);
+    public Result<Void> deleteByTicker(String ticker){
+        try {
+            assetRepository.deleteByTicker(ticker);
+            return Result.ok(null);
+        } catch (Exception ex) {
+            return Result.fail(ex.getMessage());
+        }
     }
 
     public List<AssetResponseDTO> findAll(){

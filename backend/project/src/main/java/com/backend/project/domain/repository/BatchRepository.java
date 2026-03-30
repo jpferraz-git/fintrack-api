@@ -12,5 +12,6 @@ public interface BatchRepository {
 
     BatchEntity create(BatchEntity batch);
     BatchEntity getReferenceById(UUID id);
+    BatchEntity findByFileName(String fileName);
     List<BatchEntity> findAll();
 }

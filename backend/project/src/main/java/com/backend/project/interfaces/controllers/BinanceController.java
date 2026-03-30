@@ -1,14 +1,18 @@
 package com.backend.project.interfaces.controllers;
 
+import com.backend.project.application.Result;
 import com.backend.project.application.service.BinanceService;
 import com.backend.project.interfaces.dto.binance.klines.BinanceKlinesResponseDTO;
 import com.backend.project.interfaces.dto.binance.price.BinancePriceResponseDTO;
 import com.backend.project.interfaces.dto.binance.ticker.Binance24hTickerResponseDTO;
 import com.backend.project.interfaces.swagger.BinanceControllerSwagger;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
+import static com.backend.project.interfaces.controllers.utils.Normalizer.resolveStatus;
 
 
 @RestController
@@ -21,35 +25,58 @@ public class BinanceController implements BinanceControllerSwagger {
         this.binanceService = binanceService;
     }
 
-    @GetMapping("/price")
-    public ResponseEntity<List<BinancePriceResponseDTO>> getPriceScheduled() {
-        return ResponseEntity.ok().body(binanceService.scheduledPriceUpdate());
+    @GetMapping(value = "/price", params = "!symbol")
+    public ResponseEntity<?> getPriceScheduled() {
+        Result<List<BinancePriceResponseDTO>> result = binanceService.scheduledPriceUpdate();
+        if (result.isOk()) {
+            return ResponseEntity.ok(result.getValue());
+        }
+        return ResponseEntity.status(resolveStatus(result.getMessage())).body(result);
     }
 
-
-    @GetMapping("/price")
-    public ResponseEntity<BinancePriceResponseDTO> getPrice(@RequestParam String symbol) {
-        return ResponseEntity.ok().body(binanceService.getPrice(symbol));
+    @GetMapping(value = "/price", params = "symbol")
+    public ResponseEntity<?> getPrice(@RequestParam String symbol) {
+        Result<BinancePriceResponseDTO> result = binanceService.getPrice(symbol);
+        if (result.isOk()) {
+            return ResponseEntity.ok(result.getValue());
+        }
+        return ResponseEntity.status(resolveStatus(result.getMessage())).body(result);
     }
 
-    @GetMapping("/24h")
-    public ResponseEntity<List<Binance24hTickerResponseDTO>> get24PriceScheduled(){
-        return ResponseEntity.ok().body(binanceService.scheduled24hTickerUpdate());
+    @GetMapping(value = "/24h", params = "!symbol")
+    public ResponseEntity<?> get24PriceScheduled(){
+        Result<List<Binance24hTickerResponseDTO>> result = binanceService.scheduled24hTickerUpdate();
+        if (result.isOk()) {
+            return ResponseEntity.ok(result.getValue());
+        }
+        return ResponseEntity.status(resolveStatus(result.getMessage())).body(result);
     }
 
-
-    @GetMapping("/24h")
-    public ResponseEntity<Binance24hTickerResponseDTO> get24Price(@RequestParam String symbol){
-        return ResponseEntity.ok().body(binanceService.get24hPrice(symbol));
+    @GetMapping(value = "/24h", params = "symbol")
+    public ResponseEntity<?> get24Price(@RequestParam String symbol){
+        Result<Binance24hTickerResponseDTO> result = binanceService.get24hPrice(symbol);
+        if (result.isOk()) {
+            return ResponseEntity.ok(result.getValue());
+        }
+        return ResponseEntity.status(resolveStatus(result.getMessage())).body(result);
     }
 
-    @GetMapping("/klines")
-    public ResponseEntity<List<BinanceKlinesResponseDTO>> getKlinesScheduled() {
-        return ResponseEntity.ok().body(binanceService.scheduledKlinesUpdate());
+    @GetMapping(value = "/klines", params = {"!symbol", "!interval"})
+    public ResponseEntity<?> getKlinesScheduled() {
+        Result<List<BinanceKlinesResponseDTO>> result = binanceService.scheduledKlinesUpdate();
+        if (result.isOk()) {
+            return ResponseEntity.ok(result.getValue());
+        }
+        return ResponseEntity.status(resolveStatus(result.getMessage())).body(result);
     }
 
-    @GetMapping("/klines")
-    public ResponseEntity<BinanceKlinesResponseDTO> getKlines(@RequestParam String symbol, @RequestParam String interval) {
-        return ResponseEntity.ok().body(binanceService.getKlines(symbol, interval));
+    @GetMapping(value = "/klines", params = {"symbol", "interval"})
+    public ResponseEntity<?> getKlines(@RequestParam String symbol, @RequestParam String interval) {
+        Result<BinanceKlinesResponseDTO> result = binanceService.getKlines(symbol, interval);
+        if (result.isOk()) {
+            return ResponseEntity.ok(result.getValue());
+        }
+        return ResponseEntity.status(resolveStatus(result.getMessage())).body(result);
     }
+
 }

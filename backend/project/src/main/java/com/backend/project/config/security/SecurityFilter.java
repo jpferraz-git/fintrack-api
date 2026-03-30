@@ -2,7 +2,6 @@ package com.backend.project.config.security;
 
 import com.backend.project.application.service.TokenService;
 import com.backend.project.domain.repository.UserRepository;
-import com.backend.project.exception.UserNotFoundException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -42,9 +41,6 @@ public class SecurityFilter extends OncePerRequestFilter {
             }
 
             UserDetails user = userRepository.findByEmail(email);
-            if (user == null) {
-                throw new UserNotFoundException(email);
-            }
 
             var authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(authentication);

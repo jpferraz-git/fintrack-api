@@ -1,4 +1,4 @@
-package com.backend.project.infrastructure.external.binance;
+package com.backend.project.infrastructure.binance;
 
 import com.backend.project.interfaces.dto.binance.klines.BinanceKlinesRequestDTO;
 import org.springframework.stereotype.Component;

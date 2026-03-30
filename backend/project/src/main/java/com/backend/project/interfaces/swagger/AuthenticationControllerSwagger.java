@@ -34,7 +34,7 @@ public interface AuthenticationControllerSwagger {
             @ApiResponse(responseCode = "400", description = "Invalid request payload", content = @Content),
             @ApiResponse(responseCode = "409", description = "Email already in use", content = @Content)
     })
-    ResponseEntity<String> register(
+    ResponseEntity<?> register(
             @io.swagger.v3.oas.annotations.parameters.RequestBody(
                     description = "User registration payload",
                     required = true,

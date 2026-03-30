@@ -11,4 +11,6 @@ public interface AssetJpaRepository extends JpaRepository<AssetEntity, UUID> {
     @Query("SELECT a FROM AssetEntity a WHERE a.ticker = :ticker")
     AssetEntity findByTicker(String ticker);
 
+    boolean existsByTicker(String ticker);
+
 }
