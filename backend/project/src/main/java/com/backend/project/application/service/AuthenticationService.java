@@ -33,13 +33,17 @@ public class AuthenticationService {
     public LoginResponseDTO login(AuthenticationDTO dto){
         var usernamePassword = new UsernamePasswordAuthenticationToken(dto.email(), dto.password());
         var auth = this.authenticationManager.authenticate(usernamePassword);
-        var token = tokenService.generateToken((UserEntity) auth.getPrincipal());
+        Object principal = auth.getPrincipal();
+        if (!(principal instanceof UserEntity user)) {
+            throw new IllegalStateException("Authenticated principal is not a valid user.");
+        }
+        var token = tokenService.generateToken(user);
 
         return new LoginResponseDTO(token);
     }
     
     public Result<String> register(RegisterDTO dto){
-        if (this.userRepository.findByEmail(dto.email()) != null) {
+        if (this.userRepository.existsByEmail(dto.email())) {
             return Result.fail("Email '" + dto.email() + "' is already in use.");
         }
 

@@ -41,12 +41,8 @@ public class UserService {
     }
 
     public Result<UserResponseDTO> update(String email, UserRequestDTO dto){
-        UserEntity user = userRepository.findByEmail(email);
-        if (user == null) {
-            return Result.fail("User with email '" + email + "' does not exist.");
-        }
-
         try {
+            UserEntity user = userRepository.findByEmail(email);
             user.setName(dto.name());
             user.setEmail(dto.email());
             user.setPassword(dto.password());
@@ -58,21 +54,21 @@ public class UserService {
     }
 
     public Result<UserResponseDTO> findByEmail(String email){
-        UserEntity user = userRepository.findByEmail(email);
-        if (user == null) {
-            return Result.fail("User with email '" + email + "' does not exist.");
+        try {
+            UserEntity user = userRepository.findByEmail(email);
+            return Result.ok(userMapper.toResponse(user));
+        } catch (Exception ex) {
+            return Result.fail(ex.getMessage());
         }
-        return Result.ok(userMapper.toResponse(user));
     }
 
     public Result<Void> deleteByEmail(String email){
-        UserEntity user = userRepository.findByEmail(email);
-        if (user == null) {
-            return Result.fail("User with email '" + email + "' does not exist.");
+        try {
+            userRepository.deleteByEmail(email);
+            return Result.ok(null);
+        } catch (Exception ex) {
+            return Result.fail(ex.getMessage());
         }
-
-        userRepository.deleteByEmail(email);
-        return Result.ok(null);
     }
 
     public List<UserResponseDTO> findAll() {
