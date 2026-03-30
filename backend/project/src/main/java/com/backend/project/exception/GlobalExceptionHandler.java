@@ -88,6 +88,39 @@ public class GlobalExceptionHandler {
                 ));
     }
 
+    @ExceptionHandler(TransactionAlreadyExistsException.class)
+    public ResponseEntity<ErrorResponseDTO> handleTransactionAlreadyExists(TransactionAlreadyExistsException ex){
+        return ResponseEntity
+                .status(HttpStatus.CONFLICT)
+                .body(new ErrorResponseDTO(
+                        409,
+                        ex.getMessage(),
+                        Instant.now()
+                ));
+    }
+
+    @ExceptionHandler(BatchNotFoundException.class)
+    public ResponseEntity<ErrorResponseDTO> handleBatchNotFound(BatchNotFoundException ex){
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(new ErrorResponseDTO(
+                        404,
+                        ex.getMessage(),
+                        Instant.now()
+                ));
+    }
+
+    @ExceptionHandler(RoleNotFoundException.class)
+    public ResponseEntity<ErrorResponseDTO> handleRoleNotFound(RoleNotFoundException ex){
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(new ErrorResponseDTO(
+                        404,
+                        ex.getMessage(),
+                        Instant.now()
+                ));
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponseDTO> handleGeneric(Exception ex) {
         return ResponseEntity
