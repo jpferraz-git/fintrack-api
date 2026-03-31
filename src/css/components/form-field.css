@@ -1,0 +1,160 @@
+/* ============================================================
+   KINETIC — Form Field Component (shared by auth pages)
+   ============================================================ */
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 100%;
+}
+
+.form-field__label {
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 16px;
+  color: var(--color-text-secondary);
+}
+
+.form-field__label--uppercase {
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--color-text-secondary);
+}
+
+.form-field__input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.form-field__icon {
+  position: absolute;
+  left: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.form-field__input {
+  width: 100%;
+  padding: 16px 16px 16px 48px;
+  border-radius: var(--radius-md);
+  background: var(--color-bg-input);
+  border: none;
+  outline: none;
+  font-family: var(--font-body);
+  font-size: 16px;
+  font-weight: 400;
+  color: var(--color-text-primary);
+  transition: background 0.2s;
+}
+
+.form-field__input::placeholder {
+  color: var(--color-text-dim);
+}
+
+.form-field__input:focus {
+  background: #353d56;
+  outline: none;
+}
+
+/* Checkbox row */
+.form-field--checkbox {
+  flex-direction: row;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 0;
+}
+
+.form-field__checkbox {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  min-width: 16px;
+  border-radius: 2px;
+  border: 1px solid #3C4A42;
+  background: var(--color-bg-input);
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.form-field__checkbox:checked {
+  background: var(--color-green-light);
+  border-color: var(--color-green-light);
+}
+
+.form-field__checkbox-label {
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--color-text-secondary);
+  line-height: 1.4;
+}
+
+.form-field__link {
+  color: var(--color-green-light);
+}
+
+.form-field__link:hover {
+  text-decoration: underline;
+}
+
+/* Password grid — side by side on desktop */
+.form-field-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+@media (max-width: 480px) {
+  .form-field-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Label row with forgot link */
+.form-field__label-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.form-field__forgot {
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--color-green-light);
+  cursor: pointer;
+}
+
+.form-field__forgot:hover {
+  text-decoration: underline;
+}
+
+/* CTA button */
+.btn-cta {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 16px;
+  border-radius: var(--radius-md);
+  border: none;
+  background: var(--gradient-cta);
+  box-shadow: var(--shadow-btn);
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 24px;
+  color: var(--color-green-deeper);
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.1s;
+}
+
+.btn-cta:hover  { opacity: 0.92; }
+.btn-cta:active { transform: scale(0.99); }
