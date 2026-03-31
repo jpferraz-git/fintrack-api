@@ -52,3 +52,4 @@ tsconfig.spec.json
 angular.json
 .prettier*
 .editorconfig
+.vscode
