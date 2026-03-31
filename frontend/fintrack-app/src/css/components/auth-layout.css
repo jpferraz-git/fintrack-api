@@ -1,0 +1,307 @@
+
+.auth-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 16px;
+  background: var(--gradient-page);
+  position: relative;
+  overflow: hidden;
+}
+
+
+.auth-page__decor-tl,
+.auth-page__decor-br {
+  position: fixed;
+  width: 512px;
+  height: 428px;
+  border-radius: var(--radius-lg);
+  filter: blur(60px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.auth-page__decor-tl {
+  top: -107px;
+  left: -64px;
+  background: rgba(78, 222, 163, 0.05);
+}
+
+.auth-page__decor-br {
+  bottom: -107px;
+  right: -64px;
+  background: rgba(164, 2, 23, 0.05);
+}
+
+/* Container */
+.auth-container {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 32px;
+  width: 100%;
+  max-width: 448px;
+}
+
+/* Glassmorphism card */
+.auth-card {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  padding: 32px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  background: var(--color-bg-overlay);
+  backdrop-filter: blur(8px);
+  box-shadow: var(--shadow-card);
+}
+
+.auth-card__header {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  gap: 8px;
+}
+
+.auth-card__title {
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 32px;
+  color: var(--color-text-primary);
+}
+
+/* Login page has centered title */
+.auth-card__title--center {
+  text-align: center;
+}
+
+.auth-card__subtitle {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  color: var(--color-text-secondary);
+}
+
+/* Form inside card */
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Auth card footer (Already have account? Log in) */
+.auth-card__footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+}
+
+.auth-card__footer-text {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  color: var(--color-text-secondary);
+}
+
+.auth-card__footer-link {
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 20px;
+  color: var(--color-green-light);
+}
+
+.auth-card__footer-link:hover {
+  text-decoration: underline;
+}
+
+/* Don't have account row (smaller, used on login) */
+.auth-card__signup-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+  padding-top: 8px;
+}
+
+.auth-card__signup-text {
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--color-text-secondary);
+}
+
+.auth-card__signup-link {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--color-green-light);
+  padding-left: 8px;
+}
+
+.auth-card__signup-link:hover {
+  text-decoration: underline;
+}
+
+/* Divider with label */
+.auth-divider {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  margin-top: 24px;
+}
+
+.auth-divider__line {
+  flex: 1;
+  height: 1px;
+  background: rgba(60, 74, 66, 0.30);
+}
+
+.auth-divider__label {
+  padding: 0 16px;
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--color-text-dim);
+  white-space: nowrap;
+}
+
+/* Partner branding (Binance API Connect) */
+.partner-branding {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 24px;
+  opacity: 0.6;
+}
+
+.partner-branding__name {
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--color-text-primary);
+}
+
+.partner-branding__type {
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--color-text-primary);
+}
+
+/* Technical metadata footer (AES / Global Node) */
+.auth-meta {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 24px;
+  opacity: 0.4;
+}
+
+.auth-meta__item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.auth-meta__label {
+  font-size: 10px;
+  font-weight: 400;
+  line-height: 15px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--color-text-primary);
+}
+
+/* Footer links (login page bottom) */
+.auth-footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding-top: 16px;
+}
+
+.auth-footer__links {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 24px;
+}
+
+.auth-footer__link {
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--color-text-dim);
+}
+
+.auth-footer__link:hover {
+  color: var(--color-text-secondary);
+}
+
+.auth-footer__copy {
+  font-size: 10px;
+  font-weight: 400;
+  color: var(--color-text-darkest);
+  text-align: center;
+}
+
+/* Floating data point chips (login page decorations) */
+.floating-chip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 16px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border);
+  background: var(--color-bg-card);
+  position: fixed;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.floating-chip--tl {
+  top: 30%;
+  right: 5%;
+  transform: rotate(3deg);
+}
+
+.floating-chip--bl {
+  bottom: 30%;
+  left: 5%;
+  transform: rotate(-3deg);
+}
+
+.floating-chip__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.floating-chip__dot--green { background: var(--color-green-light); }
+.floating-chip__dot--red   { background: var(--color-red-dark); }
+
+.floating-chip__label {
+  font-size: 10px;
+  font-weight: 400;
+  line-height: 15px;
+  text-transform: uppercase;
+  color: var(--color-text-secondary);
+  white-space: nowrap;
+}
+
+@media (max-width: 768px) {
+  .floating-chip { display: none; }
+
+  .auth-card {
+    padding: 24px 20px;
+    gap: 24px;
+  }
+}

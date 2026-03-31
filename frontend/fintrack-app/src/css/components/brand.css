@@ -1,0 +1,52 @@
+/* ============================================================
+   KINETIC — Brand Identity Component
+   ============================================================ */
+
+.brand {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.brand__logo {
+  font-family: var(--font-display);
+  font-size: 30px;
+  font-weight: 800;
+  line-height: 36px;
+  letter-spacing: -1.5px;
+  color: var(--color-green-light);
+  padding-bottom: 8px;
+}
+
+.brand__tagline {
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  color: var(--color-text-secondary);
+}
+
+/* Sidebar variant - left aligned, smaller */
+.brand--sidebar {
+  align-items: flex-start;
+  text-align: left;
+  padding: 0 24px;
+}
+
+.brand--sidebar .brand__logo {
+  font-size: 20px;
+  font-weight: 900;
+  line-height: 28px;
+  letter-spacing: 0;
+  padding-bottom: 4px;
+}
+
+.brand--sidebar .brand__tagline {
+  font-size: 10px;
+  line-height: 15px;
+  letter-spacing: 1px;
+  color: var(--color-text-muted);
+}
