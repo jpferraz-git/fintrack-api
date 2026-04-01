@@ -1,0 +1,12 @@
+.dash-statusbar {
+  margin-top: auto;
+  border: 1px solid var(--color-border-subtle);
+  background: rgba(19, 27, 46, 0.7);
+  border-radius: 8px;
+  padding: 10px 12px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  font-size: 11px;
+  color: var(--color-text-dim);
+}

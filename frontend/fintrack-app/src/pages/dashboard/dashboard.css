@@ -1,0 +1,32 @@
+.dash-layout {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 68px 1fr;
+  background: var(--gradient-screen-main);
+}
+
+.dash-main {
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.dash-panels-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 2.2fr) minmax(0, 1fr);
+  gap: 12px;
+  align-items: start;
+}
+
+@media (max-width: 1200px) {
+  .dash-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 900px) {
+  .dash-panels-grid {
+    grid-template-columns: 1fr;
+  }
+}

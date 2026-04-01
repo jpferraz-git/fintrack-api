@@ -20,7 +20,8 @@ import { CreateAlertModal } from '../../components/models/create-alert-modal/cre
     AlertsStatusbar,
     CreateAlertModal
   ],
-  templateUrl: './alerts.html'
+  templateUrl: './alerts.html',
+  styleUrl: './alerts.css'
 })
 export class AlertsPage {
   isCreateAlertModalOpen = false;

@@ -8,6 +8,7 @@ import { CtaButton } from '../../components/cta-button/cta-button';
 @Component({
   selector: 'app-signup-page',
   imports: [AuthLayout, AuthCard, FormInput, CtaButton, RouterLink],
-  templateUrl: './signup.html'
+  templateUrl: './signup.html',
+  styleUrl: './signup.css'
 })
 export class SignupPage {}

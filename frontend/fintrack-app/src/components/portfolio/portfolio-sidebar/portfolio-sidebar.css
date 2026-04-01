@@ -1,0 +1,92 @@
+.portfolio-sidebar {
+  border-right: 1px solid var(--color-border-subtle);
+  background: var(--color-bg-deep);
+  padding: 14px 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.portfolio-sidebar__logo {
+  font-family: var(--font-display);
+  color: var(--color-green-light);
+  font-size: 30px;
+  line-height: 1;
+}
+
+.portfolio-sidebar__nav {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.portfolio-sidebar__item {
+  min-height: 58px;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  color: var(--color-text-muted);
+  transition: all 0.2s ease;
+}
+
+.portfolio-sidebar__item:hover {
+  background: rgba(78, 222, 163, 0.05);
+}
+
+.portfolio-sidebar__item.is-active {
+  color: var(--color-green-light);
+  border-color: rgba(78, 222, 163, 0.45);
+  background: rgba(78, 222, 163, 0.08);
+}
+
+.portfolio-sidebar__icon {
+  font-size: 14px;
+  line-height: 1;
+}
+
+.portfolio-sidebar__label {
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.portfolio-sidebar__footer {
+  margin-top: auto;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.portfolio-sidebar__help,
+.portfolio-sidebar__avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: var(--color-text-muted);
+  font-size: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.portfolio-sidebar__avatar {
+  border-radius: 8px;
+  width: 28px;
+  height: 28px;
+  font-size: 11px;
+}
+
+@media (max-width: 880px) {
+  .portfolio-sidebar {
+    display: none;
+  }
+}

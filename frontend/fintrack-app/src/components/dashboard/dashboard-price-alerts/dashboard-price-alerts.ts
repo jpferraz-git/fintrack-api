@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'app-dashboard-price-alerts',
   imports: [],
-  templateUrl: './dashboard-price-alerts.html'
+  templateUrl: './dashboard-price-alerts.html',
+  styleUrl: './dashboard-price-alerts.css'
 })
 export class DashboardPriceAlerts {}

@@ -1,10 +1,10 @@
 <aside class="alerts-sidebar" aria-label="Alerts navigation">
-  <div class="alerts-sidebar__logo">T.</div>
+  <div class="alerts-sidebar__logo">FT.</div>
 
   <nav class="alerts-sidebar__nav">
-    <a class="alerts-sidebar__item" routerLink="/dashboard">Home</a>
-    <a class="alerts-sidebar__item" routerLink="/portfolio">Portfolio</a>
-    <a class="alerts-sidebar__item alerts-sidebar__item--active" routerLink="/alerts">Alerts</a>
+    <a class="alerts-sidebar__item" routerLink="/dashboard" routerLinkActive="alerts-sidebar__item--active" [routerLinkActiveOptions]="{ exact: true }">Home</a>
+    <a class="alerts-sidebar__item" routerLink="/portfolio" routerLinkActive="alerts-sidebar__item--active" [routerLinkActiveOptions]="{ exact: true }">Portfolio</a>
+    <a class="alerts-sidebar__item" routerLink="/alerts" routerLinkActive="alerts-sidebar__item--active" [routerLinkActiveOptions]="{ exact: true }">Alerts</a>
     <a class="alerts-sidebar__item" routerLink="/dashboard">Settings</a>
   </nav>
 

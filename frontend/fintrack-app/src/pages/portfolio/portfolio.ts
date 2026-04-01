@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { PortfolioSidebar } from '../../components/portfolio/portfolio-sidebar/portfolio-sidebar';
+import { AlertsSidebar } from '../../components/alerts/alerts-sidebar/alerts-sidebar';
 import { PortfolioTopbar } from '../../components/portfolio/portfolio-topbar/portfolio-topbar';
 import { PortfolioValueCard } from '../../components/portfolio/portfolio-value-card/portfolio-value-card';
 import { PortfolioActionCard } from '../../components/portfolio/portfolio-action-card/portfolio-action-card';
@@ -11,7 +11,7 @@ import { AddAssetModal } from '../../components/models/add-asset-modal/add-asset
 @Component({
   selector: 'app-portfolio-page',
   imports: [
-    PortfolioSidebar,
+    AlertsSidebar,
     PortfolioTopbar,
     PortfolioValueCard,
     PortfolioActionCard,
@@ -20,7 +20,8 @@ import { AddAssetModal } from '../../components/models/add-asset-modal/add-asset
     PortfolioStatusbar,
     AddAssetModal
   ],
-  templateUrl: './portfolio.html'
+  templateUrl: './portfolio.html',
+  styleUrl: './portfolio.css'
 })
 export class PortfolioPage {
   isAddAssetModalOpen = false;

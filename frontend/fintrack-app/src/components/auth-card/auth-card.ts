@@ -3,7 +3,8 @@ import { Component, Input } from '@angular/core';
 @Component({
   selector: 'app-auth-card',
   imports: [],
-  templateUrl: './auth-card.html'
+  templateUrl: './auth-card.html',
+  styleUrl: './auth-card.css'
 })
 export class AuthCard {
   @Input({ required: true }) title = '';

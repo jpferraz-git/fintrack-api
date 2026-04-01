@@ -4,7 +4,8 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 @Component({
   selector: 'app-create-alert-modal',
   imports: [NgIf],
-  templateUrl: './create-alert-modal.html'
+  templateUrl: './create-alert-modal.html',
+  styleUrl: './create-alert-modal.css'
 })
 export class CreateAlertModal {
   @Input() open = false;

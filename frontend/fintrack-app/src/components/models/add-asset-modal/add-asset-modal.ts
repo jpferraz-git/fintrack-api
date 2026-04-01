@@ -4,7 +4,8 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 @Component({
   selector: 'app-add-asset-modal',
   imports: [NgIf],
-  templateUrl: './add-asset-modal.html'
+  templateUrl: './add-asset-modal.html',
+  styleUrl: './add-asset-modal.css'
 })
 export class AddAssetModal {
   @Input() open = false;
