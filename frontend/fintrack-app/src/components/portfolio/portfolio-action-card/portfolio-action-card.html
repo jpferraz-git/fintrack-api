@@ -1,0 +1,11 @@
+<section class="portfolio-card portfolio-action" aria-label="Portfolio actions">
+  <button type="button" class="portfolio-action__plus" aria-label="Open add asset modal" (click)="openModal.emit()">+</button>
+  <h3>Add New Asset</h3>
+  <p>Manually track external holdings</p>
+
+  <div class="portfolio-action__buttons">
+    <button type="button" (click)="openModal.emit()">Add Asset</button>
+    <button type="button">Sell</button>
+    <button type="button">Transfer</button>
+  </div>
+</section>

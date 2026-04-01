@@ -1,0 +1,45 @@
+<div *ngIf="open" class="terminal-modal-backdrop" (click)="onBackdropClick($event)">
+  <section class="terminal-modal terminal-modal--asset" role="dialog" aria-modal="true" aria-labelledby="add-asset-title">
+    <header class="terminal-modal__header">
+      <h2 id="add-asset-title">Add New Asset</h2>
+      <button type="button" class="terminal-modal__close" aria-label="Close asset modal" (click)="close()">x</button>
+    </header>
+
+    <p class="terminal-modal__subtitle">Manual portfolio expansion</p>
+
+    <div class="terminal-modal__body">
+      <label class="terminal-modal__label">Search Assets</label>
+      <div class="terminal-modal__search-row">
+        <input class="terminal-modal__field" type="search" placeholder="Search (e.g. BTC, ETH, Solana)..." />
+        <span>ESC to clear</span>
+      </div>
+
+      <div class="terminal-modal__split">
+        <div>
+          <label class="terminal-modal__label">Amount Held</label>
+          <input class="terminal-modal__field" type="text" value="0.000000" />
+        </div>
+        <div>
+          <label class="terminal-modal__label">Avg Buy Price (USD)</label>
+          <input class="terminal-modal__field" type="text" value="$ 0.00" />
+        </div>
+      </div>
+
+      <div class="terminal-modal__summary">
+        <article>
+          <span>Estimated Value</span>
+          <strong>$0.00</strong>
+        </article>
+        <article>
+          <span>Portfolio Weight</span>
+          <strong class="text-green">+0.0%</strong>
+        </article>
+      </div>
+    </div>
+
+    <footer class="terminal-modal__footer terminal-modal__footer--stack">
+      <button type="button" class="terminal-button terminal-button--primary">Add to Portfolio</button>
+      <p>Data will be stored locally in terminal cache until synced.</p>
+    </footer>
+  </section>
+</div>

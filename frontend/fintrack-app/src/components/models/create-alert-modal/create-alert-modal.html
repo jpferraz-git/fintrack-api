@@ -1,0 +1,54 @@
+<div *ngIf="open" class="terminal-modal-backdrop" (click)="onBackdropClick($event)">
+  <section class="terminal-modal terminal-modal--alert" role="dialog" aria-modal="true" aria-labelledby="create-alert-title">
+    <header class="terminal-modal__header">
+      <h2 id="create-alert-title">Create New Alert</h2>
+      <button type="button" class="terminal-modal__close" aria-label="Close alert modal" (click)="close()">x</button>
+    </header>
+
+    <div class="terminal-modal__body">
+      <label class="terminal-modal__label">Select Asset</label>
+      <select class="terminal-modal__field">
+        <option>BTC / USDT (Bitcoin)</option>
+        <option>ETH / USDT (Ethereum)</option>
+        <option>SOL / USDT (Solana)</option>
+      </select>
+
+      <div class="terminal-modal__split">
+        <div>
+          <label class="terminal-modal__label">Condition</label>
+          <select class="terminal-modal__field">
+            <option>Above</option>
+            <option>Below</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="terminal-modal__label">Target Price</label>
+          <input class="terminal-modal__field" type="text" value="0.00" />
+        </div>
+      </div>
+
+      <label class="terminal-modal__label">Notification Channels</label>
+
+      <div class="terminal-modal__toggle-list">
+        <div class="terminal-modal__toggle-row">
+          <span>Push Notification</span>
+          <button type="button" class="terminal-toggle terminal-toggle--on" aria-label="Enable push notification"></button>
+        </div>
+        <div class="terminal-modal__toggle-row">
+          <span>Email Digest</span>
+          <button type="button" class="terminal-toggle" aria-label="Enable email digest"></button>
+        </div>
+        <div class="terminal-modal__toggle-row">
+          <span>SMS Alert</span>
+          <button type="button" class="terminal-toggle" aria-label="Enable sms alert"></button>
+        </div>
+      </div>
+    </div>
+
+    <footer class="terminal-modal__footer">
+      <button type="button" class="terminal-button terminal-button--ghost" (click)="close()">Cancel</button>
+      <button type="button" class="terminal-button terminal-button--primary">Set Trigger</button>
+    </footer>
+  </section>
+</div>
