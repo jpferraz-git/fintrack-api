@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { AlertsSidebar } from '../../components/alerts/alerts-sidebar/alerts-sidebar';
+import { Sidebar } from '../../components/sidebar/sidebar';
 import { AlertsTopbar } from '../../components/alerts/alerts-topbar/alerts-topbar';
 import { AlertsTable } from '../../components/alerts/alerts-table/alerts-table';
 import { AlertsCreatePanel } from '../../components/alerts/alerts-create-panel/alerts-create-panel';
@@ -11,7 +11,7 @@ import { CreateAlertModal } from '../../components/models/create-alert-modal/cre
 @Component({
   selector: 'app-alerts-page',
   imports: [
-    AlertsSidebar,
+    Sidebar,
     AlertsTopbar,
     AlertsTable,
     AlertsCreatePanel,

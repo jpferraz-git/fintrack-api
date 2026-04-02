@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { AlertsSidebar } from '../../components/alerts/alerts-sidebar/alerts-sidebar';
+import { Sidebar } from '../../components/sidebar/sidebar';
 import { PortfolioTopbar } from '../../components/portfolio/portfolio-topbar/portfolio-topbar';
 import { PortfolioValueCard } from '../../components/portfolio/portfolio-value-card/portfolio-value-card';
 import { PortfolioActionCard } from '../../components/portfolio/portfolio-action-card/portfolio-action-card';
@@ -11,7 +11,7 @@ import { AddAssetModal } from '../../components/models/add-asset-modal/add-asset
 @Component({
   selector: 'app-portfolio-page',
   imports: [
-    AlertsSidebar,
+    Sidebar,
     PortfolioTopbar,
     PortfolioValueCard,
     PortfolioActionCard,

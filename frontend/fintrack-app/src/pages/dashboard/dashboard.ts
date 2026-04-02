@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { AlertsSidebar } from '../../components/alerts/alerts-sidebar/alerts-sidebar';
+import { Sidebar } from '../../components/sidebar/sidebar';
 import { DashboardTopbar } from '../../components/dashboard/dashboard-topbar/dashboard-topbar';
 import { DashboardMarketCards } from '../../components/dashboard/dashboard-market-cards/dashboard-market-cards';
 import { DashboardChart } from '../../components/dashboard/dashboard-chart/dashboard-chart';
@@ -11,7 +11,7 @@ import { DashboardStatusbar } from '../../components/dashboard/dashboard-statusb
 @Component({
   selector: 'app-dashboard-page',
   imports: [
-    AlertsSidebar,
+    Sidebar,
     DashboardTopbar,
     DashboardMarketCards,
     DashboardChart,
