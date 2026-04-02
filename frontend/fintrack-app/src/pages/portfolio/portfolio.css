@@ -1,13 +1,13 @@
 .portfolio-screen {
   min-height: 100vh;
   display: grid;
-  grid-template-columns: 68px 1fr;
+  grid-template-columns: var(--layout-sidebar-width) minmax(0, 1fr);
   background: var(--gradient-screen-sub);
 }
 
 .portfolio-main {
   min-width: 0;
-  padding: 14px 16px;
+  padding: var(--layout-main-padding);
   display: flex;
   flex-direction: column;
   gap: 14px;
@@ -36,7 +36,7 @@
   }
 }
 
-@media (max-width: 880px) {
+@media (max-width: 960px) {
   .portfolio-screen {
     grid-template-columns: 1fr;
   }

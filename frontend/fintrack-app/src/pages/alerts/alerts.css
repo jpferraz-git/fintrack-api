@@ -1,12 +1,13 @@
 .alerts-screen {
   min-height: 100vh;
   display: grid;
-  grid-template-columns: 68px 1fr;
+  grid-template-columns: var(--layout-sidebar-width) minmax(0, 1fr);
   background: var(--gradient-screen-sub);
 }
 
 .alerts-main {
-  padding: 14px 16px;
+  min-width: 0;
+  padding: var(--layout-main-padding);
   display: flex;
   flex-direction: column;
   gap: 14px;
@@ -36,7 +37,7 @@
   }
 }
 
-@media (max-width: 800px) {
+@media (max-width: 960px) {
   .alerts-screen {
     grid-template-columns: 1fr;
   }
