@@ -13,14 +13,15 @@
   </header>
 
   <div class="dash-chart__canvas" role="img" aria-label="Candlestick chart preview">
-    <div class="dash-candle dash-candle--green"></div>
-    <div class="dash-candle dash-candle--red"></div>
-    <div class="dash-candle dash-candle--green"></div>
-    <div class="dash-candle dash-candle--red"></div>
-    <div class="dash-candle dash-candle--green"></div>
-    <div class="dash-candle dash-candle--green"></div>
-    <div class="dash-candle dash-candle--red"></div>
-    <div class="dash-candle dash-candle--green"></div>
-    <div class="dash-candle dash-candle--green"></div>
+    <div
+      *ngFor="let candle of candles; trackBy: trackByIndex"
+      class="dash-candle"
+      [class.dash-candle--up]="candle.trend === 'up'"
+      [class.dash-candle--down]="candle.trend === 'down'"
+      [style.--wick-top]="candle.wickTop"
+      [style.--wick-bottom]="candle.wickBottom"
+      [style.--body-top]="candle.bodyTop"
+      [style.--body-height]="candle.bodyHeight"
+    ></div>
   </div>
 </section>
