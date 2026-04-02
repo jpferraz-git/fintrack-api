@@ -1,11 +1,23 @@
 <aside class="alerts-sidebar" aria-label="Alerts navigation">
-  <div class="alerts-sidebar__logo">FT.</div>
+  <div class="alerts-sidebar__logo">Fintrack</div>
 
   <nav class="alerts-sidebar__nav">
-    <a class="alerts-sidebar__item" routerLink="/dashboard" routerLinkActive="alerts-sidebar__item--active" [routerLinkActiveOptions]="{ exact: true }">Home</a>
-    <a class="alerts-sidebar__item" routerLink="/portfolio" routerLinkActive="alerts-sidebar__item--active" [routerLinkActiveOptions]="{ exact: true }">Portfolio</a>
-    <a class="alerts-sidebar__item" routerLink="/alerts" routerLinkActive="alerts-sidebar__item--active" [routerLinkActiveOptions]="{ exact: true }">Alerts</a>
-    <a class="alerts-sidebar__item" routerLink="/dashboard">Settings</a>
+    <a class="alerts-sidebar__item" routerLink="/dashboard" routerLinkActive="alerts-sidebar__item--active" [routerLinkActiveOptions]="{ exact: true }">
+      <span class="alerts-sidebar__item-icon" aria-hidden="true">&#128480;</span>
+      <span class="alerts-sidebar__item-label">Dashboard</span>
+    </a>
+    <a class="alerts-sidebar__item" routerLink="/portfolio" routerLinkActive="alerts-sidebar__item--active" [routerLinkActiveOptions]="{ exact: true }">
+      <span class="alerts-sidebar__item-icon" aria-hidden="true">&#128479;</span>
+      <span class="alerts-sidebar__item-label">Portfolio</span>
+    </a>
+    <a class="alerts-sidebar__item" routerLink="/alerts" routerLinkActive="alerts-sidebar__item--active" [routerLinkActiveOptions]="{ exact: true }">
+      <span class="alerts-sidebar__item-icon" aria-hidden="true">&#128276;&#65038;</span>
+      <span class="alerts-sidebar__item-label">Alerts</span>
+    </a>
+    <a class="alerts-sidebar__item" routerLink="/dashboard">
+      <span class="alerts-sidebar__item-icon" aria-hidden="true">&#9881;</span>
+      <span class="alerts-sidebar__item-label">Settings</span>
+    </a>
   </nav>
 
   <div class="alerts-sidebar__help">?</div>
