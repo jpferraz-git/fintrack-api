@@ -1,9 +1,9 @@
 import { Routes } from '@angular/router';
-import { AlertsPage } from '../pages/alerts/alerts';
-import { DashboardPage } from '../pages/dashboard/dashboard';
-import { LoginPage } from '../pages/login/login';
-import { PortfolioPage } from '../pages/portfolio/portfolio';
-import { SignupPage } from '../pages/signup/signup';
+import { AlertsPage } from '../pages/alerts/alerts.component';
+import { DashboardPage } from '../pages/dashboard/dashboard.component';
+import { LoginPage } from '../pages/login/login.component';
+import { PortfolioPage } from '../pages/portfolio/portfolio.component';
+import { SignupPage } from '../pages/signup/signup.component';
 
 export const routes: Routes = [
 	{ path: '', pathMatch: 'full', redirectTo: 'dashboard' },
