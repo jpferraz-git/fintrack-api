@@ -57,7 +57,6 @@ public class AuthenticationService {
                     roleRepository.findByName(role)
             );
             newUser.setName(resolveName(dto.name(), dto.email()));
-            System.out.println(newUser);
             this.userRepository.create(newUser);
             return Result.ok("User registered successfully");
         } catch (Exception ex) {

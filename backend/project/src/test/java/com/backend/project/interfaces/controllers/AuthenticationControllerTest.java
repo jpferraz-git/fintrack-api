@@ -40,7 +40,7 @@ class AuthenticationControllerTest {
 
     @Test
     void registerShouldReturnConflictWhenEmailAlreadyInUse() throws Exception {
-        RegisterDTO request = new RegisterDTO("joao@test.com", "123456", Role.USER);
+        RegisterDTO request = new RegisterDTO("Joao Test", "joao@test.com", "123456", Role.USER);
 
         when(authenticationService.register(request))
                 .thenThrow(new EmailAlreadyInUseException("joao@test.com"));
