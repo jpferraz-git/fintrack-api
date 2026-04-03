@@ -23,7 +23,7 @@ export class AuthService {
     constructor(private http: HttpClient) {}
 
     login(body: LoginRequest): Observable<LoginResponse> {
-        return this.http.post<LoginResponse>(`${environment.apiUrl}/login`, body)
+        return this.http.post<LoginResponse>(`${environment.apiUrl}/auth/login`, body)
             .pipe(
                 tap(response => {
                     this.saveToken(response.token)

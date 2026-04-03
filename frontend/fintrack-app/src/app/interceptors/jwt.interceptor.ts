@@ -13,7 +13,7 @@ intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> 
     const token = this.authService.getToken();
 
     const isAuthRequest = req.url.includes('/login') || req.url.includes('/signup');
-
+    
     if (isAuthRequest || !token) {
         return next.handle(req);
     }
