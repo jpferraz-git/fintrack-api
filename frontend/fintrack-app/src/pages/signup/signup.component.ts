@@ -41,12 +41,8 @@ export class SignupPage {
       password: this.password,
     }).subscribe ({
       next: () => {
-        console.log(`User with ${this.email} created` )
           this.router.navigate(['/login'])
-      },
-      complete() {
-  
-      },
+      }
     })
 
   }
