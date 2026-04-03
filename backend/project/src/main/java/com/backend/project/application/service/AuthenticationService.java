@@ -1,6 +1,7 @@
 package com.backend.project.application.service;
 
 import com.backend.project.application.Result;
+import com.backend.project.domain.model.Role;
 import com.backend.project.domain.repository.RoleRepository;
 import com.backend.project.domain.repository.UserRepository;
 import com.backend.project.infrastructure.entity.UserEntity;
@@ -49,16 +50,26 @@ public class AuthenticationService {
 
         try {
             String encryptedPassword = new BCryptPasswordEncoder(12).encode(dto.password());
+            Role role = dto.role() != null ? dto.role() : Role.USER;
             UserEntity newUser = new UserEntity(
                     dto.email(),
                     encryptedPassword,
-                    roleRepository.findByName(dto.role())
+                    roleRepository.findByName(role)
             );
+            newUser.setName(resolveName(dto.name(), dto.email()));
+            System.out.println(newUser);
             this.userRepository.create(newUser);
             return Result.ok("User registered successfully");
         } catch (Exception ex) {
             return Result.fail(ex.getMessage());
         }
+    }
+
+    private String resolveName(String name, String email) {
+        if (name != null && !name.isBlank()) {
+            return name.trim();
+        }
+        return email;
     }
     
 }

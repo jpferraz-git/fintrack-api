@@ -35,7 +35,7 @@ public class AuthenticationController implements AuthenticationControllerSwagger
     public ResponseEntity<?> register(@RequestBody @Valid RegisterDTO dto) {
         Result<String> result = authenticationService.register(dto);
         if (result.isOk()) {
-            return ResponseEntity.ok().body(result.getValue());
+            return ResponseEntity.status(HttpStatus.CREATED).build();
         }
         return ResponseEntity.status(resolveStatus(result.getMessage())).body(result);
     }

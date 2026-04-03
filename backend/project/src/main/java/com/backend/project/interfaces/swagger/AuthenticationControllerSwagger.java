@@ -28,9 +28,9 @@ public interface AuthenticationControllerSwagger {
                     content = @Content(schema = @Schema(implementation = AuthenticationDTO.class)))
             AuthenticationDTO dto);
 
-    @Operation(summary = "User registration", description = "Creates a new user account with email, password and role")
+        @Operation(summary = "User registration", description = "Creates a new user account with name, email and password. Role is optional and defaults to USER")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "User registered successfully", content = @Content),
+            @ApiResponse(responseCode = "201", description = "User registered successfully", content = @Content),
             @ApiResponse(responseCode = "400", description = "Invalid request payload", content = @Content),
             @ApiResponse(responseCode = "409", description = "Email already in use", content = @Content)
     })
