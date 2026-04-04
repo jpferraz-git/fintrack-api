@@ -1,0 +1,41 @@
+<article class="dash-market-card">
+  <header class="dash-market-card__top">
+    <div class="dash-market-card__instrument">
+      <span class="dash-coin-icon dash-coin-icon--{{ coin }}" aria-hidden="true">
+        {{ coin | uppercase }}
+      </span>
+      <p class="dash-market-card__pair">{{ label }}</p>
+    </div>
+
+    <div class="dash-market-card__trend">
+      <span
+        class="dash-market-card__delta"
+        [class.dash-market-card__delta--up]="trendUp"
+        [class.dash-market-card__delta--down]="!trendUp"
+      >
+        {{ loading ? 'Loading...' : delta }}
+      </span>
+
+      <svg
+        class="dash-market-card__sparkline"
+        [class.dash-market-card__sparkline--up]="trendUp"
+        [class.dash-market-card__sparkline--down]="!trendUp"
+        viewBox="0 0 80 24"
+      >
+        <polyline
+          [attr.points]="trendUp
+            ? '2,18 14,16 24,17 34,13 44,11 56,12 66,8 78,4'
+            : '2,7 14,9 24,8 34,12 44,11 56,14 66,16 78,19'"
+        ></polyline>
+      </svg>
+    </div>
+  </header>
+
+  <p class="dash-market-card__price">
+    {{ loading ? 'Loading...' : price }}
+  </p>
+
+  <p class="dash-market-card__meta">
+    {{ loading ? 'Vol: Loading...' : volume }}
+  </p>
+</article>
