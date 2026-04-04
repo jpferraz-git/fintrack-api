@@ -7,15 +7,27 @@
       </div>
 
       <div class="dash-market-card__trend" aria-label="BTC trend">
-        <span class="dash-market-card__delta dash-market-card__delta--up">+2.45%</span>
-        <svg class="dash-market-card__sparkline dash-market-card__sparkline--up" viewBox="0 0 80 24" aria-hidden="true">
-          <polyline points="2,18 14,16 24,17 34,13 44,11 56,12 66,8 78,4"></polyline>
+        <span
+          class="dash-market-card__delta"
+          [class.dash-market-card__delta--up]="btcTrendUp"
+          [class.dash-market-card__delta--down]="!btcTrendUp"
+        >
+          {{ loadingBtc ? 'Loading...' : btcDelta }}
+        </span>
+        <svg
+          class="dash-market-card__sparkline"
+          [class.dash-market-card__sparkline--up]="btcTrendUp"
+          [class.dash-market-card__sparkline--down]="!btcTrendUp"
+          viewBox="0 0 80 24"
+          aria-hidden="true"
+        >
+          <polyline [attr.points]="btcTrendUp ? '2,18 14,16 24,17 34,13 44,11 56,12 66,8 78,4' : '2,7 14,9 24,8 34,12 44,11 56,14 66,16 78,19'"></polyline>
         </svg>
       </div>
     </header>
 
-    <p class="dash-market-card__price">$64,281.40</p>
-    <p class="dash-market-card__meta">Vol: 128M USDT</p>
+    <p class="dash-market-card__price">{{ btcPrice }}</p>
+    <p class="dash-market-card__meta">{{ loadingBtc ? 'Vol: Loading...' : btcVolume }}</p>
   </article>
 
   <article class="dash-market-card">
