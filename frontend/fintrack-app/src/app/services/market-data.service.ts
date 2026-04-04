@@ -42,7 +42,8 @@ export class MarketDataService {
         return this.http.get<MarketIndividualKlineResponse>(`${environment.apiUrl}/binance/klines`, {
             params: {
                 symbol,
-                interval
+                interval,
+                limit: 80
             }
         })
     }
