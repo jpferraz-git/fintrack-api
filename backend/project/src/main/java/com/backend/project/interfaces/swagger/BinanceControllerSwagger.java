@@ -67,6 +67,8 @@ public interface BinanceControllerSwagger {
             @Parameter(description = "Trading pair symbol", example = "BTCUSDT", required = true)
             String symbol,
             @Parameter(description = "Candlestick interval", example = "1m", required = true)
-            String interval);
+            String interval,
+            @Parameter(description = "Candlestick interval", example = "80")
+            Integer limit);
 }
 
