@@ -8,19 +8,18 @@ export interface MarketIndividualPrice {
     price: number | string
 }
 
-export interface MarketIndividualLineChart {
-    symbol: string,
-    opentime: Date | number,
-    open: number,
-    high: number,
-    low: number,
-    close: number,
-    volume: number,
-    closetime: Date | number,
-    quoteAssetVolume: number,
+export interface MarketIndividualKlineResponse {
+    openTime: string,
+    open: number | string,
+    high: number | string,
+    low: number | string,
+    close: number | string,
+    volume: number | string,
+    closeTime: string,
+    quoteAssetVolume: number | string,
     numberOfTrades: number,
-    takerBuyBaseAssetVolume: number,
-    takerBuyQuoteAssetVolume: number
+    takerBuyBaseAssetVolume: number | string,
+    takerBuyQuoteAssetVolume: number | string
 }
 
 
@@ -39,12 +38,14 @@ export class MarketDataService {
         })
     }
 
-    getKlines(symbol: string, interval: string): Observable<MarketIndividualLineChart[]> {
-        return this.http.get<MarketIndividualLineChart[]>(`${environment.apiUrl}/binance/klines`, {
+    getKlines(symbol: string, interval: string): Observable<MarketIndividualKlineResponse> {
+        return this.http.get<MarketIndividualKlineResponse>(`${environment.apiUrl}/binance/klines`, {
             params: {
                 symbol,
                 interval
             }
         })
     }
+
+
 }
