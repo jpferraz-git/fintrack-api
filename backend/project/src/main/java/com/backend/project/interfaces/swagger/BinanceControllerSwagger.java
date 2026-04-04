@@ -63,18 +63,6 @@ public interface BinanceControllerSwagger {
             @ApiResponse(responseCode = "200", description = "Klines retrieved successfully",
                     content = @Content(array = @ArraySchema(schema = @Schema(implementation = BinanceKlinesResponseDTO.class))))
     })
-    ResponseEntity<?> getKlinesScheduled();
-
-    @Operation(summary = "Kline by symbol and interval", description = "Returns one kline record for the provided symbol and interval")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Kline retrieved successfully",
-                    content = @Content(schema = @Schema(implementation = BinanceKlinesResponseDTO.class))),
-            @ApiResponse(responseCode = "404", description = "No klines found for symbol and interval",
-                    content = @Content(schema = @Schema(implementation = ErrorResponseDTO.class))),
-            @ApiResponse(responseCode = "400", description = "Invalid request parameters", content = @Content),
-            @ApiResponse(responseCode = "500", description = "Unexpected Binance response",
-                    content = @Content(schema = @Schema(implementation = ErrorResponseDTO.class)))
-    })
     ResponseEntity<?> getKlines(
             @Parameter(description = "Trading pair symbol", example = "BTCUSDT", required = true)
             String symbol,

@@ -74,14 +74,14 @@ public class BinanceService {
         }
     }
 
-    @Scheduled(fixedDelay = 10000)
+    @Scheduled(fixedDelay = 2000)
     public Result<List<BinanceKlinesResponseDTO>> scheduledKlinesUpdate() {
         List<BinanceKlinesResponseDTO> klines = TRACKED_SYMBOLS.stream()
                 .map(symbol -> getKlines(symbol, "1m"))
                 .filter(Result::isOk)
                 .map(Result::getValue)
                 .toList();
-
+        System.out.println(klines);
         if (klines.isEmpty()) {
             return Result.fail("Failed to retrieve klines");
         }

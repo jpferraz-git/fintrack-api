@@ -32,7 +32,6 @@ public class BinanceIntegration {
                 .bodyToMono(BinancePriceResponseDTO.class)
                 .block();
     }
-
     public Binance24hTickerRequestDTO get24hTicker(String symbol){
         return webClient.get()
                 .uri(uriBuilder -> uriBuilder

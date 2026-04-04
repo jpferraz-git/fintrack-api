@@ -43,6 +43,7 @@ public class BinanceController implements BinanceControllerSwagger {
         return ResponseEntity.status(resolveStatus(result.getMessage())).body(result);
     }
 
+
     @GetMapping(value = "/24h", params = "!symbol")
     public ResponseEntity<?> get24PriceScheduled(){
         Result<List<Binance24hTickerResponseDTO>> result = binanceService.scheduled24hTickerUpdate();
@@ -55,15 +56,6 @@ public class BinanceController implements BinanceControllerSwagger {
     @GetMapping(value = "/24h", params = "symbol")
     public ResponseEntity<?> get24Price(@RequestParam String symbol){
         Result<Binance24hTickerResponseDTO> result = binanceService.get24hPrice(symbol);
-        if (result.isOk()) {
-            return ResponseEntity.ok(result.getValue());
-        }
-        return ResponseEntity.status(resolveStatus(result.getMessage())).body(result);
-    }
-
-    @GetMapping(value = "/klines", params = {"!symbol", "!interval"})
-    public ResponseEntity<?> getKlinesScheduled() {
-        Result<List<BinanceKlinesResponseDTO>> result = binanceService.scheduledKlinesUpdate();
         if (result.isOk()) {
             return ResponseEntity.ok(result.getValue());
         }
