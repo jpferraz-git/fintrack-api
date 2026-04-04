@@ -1,7 +1,6 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { Subject, catchError, exhaustMap, of, takeUntil, timer } from 'rxjs';
 import { MarketDataService } from '../../../app/services/market-data.service';
-import { ChangeDetectorRef } from '@angular/core';
 
 @Component({
   selector: 'app-dashboard-market-cards',
@@ -45,7 +44,6 @@ constructor(
       .subscribe({
         next: (ticker) => {
           this.loadingBtc = false;
-          console.log('BTC Ticker:', ticker);
 
           if (!ticker) {
             this.btcDelta = 'OFFLINE';
@@ -56,9 +54,23 @@ constructor(
           }
 
           this.btcDelta = 'LIVE';
-          this.btcPrice = String(ticker.price);
+          this.btcPrice = this.formatUsd(ticker.price);
           this.cd.markForCheck();
         }
       });
+  }
+
+  private formatUsd(value: number | string): string {
+    const parsedValue = Number(value);
+    if (Number.isNaN(parsedValue)) {
+      return '--';
+    }
+
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD',
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    }).format(parsedValue);
   }
 }
