@@ -1,6 +1,7 @@
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { Subject, catchError, exhaustMap, of, takeUntil, timer } from 'rxjs';
 import { MarketDataService } from '../../../app/services/market-data.service';
+import { formatUsd } from '../../../app/shared/utils/sanitizer';
 
 @Component({
   selector: 'app-dashboard-market-cards',
@@ -54,23 +55,9 @@ constructor(
           }
 
           this.btcDelta = 'LIVE';
-          this.btcPrice = this.formatUsd(ticker.price);
+          this.btcPrice = formatUsd(ticker.price);
           this.cd.markForCheck();
         }
       });
-  }
-
-  private formatUsd(value: number | string): string {
-    const parsedValue = Number(value);
-    if (Number.isNaN(parsedValue)) {
-      return '--';
-    }
-
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2
-    }).format(parsedValue);
   }
 }
