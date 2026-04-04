@@ -20,16 +20,34 @@
     ></app-dashboard-chart-interval-selector>
   </header>
 
-  <div class="dash-chart__canvas" role="img" [attr.aria-label]="selectedSymbolLabel + ' candlestick chart for interval ' + selectedInterval">
+  <div
+    #chartCanvas
+    class="dash-chart__canvas"
+    role="img"
+    [attr.aria-label]="selectedSymbolLabel + ' candlestick chart for interval ' + selectedInterval"
+  >
     <div
       *ngFor="let candle of candles; trackBy: trackByIndex"
       class="dash-candle"
+      [title]="getTooltip(candle)"
       [class.dash-candle--up]="candle.trend === 'up'"
       [class.dash-candle--down]="candle.trend === 'down'"
+      (mouseenter)="onCandleMouseEnter($event, candle, chartCanvas)"
+      (mousemove)="onCandleMouseMove($event, chartCanvas)"
+      (mouseleave)="onCandleMouseLeave()"
       [style.--wick-top]="candle.wickTop"
       [style.--wick-bottom]="candle.wickBottom"
       [style.--body-top]="candle.bodyTop"
       [style.--body-height]="candle.bodyHeight"
     ></div>
+
+    <div
+      class="dash-chart__tooltip"
+      [class.dash-chart__tooltip--visible]="tooltipVisible"
+      [style.left.px]="tooltipLeft"
+      [style.top.px]="tooltipTop"
+    >
+      {{ tooltipText }}
+    </div>
   </div>
 </section>

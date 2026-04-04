@@ -19,6 +19,7 @@ type CandlePoint = {
 };
 
 type RenderCandle = {
+  candle: CandlePoint;
   trend: 'up' | 'down';
   wickTop: string;
   wickBottom: string;
@@ -58,6 +59,10 @@ export class DashboardChart implements OnInit, OnDestroy {
   candles: RenderCandle[] = [];
   isOffline = false;
   loading = true;
+  tooltipVisible = false;
+  tooltipText = '';
+  tooltipLeft = 0;
+  tooltipTop = 0;
 
   constructor(private marketDataService: MarketDataService) {}
 
@@ -123,6 +128,7 @@ export class DashboardChart implements OnInit, OnDestroy {
       const bodySize = Math.abs(toPercent(point.open) - toPercent(point.close));
 
       return {
+        candle: point,
         trend: point.close >= point.open ? 'up' : 'down',
         wickTop: fromTop(point.high),
         wickBottom: `${toPercent(point.low)}%`,
@@ -132,6 +138,7 @@ export class DashboardChart implements OnInit, OnDestroy {
     });
   }
 
+ 
   private startPolling(): void {
     this.refreshParams$
       .pipe(
@@ -162,9 +169,41 @@ export class DashboardChart implements OnInit, OnDestroy {
       });
   }
 
+  getTooltip(renderCandle: RenderCandle): string {
+    const { open, high, low, close } = renderCandle.candle;
+    return `Open: ${open} | High: ${high} | Low: ${low} | Close: ${close}`;
+  }
+
+  onCandleMouseEnter(event: MouseEvent, candle: RenderCandle, canvas: HTMLElement): void {
+    this.tooltipText = this.getTooltip(candle);
+    this.tooltipVisible = true;
+    this.updateTooltipPosition(event, canvas);
+  }
+
+  onCandleMouseMove(event: MouseEvent, canvas: HTMLElement): void {
+    if (!this.tooltipVisible) {
+      return;
+    }
+
+    this.updateTooltipPosition(event, canvas);
+  }
+
+  onCandleMouseLeave(): void {
+    this.tooltipVisible = false;
+  }
+
+  private updateTooltipPosition(event: MouseEvent, canvas: HTMLElement): void {
+    const rect = canvas.getBoundingClientRect();
+    const cursorX = event.clientX - rect.left;
+    const cursorY = event.clientY - rect.top;
+    const tooltipWidth = 190;
+
+    this.tooltipLeft = Math.min(Math.max(cursorX, 12), Math.max(rect.width - tooltipWidth, 12));
+    this.tooltipTop = Math.max(cursorY - 14, 14);
+  }
+  
   private toCandleSeries(response: MarketKlinesResponse): CandlePoint[] {
     const rows = Array.isArray(response) ? response : [response];
-
     return rows
       .map((row) => ({
         open: Number(row.open),
@@ -177,8 +216,7 @@ export class DashboardChart implements OnInit, OnDestroy {
           && Number.isFinite(point.high)
           && Number.isFinite(point.low)
           && Number.isFinite(point.close)
-
       )
-      .slice(-40);
+      .slice(-50);
   }
 }

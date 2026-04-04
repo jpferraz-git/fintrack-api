@@ -34,6 +34,7 @@
 }
 
 .dash-chart__canvas {
+  position: relative;
   margin-top: 12px;
   border-radius: 10px;
   padding: 15px 14px;
@@ -41,7 +42,7 @@
   display: grid;
   gap: clamp(6px, 0.8vw, 12px);
   align-items: stretch;
-  grid-template-columns: repeat(80, minmax(8px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(8px, 1fr));
   background:
     linear-gradient(to top, rgba(255, 255, 255, 0.05) 1px, transparent 1px) 0 0 / 100% 25%,
     linear-gradient(180deg, rgba(9, 16, 36, 0.9), rgba(8, 14, 31, 0.8));
@@ -50,6 +51,29 @@
 .dash-candle {
   position: relative;
   min-height: 100%;
+  cursor: crosshair;
+}
+
+.dash-chart__tooltip {
+  position: absolute;
+  z-index: 5;
+  pointer-events: none;   
+  opacity: 0;
+  transform: translateY(-100%);
+  transition: opacity 120ms ease;
+  background: rgba(5, 10, 24, 0.95);
+  color: #ecf4ff;
+  border: 1px solid rgba(111, 134, 177, 0.45);
+  border-radius: 8px;
+  padding: 6px 8px;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+  box-shadow: 0 8px 20px rgba(2, 4, 12, 0.5);
+}
+
+.dash-chart__tooltip--visible {
+  opacity: 1;
 }
 
 .dash-candle::before {
@@ -71,7 +95,7 @@
   transform: translateX(-50%);
   top: var(--body-top);
   height: var(--body-height);
-  width: clamp(12px, 0.9vw, 20px);
+  width: clamp(12px, 0.9vw, 12px);
   border-radius: 3px;
   box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.06) inset;
 }
