@@ -74,28 +74,8 @@
 }
 
 .dash-market-card__delta {
-  font-size: 12px;
+  font-size: 16px;
   font-weight: 600;
-}
-
-.dash-market-card__sparkline {
-  width: 84px;
-  height: 24px;
-}
-
-.dash-market-card__sparkline polyline {
-  fill: none;
-  stroke-width: 2;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
-.dash-market-card__sparkline--up polyline {
-  stroke: var(--color-green-light);
-}
-
-.dash-market-card__sparkline--down polyline {
-  stroke: var(--color-red-light);
 }
 
 .dash-market-card__delta--up {

@@ -11,21 +11,10 @@
       <span
         class="dash-market-card__delta"
         [class.dash-market-card__delta--up]="trendUp"
-        [class.dash-market-card__delta--down]="!trendUp"
+         [class.dash-market-card__delta--down]="!trendUp"
       >
-        {{ loading ? 'Loading...' : delta }}
+        {{ loading ? 'Loading...' : (isOffline ? '•' : (trendUp ? '▲' : '▼')) }}
       </span>
-
-      <svg
-        class="dash-market-card__sparkline"
-        [class.dash-market-card__sparkline--up]="trendUp"
-        [class.dash-market-card__sparkline--down]="!trendUp"
-        viewBox="0 0 80 24"
-      >
-        <polyline
-          [attr.points]="sparklinePoints"
-        ></polyline>
-      </svg>
     </div>
   </header>
 
