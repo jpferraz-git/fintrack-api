@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, ChangeDetectorRef } from '@angular/core';
 import { UpperCasePipe } from '@angular/common';
 import { Subject, catchError, exhaustMap, of, takeUntil, timer } from 'rxjs';
 import { MarketDataService } from '../../../app/services/market-data.service';
@@ -26,7 +26,10 @@ export class MarketCardComponent implements OnInit, OnDestroy {
   trendUp = true;
   loading = true;
 
-  constructor(private marketDataService: MarketDataService) {}
+  constructor(
+    private marketDataService: MarketDataService,
+    private cd: ChangeDetectorRef
+  ) {}
 
   ngOnInit(): void {
     this.startPolling();
@@ -66,7 +69,8 @@ export class MarketCardComponent implements OnInit, OnDestroy {
         this.previousPrice = Number.isNaN(currentPrice) ? this.previousPrice : currentPrice;
         this.delta = 'LIVE';
         this.price = formatUsd(ticker.price);
-        this.volume = `Pair: ${ticker.symbol}`;
+        this.volume = `Pair: ${ticker.symbol}`
+          this.cd.markForCheck();;
       });
   }
 

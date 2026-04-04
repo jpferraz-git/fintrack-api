@@ -43,7 +43,7 @@ public class BinanceService {
     }
 
     public Result<BinancePriceResponseDTO> getPrice(String symbol) {
-        Optional<BinancePriceResponseDTO> price = Optional.ofNullable(binanceIntegration.getPrice(symbol)); 
+        Optional<BinancePriceResponseDTO> price = Optional.ofNullable(binanceIntegration.getPrice(symbol));
         return price.map(Result::ok).orElseGet(() -> Result.fail("Price not found"));
     }
 
