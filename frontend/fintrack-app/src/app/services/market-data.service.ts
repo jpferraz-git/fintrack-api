@@ -22,6 +22,8 @@ export interface MarketIndividualKlineResponse {
     takerBuyQuoteAssetVolume: number | string
 }
 
+export type MarketKlinesResponse = MarketIndividualKlineResponse | MarketIndividualKlineResponse[];
+
 
 @Injectable({
     providedIn: 'root'
@@ -38,8 +40,8 @@ export class MarketDataService {
         })
     }
 
-    getKlines(symbol: string, interval: string): Observable<MarketIndividualKlineResponse> {
-        return this.http.get<MarketIndividualKlineResponse>(`${environment.apiUrl}/binance/klines`, {
+    getKlines(symbol: string, interval: string): Observable<MarketKlinesResponse> {
+        return this.http.get<MarketKlinesResponse>(`${environment.apiUrl}/binance/klines`, {
             params: {
                 symbol,
                 interval,

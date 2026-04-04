@@ -1,18 +1,26 @@
 <section class="dash-chart" aria-label="Market chart">
   <header class="dash-chart__header">
     <div class="dash-chart__title-row">
-      <h2 class="dash-chart__title">BTC / USDT</h2>
-      <span class="dash-chart__live">REAL-TIME</span>
+      <app-dashboard-chart-symbol-selector
+        [activeSymbol]="selectedSymbol"
+        [options]="symbolOptions"
+        (symbolSelected)="onSymbolSelected($event)"
+      ></app-dashboard-chart-symbol-selector>
+      <span
+        class="dash-chart__live"
+        [class.dash-chart__live--offline]="isOffline"
+        [class.dash-chart__live--loading]="loading"
+      >{{ liveStatusLabel }}</span>
     </div>
-    <div class="dash-chart__intervals">
-      <button type="button" class="dash-chart__interval dash-chart__interval--active">15m</button>
-      <button type="button" class="dash-chart__interval">1h</button>
-      <button type="button" class="dash-chart__interval">4h</button>
-      <button type="button" class="dash-chart__interval">1D</button>
-    </div>
+
+    <app-dashboard-chart-interval-selector
+      [activeInterval]="selectedInterval"
+      [intervals]="intervalOptions"
+      (intervalSelected)="onIntervalSelected($event)"
+    ></app-dashboard-chart-interval-selector>
   </header>
 
-  <div class="dash-chart__canvas" role="img" aria-label="Candlestick chart preview">
+  <div class="dash-chart__canvas" role="img" [attr.aria-label]="selectedSymbolLabel + ' candlestick chart for interval ' + selectedInterval">
     <div
       *ngFor="let candle of candles; trackBy: trackByIndex"
       class="dash-candle"

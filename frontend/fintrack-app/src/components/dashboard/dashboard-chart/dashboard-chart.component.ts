@@ -1,5 +1,15 @@
 import { NgFor } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Subject, catchError, of, switchMap, takeUntil, timer } from 'rxjs';
+import { MarketDataService, MarketIndividualKlineResponse, MarketKlinesResponse } from '../../../app/services/market-data.service';
+import {
+  ChartIntervalOption,
+  DashboardChartIntervalSelectorComponent
+} from './interval-selector/dashboard-chart-interval-selector.component';
+import {
+  ChartSymbolOption,
+  DashboardChartSymbolSelectorComponent
+} from './symbol-selector/dashboard-chart-symbol-selector.component';
 
 type CandlePoint = {
   open: number;
@@ -16,32 +26,87 @@ type RenderCandle = {
   bodyHeight: string;
 };
 
+type ChartInterval = '15m' | '1h' | '1d' | '1w';
+
 @Component({
   selector: 'app-dashboard-chart',
-  imports: [NgFor],
+  imports: [NgFor, DashboardChartIntervalSelectorComponent, DashboardChartSymbolSelectorComponent],
   templateUrl: './dashboard-chart.component.html',
   styleUrl: './dashboard-chart.component.css'
 })
-export class DashboardChart {
-  private readonly ohlcSeries: CandlePoint[] = [
-    { open: 67320, high: 67610, low: 66980, close: 67480 },
-    { open: 67480, high: 67890, low: 67320, close: 67730 },
-    { open: 67730, high: 67910, low: 67280, close: 67390 },
-    { open: 67390, high: 68120, low: 67120, close: 67980 },
-    { open: 67980, high: 68240, low: 67620, close: 67710 },
-    { open: 67710, high: 68450, low: 67590, close: 68270 },
-    { open: 68270, high: 68620, low: 68010, close: 68120 },
-    { open: 68120, high: 68790, low: 67980, close: 68640 },
-    { open: 68640, high: 68950, low: 68310, close: 68470 },
-    { open: 68470, high: 69210, low: 68280, close: 69080 },
-    { open: 69080, high: 69420, low: 68810, close: 69160 },
-    { open: 69160, high: 69680, low: 68920, close: 69410 }
+export class DashboardChart implements OnInit, OnDestroy {
+  private readonly destroy$ = new Subject<void>();
+  private readonly refreshParams$ = new Subject<void>();
+
+  readonly intervalOptions: ChartIntervalOption[] = [
+    { value: '15m', label: '15m' },
+    { value: '1h', label: '1h' },
+    { value: '1d', label: '1d' },
+    { value: '1w', label: '1w' }
   ];
 
-  readonly candles: RenderCandle[] = this.buildCandles(this.ohlcSeries);
+  readonly symbolOptions: ChartSymbolOption[] = [
+    { symbol: 'BTCUSDT', label: 'BTC / USDT' },
+    { symbol: 'ETHUSDT', label: 'ETH / USDT' },
+    { symbol: 'BNBUSDT', label: 'BNB / USDT' },
+    { symbol: 'SOLUSDT', label: 'SOL / USDT' }
+  ];
+
+  selectedInterval: ChartInterval = '15m';
+  selectedSymbol = 'BTCUSDT';
+
+  candles: RenderCandle[] = [];
+  isOffline = false;
+  loading = true;
+
+  constructor(private marketDataService: MarketDataService) {}
+
+  ngOnInit(): void {
+    this.startPolling();
+    this.refreshParams$.next();
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  get selectedSymbolLabel(): string {
+    return this.symbolOptions.find((option) => option.symbol === this.selectedSymbol)?.label ?? this.selectedSymbol;
+  }
+
+  get liveStatusLabel(): string {
+    if (this.loading) {
+      return 'LOADING';
+    }
+
+    if (this.isOffline) {
+      return 'OFFLINE';
+    }
+
+    return 'REAL-TIME';
+  }
 
   trackByIndex(index: number): number {
     return index;
+  }
+
+  onIntervalSelected(interval: string): void {
+    if (this.selectedInterval === interval) {
+      return;
+    }
+
+    this.selectedInterval = interval as ChartInterval;
+    this.refreshParams$.next();
+  }
+
+  onSymbolSelected(symbol: string): void {
+    if (this.selectedSymbol === symbol) {
+      return;
+    }
+
+    this.selectedSymbol = symbol;
+    this.refreshParams$.next();
   }
 
   private buildCandles(series: CandlePoint[]): RenderCandle[] {
@@ -65,5 +130,55 @@ export class DashboardChart {
         bodyHeight: `${Math.max(bodySize, 2)}%`
       };
     });
+  }
+
+  private startPolling(): void {
+    this.refreshParams$
+      .pipe(
+        switchMap(() =>
+          timer(0, 4000).pipe(
+            switchMap(() => {
+              this.loading = true;
+
+              return this.marketDataService.getKlines(this.selectedSymbol, this.selectedInterval).pipe(
+                catchError(() => of([] as MarketIndividualKlineResponse[]))
+              );
+            })
+          )
+        ),
+        takeUntil(this.destroy$)
+      )
+      .subscribe((response) => {
+        const series = this.toCandleSeries(response);
+        this.loading = false;
+
+        if (!series.length) {
+          this.isOffline = true;
+          return;
+        }
+
+        this.isOffline = false;
+        this.candles = this.buildCandles(series);
+      });
+  }
+
+  private toCandleSeries(response: MarketKlinesResponse): CandlePoint[] {
+    const rows = Array.isArray(response) ? response : [response];
+
+    return rows
+      .map((row) => ({
+        open: Number(row.open),
+        high: Number(row.high),
+        low: Number(row.low),
+        close: Number(row.close)
+      }))
+      .filter((point) =>
+        Number.isFinite(point.open)
+          && Number.isFinite(point.high)
+          && Number.isFinite(point.low)
+          && Number.isFinite(point.close)
+
+      )
+      .slice(-12);
   }
 }
