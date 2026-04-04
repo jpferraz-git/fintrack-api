@@ -179,6 +179,6 @@ export class DashboardChart implements OnInit, OnDestroy {
           && Number.isFinite(point.close)
 
       )
-      .slice(-12);
+      .slice(-40);
   }
 }

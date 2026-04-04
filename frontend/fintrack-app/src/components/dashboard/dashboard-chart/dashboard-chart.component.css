@@ -20,7 +20,7 @@
 }
 
 .dash-chart__live {
-  font-size: 11px;
+  font-size: 15px;
   color: var(--color-green-light);
   font-weight: 600;
 }
@@ -35,13 +35,13 @@
 
 .dash-chart__canvas {
   margin-top: 12px;
-  border-radius: 8px;
-  padding: 18px 14px;
-  min-height: 360px;
+  border-radius: 10px;
+  padding: 15px 14px;
+  min-height: 420px;
   display: grid;
   gap: clamp(6px, 0.8vw, 12px);
   align-items: stretch;
-  grid-template-columns: repeat(12, minmax(8px, 1fr));
+  grid-template-columns: repeat(80, minmax(8px, 1fr));
   background:
     linear-gradient(to top, rgba(255, 255, 255, 0.05) 1px, transparent 1px) 0 0 / 100% 25%,
     linear-gradient(180deg, rgba(9, 16, 36, 0.9), rgba(8, 14, 31, 0.8));
@@ -59,7 +59,7 @@
   transform: translateX(-50%);
   top: var(--wick-top);
   bottom: var(--wick-bottom);
-  width: 2px;
+  width: 1.5px;
   border-radius: 99px;
   background: rgba(148, 163, 184, 0.85);
 }
@@ -71,7 +71,7 @@
   transform: translateX(-50%);
   top: var(--body-top);
   height: var(--body-height);
-  width: clamp(8px, 0.9vw, 14px);
+  width: clamp(12px, 0.9vw, 20px);
   border-radius: 3px;
   box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.06) inset;
 }
@@ -95,7 +95,7 @@
   }
 
   .dash-chart__canvas {
-    min-height: 300px;
+    min-height: 420px;
     padding: 14px 10px;
     gap: 6px;
   }
