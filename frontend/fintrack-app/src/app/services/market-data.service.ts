@@ -8,6 +8,22 @@ export interface MarketIndividualPrice {
     price: number | string
 }
 
+export interface MarketIndividualLineChart {
+    symbol: string,
+    opentime: Date | number,
+    open: number,
+    high: number,
+    low: number,
+    close: number,
+    volume: number,
+    closetime: Date | number,
+    quoteAssetVolume: number,
+    numberOfTrades: number,
+    takerBuyBaseAssetVolume: number,
+    takerBuyQuoteAssetVolume: number
+}
+
+
 @Injectable({
     providedIn: 'root'
 })
@@ -19,6 +35,15 @@ export class MarketDataService {
         return this.http.get<MarketIndividualPrice>(`${environment.apiUrl}/binance/price`, {
             params: {
                 symbol
+            }
+        })
+    }
+
+    getKlines(symbol: string, interval: string): Observable<MarketIndividualLineChart[]> {
+        return this.http.get<MarketIndividualLineChart[]>(`${environment.apiUrl}/binance/klines`, {
+            params: {
+                symbol,
+                interval
             }
         })
     }
