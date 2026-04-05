@@ -1,8 +1,8 @@
 <article class="settings-card">
   <div class="settings-card__head">
     <div>
-      <h2 class="settings-card__title">Institutional Identity</h2>
-      <p class="settings-card__description">Update your public terminal profile.</p>
+      <h2 class="settings-card__title">Identity</h2>
+      <p class="settings-card__description">Update your personal information.</p>
     </div>
 
     <div class="settings-avatar" aria-label="User avatar">
@@ -14,20 +14,20 @@
   <form class="settings-form" (ngSubmit)="saveIdentity()">
     <div class="settings-form__grid settings-form__grid--two-columns">
       <label class="settings-field" for="settings-full-name">
-        <span class="settings-field__label">Full Name</span>
+        <span class="settings-field__label">Name</span>
         <input
           id="settings-full-name"
           class="settings-field__input"
           type="text"
-          name="fullName"
-          [(ngModel)]="fullName"
+          name="name"
+          [(ngModel)]="name"
           autocomplete="name"
           required
         />
       </label>
 
       <label class="settings-field" for="settings-email">
-        <span class="settings-field__label">Email Address</span>
+        <span class="settings-field__label">Email</span>
         <input
           id="settings-email"
           class="settings-field__input"
@@ -41,7 +41,11 @@
     </div>
 
     <div class="settings-actions">
-      <button class="settings-btn settings-btn--primary" type="submit">Save identity</button>
+      <button class="settings-btn settings-btn--primary" 
+      type="submit"
+      (click) = "updateUser()"
+      >Save identity</button>
+      
       @if (profileSaved) {
         <p class="settings-feedback">Identity updated successfully.</p>
       }

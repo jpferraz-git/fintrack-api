@@ -6,18 +6,32 @@ import { environment } from '../../environments/environment'
 interface UserUpdateRequest {
     name: string
     email: string
-    password: string
+}
+
+interface UserUpdateByEmailRequest {
+    name?: string
+    email?: string
+    password?: string
 }
 
 @Injectable({
     providedIn: 'root'
 })
 
-export class UpdateUserService {
+export class UserService {
 
     constructor(private http: HttpClient) {}
 
     updateUser(body: UserUpdateRequest): Observable<void> {
         return this.http.put<void>(`${environment.apiUrl}/users/update`, body)
     }
+
+    updateUserByEmail(email: string, body: UserUpdateByEmailRequest): Observable<void> {
+        return this.http.put<void>(`${environment.apiUrl}/users/${encodeURIComponent(email)}`, body)
+    }
+
+    updatePasswordByEmail(email: string, newPassword: string): Observable<void> {
+        return this.updateUserByEmail(email, { password: newPassword })
+    }
+
 }

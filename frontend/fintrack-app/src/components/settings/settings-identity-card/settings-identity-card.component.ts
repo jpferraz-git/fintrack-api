@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { UpdateUserService } from '../../../app/services/update-user.service';
+import { UserService } from '../../../app/services/user.service';
 
 
 @Component({
@@ -16,7 +16,7 @@ export class SettingsIdentityCard {
   profileSaved = false;
   user: any;
 
-  constructor(private updateUserService: UpdateUserService) {}
+  constructor(private userService: UserService) {}
 
   ngOnInit() {
     const storedUser = localStorage.getItem('user');
@@ -32,7 +32,7 @@ export class SettingsIdentityCard {
       name: this.name,
       email: this.email
     };
-    this.updateUserService.updateUser(updateData).subscribe( () => {
+    this.userService.updateUser(updateData).subscribe( () => {
         console.log('User updated successfully', updateData);
         this.profileSaved = true
     }
