@@ -39,7 +39,6 @@ public class AuthenticationService {
             throw new IllegalStateException("Authenticated principal is not a valid user.");
         }
         var token = tokenService.generateToken(user);
-
         return new LoginResponseDTO(
                 token,
                 new LoginResponseDTO.LoginUserResponseDTO(
