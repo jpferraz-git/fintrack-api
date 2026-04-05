@@ -1,0 +1,28 @@
+<article class="dash-market-card">
+  <header class="dash-market-card__top">
+    <div class="dash-market-card__instrument">
+      <span class="dash-coin-icon dash-coin-icon--{{ coin }}" aria-hidden="true">
+        {{ coin | uppercase }}
+      </span>
+      <p class="dash-market-card__pair">{{ label }}</p>
+    </div>
+
+    <div class="dash-market-card__trend">
+      <span
+        class="dash-market-card__delta"
+        [class.dash-market-card__delta--up]="trendUp"
+         [class.dash-market-card__delta--down]="!trendUp"
+      >
+        {{ loading ? 'Loading...' : (isOffline ? '•' : (trendUp ? '▲' : '▼')) }}
+      </span>
+    </div>
+  </header>
+
+  <p class="dash-market-card__price">
+    {{ loading ? 'Loading...' : price }}
+  </p>
+
+  <p class="dash-market-card__meta">
+    {{ loading ? 'Vol: Loading...' : volume }}
+  </p>
+</article>

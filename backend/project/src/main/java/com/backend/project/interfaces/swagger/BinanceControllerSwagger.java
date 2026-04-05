@@ -13,9 +13,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
-
-import java.util.List;
-
 @Tag(name = "Binance", description = "Operations for Binance market data")
 public interface BinanceControllerSwagger {
 
@@ -66,22 +63,12 @@ public interface BinanceControllerSwagger {
             @ApiResponse(responseCode = "200", description = "Klines retrieved successfully",
                     content = @Content(array = @ArraySchema(schema = @Schema(implementation = BinanceKlinesResponseDTO.class))))
     })
-    ResponseEntity<?> getKlinesScheduled();
-
-    @Operation(summary = "Kline by symbol and interval", description = "Returns one kline record for the provided symbol and interval")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Kline retrieved successfully",
-                    content = @Content(schema = @Schema(implementation = BinanceKlinesResponseDTO.class))),
-            @ApiResponse(responseCode = "404", description = "No klines found for symbol and interval",
-                    content = @Content(schema = @Schema(implementation = ErrorResponseDTO.class))),
-            @ApiResponse(responseCode = "400", description = "Invalid request parameters", content = @Content),
-            @ApiResponse(responseCode = "500", description = "Unexpected Binance response",
-                    content = @Content(schema = @Schema(implementation = ErrorResponseDTO.class)))
-    })
     ResponseEntity<?> getKlines(
             @Parameter(description = "Trading pair symbol", example = "BTCUSDT", required = true)
             String symbol,
             @Parameter(description = "Candlestick interval", example = "1m", required = true)
-            String interval);
+            String interval,
+            @Parameter(description = "Candlestick interval", example = "80")
+            Integer limit);
 }
 

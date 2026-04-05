@@ -32,7 +32,6 @@ public class BinanceIntegration {
                 .bodyToMono(BinancePriceResponseDTO.class)
                 .block();
     }
-
     public Binance24hTickerRequestDTO get24hTicker(String symbol){
         return webClient.get()
                 .uri(uriBuilder -> uriBuilder
@@ -44,12 +43,13 @@ public class BinanceIntegration {
                 .block();
     }
 
-    public List<BinanceKlinesRequestDTO> getKlines(String symbol, String interval){
+    public List<BinanceKlinesRequestDTO> getKlines(String symbol, String interval, Integer limit){
         List<List<Object>> rawKlines = webClient.get()
                 .uri(uriBuilder -> uriBuilder
                         .path("/klines")
                         .queryParam("symbol", symbol)
                         .queryParam("interval", interval)
+                        .queryParam("limit", limit)
                         .build())
                 .retrieve()
                 .bodyToMono(new ParameterizedTypeReference<List<List<Object>>>() {})

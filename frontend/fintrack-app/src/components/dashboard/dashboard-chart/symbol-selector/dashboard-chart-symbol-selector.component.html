@@ -1,0 +1,15 @@
+<label class="dash-chart__symbol-label" for="dash-chart-symbol">Pair</label>
+
+<select
+  id="dash-chart-symbol"
+  class="dash-chart__symbol-select"
+  [value]="activeSymbol"
+  (change)="onSelectionChange($event)"
+>
+  <option
+    *ngFor="let option of options; trackBy: trackBySymbol"
+    [value]="option.symbol"
+  >
+    {{ option.label }}
+  </option>
+</select>

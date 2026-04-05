@@ -1,0 +1,99 @@
+.dash-sidebar {
+  background: linear-gradient(180deg, #0d1a38 0%, #0a142d 100%);
+  border-right: 1px solid var(--color-border);
+  padding: 28px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.dash-brand {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.dash-brand__logo {
+  font-family: var(--font-display);
+  font-size: 31px;
+  line-height: 1;
+  letter-spacing: -1px;
+  color: var(--color-green-light);
+}
+
+.dash-brand__tagline {
+  color: var(--color-text-dim);
+  font-size: 10px;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+}
+
+.dash-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.dash-nav__item {
+  display: block;
+  padding: 10px 12px;
+  border-radius: 8px;
+  color: var(--color-text-secondary);
+  font-size: 13px;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.dash-nav__item:hover {
+  background: rgba(45, 52, 73, 0.6);
+}
+
+.dash-nav__item--active {
+  background: rgba(78, 222, 163, 0.14);
+  color: var(--color-green-light);
+  font-weight: 600;
+}
+
+.dash-account-card {
+  margin-top: auto;
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  padding: 14px;
+  background: rgba(19, 27, 46, 0.8);
+}
+
+.dash-account-card__title {
+  font-size: 13px;
+  color: var(--color-text-primary);
+  font-weight: 600;
+}
+
+.dash-account-card__subtitle {
+  margin-top: 4px;
+  font-size: 11px;
+  color: var(--color-text-dim);
+}
+
+.dash-account-card__button {
+  margin-top: 14px;
+  width: 100%;
+  padding: 9px 12px;
+  border-radius: 8px;
+  background: var(--gradient-cta);
+  color: var(--color-green-deeper);
+  font-weight: 700;
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  font-size: 11px;
+}
+
+@media (max-width: 1200px) {
+  .dash-sidebar {
+    border-right: none;
+    border-bottom: 1px solid var(--color-border);
+    padding-bottom: 16px;
+  }
+
+  .dash-account-card {
+    margin-top: 4px;
+  }
+}

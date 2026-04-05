@@ -102,7 +102,7 @@ class BinanceControllerTest {
                 new BigDecimal("3900000.00")
         );
 
-        when(binanceService.getKlines("BTCUSDT", "1m")).thenReturn(Result.ok(response));
+        when(binanceService.getKlines("BTCUSDT", "1m", 80)).thenReturn(Result.ok(response));
 
         mockMvc.perform(get("/binance/klines")
                         .param("symbol", "BTCUSDT")

@@ -1,0 +1,27 @@
+<aside class="portfolio-sidebar" aria-label="Portfolio navigation">
+  <div class="portfolio-sidebar__logo">T</div>
+
+  <nav class="portfolio-sidebar__nav">
+    <a class="portfolio-sidebar__item" routerLink="/dashboard" routerLinkActive="is-active" [routerLinkActiveOptions]="{ exact: true }">
+      <span class="portfolio-sidebar__icon">⌂</span>
+      <span class="portfolio-sidebar__label">Home</span>
+    </a>
+    <a class="portfolio-sidebar__item" routerLink="/portfolio" routerLinkActive="is-active" [routerLinkActiveOptions]="{ exact: true }">
+      <span class="portfolio-sidebar__icon">▣</span>
+      <span class="portfolio-sidebar__label">Portfolio</span>
+    </a>
+    <a class="portfolio-sidebar__item" routerLink="/alerts" routerLinkActive="is-active">
+      <span class="portfolio-sidebar__icon">⚑</span>
+      <span class="portfolio-sidebar__label">Alerts</span>
+    </a>
+    <a class="portfolio-sidebar__item" routerLink="/dashboard">
+      <span class="portfolio-sidebar__icon">⚙</span>
+      <span class="portfolio-sidebar__label">Settings</span>
+    </a>
+  </nav>
+
+  <div class="portfolio-sidebar__footer">
+    <button type="button" class="portfolio-sidebar__help">?</button>
+    <button type="button" class="portfolio-sidebar__avatar">👤</button>
+  </div>
+</aside>

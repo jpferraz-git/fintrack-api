@@ -1,0 +1,136 @@
+.portfolio-card {
+  border: 1px solid var(--color-border-subtle);
+  border-radius: 12px;
+  background: var(--gradient-panel);
+}
+
+.portfolio-holdings {
+  padding: 0;
+  overflow: hidden;
+}
+
+.portfolio-holdings__header {
+  min-height: 56px;
+  border-bottom: 1px solid var(--color-border-subtle);
+  padding: 0 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.portfolio-holdings__header h3 {
+  color: #e7efff;
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-size: 24px;
+}
+
+.portfolio-holdings__actions {
+  display: flex;
+  gap: 10px;
+}
+
+.portfolio-holdings__actions button {
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.9px;
+  font-size: 10px;
+}
+
+.portfolio-holdings__table-wrap {
+  overflow-x: auto;
+}
+
+.portfolio-holdings__table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.portfolio-holdings__table th {
+  text-align: left;
+  color: var(--color-text-muted);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  padding: 12px 20px;
+}
+
+.portfolio-holdings__table td {
+  padding: 16px 20px;
+  border-top: 1px solid var(--color-border-subtle);
+  color: #d5dff0;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.portfolio-holdings__price {
+  color: #f3fbff;
+  font-weight: 700;
+}
+
+.portfolio-asset {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.portfolio-asset__icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.portfolio-asset p {
+  color: #f5fbff;
+  font-weight: 600;
+}
+
+.portfolio-asset span {
+  color: var(--color-text-muted);
+  font-size: 10px;
+  text-transform: uppercase;
+}
+
+.portfolio-asset__icon--btc { background: rgba(247, 147, 26, 0.2); color: #f3b461; }
+.portfolio-asset__icon--eth { background: rgba(98, 126, 234, 0.2); color: #a2b3ff; }
+.portfolio-asset__icon--sol { background: rgba(78, 222, 163, 0.14); color: #78ffe2; }
+.portfolio-asset__icon--dot { background: rgba(251, 113, 133, 0.16); color: #ffa6b9; }
+
+.portfolio-pill {
+  border-radius: 6px;
+  padding: 4px 8px;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.portfolio-pill--up {
+  color: var(--color-green-light);
+  background: rgba(78, 222, 163, 0.15);
+}
+
+.portfolio-pill--down {
+  color: #ff95ab;
+  background: rgba(255, 149, 171, 0.14);
+}
+
+.portfolio-row-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.portfolio-row-actions button {
+  border-radius: 6px;
+  border: 1px solid rgba(78, 222, 163, 0.28);
+  color: var(--color-green-light);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  padding: 5px 8px;
+  background: rgba(78, 222, 163, 0.08);
+}

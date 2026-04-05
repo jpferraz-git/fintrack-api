@@ -1,0 +1,22 @@
+.alerts-statusbar {
+  margin-top: auto;
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  padding: 10px 12px;
+  border: 1px solid var(--color-border-subtle);
+  border-radius: 10px;
+  background: rgba(9, 18, 33, 0.8);
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  font-size: 10px;
+}
+
+.alerts-statusbar__active {
+  color: var(--color-green-light);
+}
+
+.alerts-statusbar__version {
+  margin-left: auto;
+}

@@ -1,0 +1,38 @@
+<section class="dash-alerts" aria-label="Price alerts">
+  <h3 class="dash-panel-title">Price Alerts</h3>
+
+  <label class="dash-field-label">Market</label>
+  <select class="dash-select">
+    <option>BTC / USDT</option>
+    <option>ETH / USDT</option>
+    <option>BNB / USDT</option>
+  </select>
+
+  <div class="dash-alerts__row">
+    <div>
+      <label class="dash-field-label">Condition</label>
+      <select class="dash-select">
+        <option>Above</option>
+        <option>Below</option>
+      </select>
+    </div>
+    <div>
+      <label class="dash-field-label">Value</label>
+      <input class="dash-input" type="text" value="65,000" />
+    </div>
+  </div>
+
+  <button class="dash-button" type="button">Set Alert</button>
+
+  <div class="dash-alerts__list">
+    <p class="dash-field-label">Active alerts</p>
+    <article class="dash-alert-item">
+      <p class="dash-alert-item__pair">BTC &gt; $68,000</p>
+      <p class="dash-alert-item__time">Created 2h ago</p>
+    </article>
+    <article class="dash-alert-item">
+      <p class="dash-alert-item__pair">ETH &lt; $3,200</p>
+      <p class="dash-alert-item__time">Created 5h ago</p>
+    </article>
+  </div>
+</section>

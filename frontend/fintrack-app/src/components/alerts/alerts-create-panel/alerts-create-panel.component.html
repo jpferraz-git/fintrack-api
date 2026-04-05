@@ -1,0 +1,42 @@
+<section class="alerts-create" aria-label="Create alert panel">
+  <h3>Create New Alert</h3>
+
+  <label>Select Asset</label>
+  <select>
+    <option>BTC / USDT (Bitcoin)</option>
+    <option>ETH / USDT (Ethereum)</option>
+    <option>SOL / USDT (Solana)</option>
+  </select>
+
+  <div class="alerts-create__row">
+    <div>
+      <label>Condition</label>
+      <select>
+        <option>Above</option>
+        <option>Below</option>
+      </select>
+    </div>
+    <div>
+      <label>Target Price</label>
+      <input type="text" value="0.00" />
+    </div>
+  </div>
+
+  <label>Notification Channels</label>
+  <div class="alerts-toggle-list">
+    <div class="alerts-toggle-row">
+      <span>Push Notification</span>
+      <button class="alerts-toggle is-on" type="button" aria-label="Enable push notification"></button>
+    </div>
+    <div class="alerts-toggle-row">
+      <span>Email Digest</span>
+      <button class="alerts-toggle" type="button" aria-label="Enable email digest"></button>
+    </div>
+    <div class="alerts-toggle-row">
+      <span>SMS Alert</span>
+      <button class="alerts-toggle" type="button" aria-label="Enable SMS alert"></button>
+    </div>
+  </div>
+
+  <button class="alerts-create__submit" type="button" (click)="openModal.emit()">Set Alert Trigger</button>
+</section>

@@ -1,0 +1,11 @@
+.dash-market-cards {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+@media (max-width: 900px) {
+  .dash-market-cards {
+    grid-template-columns: 1fr;
+  }
+}

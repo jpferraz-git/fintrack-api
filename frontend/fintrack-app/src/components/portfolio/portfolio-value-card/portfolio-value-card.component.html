@@ -1,0 +1,39 @@
+<section class="portfolio-card portfolio-value" aria-label="Total portfolio value">
+  <header class="portfolio-value__header">
+    <div>
+      <p class="portfolio-value__eyebrow">Total Portfolio Value</p>
+      <h2>$1,429,842.12 <span>+12.4% (24h)</span></h2>
+    </div>
+
+    <div class="portfolio-value__range" role="tablist" aria-label="Chart range">
+      <button type="button">1D</button>
+      <button type="button" class="is-active">1W</button>
+      <button type="button">1M</button>
+      <button type="button">All</button>
+    </div>
+  </header>
+
+  <div class="portfolio-value__chart" aria-hidden="true">
+    <svg viewBox="0 0 780 260" preserveAspectRatio="none">
+      <defs>
+        <linearGradient id="portfolioArea" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#2effcb" stop-opacity="0.45" />
+          <stop offset="100%" stop-color="#2effcb" stop-opacity="0" />
+        </linearGradient>
+      </defs>
+
+      <path
+        d="M0,240 C48,210 78,248 116,220 C154,190 188,170 222,230 C254,280 300,80 344,188 C380,274 424,64 458,144 C490,220 528,268 570,58 C596,2 638,14 662,120 C686,228 720,290 780,72 L780,260 L0,260 Z"
+        fill="url(#portfolioArea)"
+      ></path>
+
+      <path
+        d="M0,240 C48,210 78,248 116,220 C154,190 188,170 222,230 C254,280 300,80 344,188 C380,274 424,64 458,144 C490,220 528,268 570,58 C596,2 638,14 662,120 C686,228 720,290 780,72"
+        fill="none"
+        stroke="#33ffd0"
+        stroke-width="3"
+        stroke-linecap="round"
+      ></path>
+    </svg>
+  </div>
+</section>

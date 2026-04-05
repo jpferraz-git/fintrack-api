@@ -1,0 +1,11 @@
+<div class="dash-chart__intervals" role="group" aria-label="Chart interval selector">
+  <button
+    *ngFor="let option of intervals; trackBy: trackByValue"
+    type="button"
+    class="dash-chart__interval"
+    [class.dash-chart__interval--active]="activeInterval === option.value"
+    (click)="selectInterval(option.value)"
+  >
+    {{ option.label }}
+  </button>
+</div>

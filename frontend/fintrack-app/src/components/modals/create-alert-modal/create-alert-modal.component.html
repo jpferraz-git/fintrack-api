@@ -1,0 +1,87 @@
+<div *ngIf="open" class="terminal-modal-backdrop" (click)="onBackdropClick($event)">
+  <section class="terminal-modal terminal-modal--alert" role="dialog" aria-modal="true" aria-labelledby="create-alert-title">
+    <header class="terminal-modal__header">
+      <div class="terminal-modal__title-wrap">
+        <span class="terminal-modal__title-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" focusable="false">
+            <path d="M12 3a5 5 0 0 0-5 5v3.2l-1.6 2.6a1 1 0 0 0 .85 1.52h11.5a1 1 0 0 0 .85-1.52L17 11.2V8a5 5 0 0 0-5-5zm0 19a2.5 2.5 0 0 0 2.45-2h-4.9A2.5 2.5 0 0 0 12 22z" />
+          </svg>
+        </span>
+        <h2 id="create-alert-title">Create New Alert</h2>
+      </div>
+    </header>
+
+    <div class="terminal-modal__body">
+      <label class="terminal-modal__label">Select Asset</label>
+      <div class="terminal-modal__field-wrap">
+        <select class="terminal-modal__field">
+          <option>BTC / USDT (Bitcoin)</option>
+          <option>ETH / USDT (Ethereum)</option>
+          <option>SOL / USDT (Solana)</option>
+        </select>
+      </div>
+
+      <div class="terminal-modal__split">
+        <div>
+          <label class="terminal-modal__label">Condition</label>
+          <div class="terminal-modal__field-wrap">
+            <select class="terminal-modal__field">
+              <option>Above</option>
+              <option>Below</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label class="terminal-modal__label">Target Price</label>
+          <input class="terminal-modal__field" type="text" value="0.00" />
+        </div>
+      </div>
+
+      <div class="terminal-modal__divider" aria-hidden="true"></div>
+
+      <label class="terminal-modal__label">Notification Channels</label>
+
+      <div class="terminal-modal__toggle-list">
+        <div class="terminal-modal__toggle-row">
+          <div class="terminal-modal__channel">
+            <span class="terminal-modal__channel-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" focusable="false">
+                <path d="M7 2h10a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2zm1 4v12h8V6H8z" />
+              </svg>
+            </span>
+            <span>Push Notification</span>
+          </div>
+          <button type="button" class="terminal-toggle terminal-toggle--on" aria-label="Enable push notification"></button>
+        </div>
+        <div class="terminal-modal__toggle-row">
+          <div class="terminal-modal__channel">
+            <span class="terminal-modal__channel-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" focusable="false">
+                <path d="M3 6a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6zm2 .8v.5l7 4.2 7-4.2v-.5H5zm14 11.2V9.6l-6.5 3.9a1 1 0 0 1-1 0L5 9.6V18h14z" />
+              </svg>
+            </span>
+            <span>Email Digest</span>
+          </div>
+          <button type="button" class="terminal-toggle" aria-label="Enable email digest"></button>
+        </div>
+        <div class="terminal-modal__toggle-row">
+          <div class="terminal-modal__channel">
+            <span class="terminal-modal__channel-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" focusable="false">
+                <path d="M4 4h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H9l-5 4v-4H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2zm3 7a1.4 1.4 0 1 0 0 .01V11zm5 0a1.4 1.4 0 1 0 0 .01V11zm5 0a1.4 1.4 0 1 0 0 .01V11z" />
+              </svg>
+            </span>
+            <span>SMS Alert</span>
+          </div>
+          <button type="button" class="terminal-toggle" aria-label="Enable sms alert"></button>
+        </div>
+      </div>
+    </div>
+
+    <footer class="terminal-modal__footer">
+      <button type="button" class="terminal-button terminal-button--ghost" (click)="close()">Cancel</button>
+      <button type="button" class="terminal-button terminal-button--primary">Set Trigger</button>
+    </footer>
+  </section>
+</div>

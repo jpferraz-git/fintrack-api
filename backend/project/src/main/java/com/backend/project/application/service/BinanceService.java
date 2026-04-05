@@ -74,14 +74,14 @@ public class BinanceService {
         }
     }
 
-    @Scheduled(fixedDelay = 10000)
+    @Scheduled(fixedDelay = 2000)
     public Result<List<BinanceKlinesResponseDTO>> scheduledKlinesUpdate() {
         List<BinanceKlinesResponseDTO> klines = TRACKED_SYMBOLS.stream()
-                .map(symbol -> getKlines(symbol, "1m"))
+                .map(symbol -> getKlines(symbol, "1m", 80))
                 .filter(Result::isOk)
                 .map(Result::getValue)
-                .toList();
-
+                .flatMap(List::stream)
+                .toList();;
         if (klines.isEmpty()) {
             return Result.fail("Failed to retrieve klines");
         }
@@ -89,13 +89,13 @@ public class BinanceService {
         return Result.ok(klines);
     }
 
-    public Result<BinanceKlinesResponseDTO> getKlines(String symbol, String interval){
+    public Result<List<BinanceKlinesResponseDTO>> getKlines(String symbol, String interval, Integer limit){
         try {
-            List<BinanceKlinesRequestDTO> dtos = binanceIntegration.getKlines(symbol, interval);
+            List<BinanceKlinesRequestDTO> dtos = binanceIntegration.getKlines(symbol, interval, limit);
             if (dtos == null || dtos.isEmpty()) {
                 return Result.fail("No klines found for symbol and interval");
             }
-            return Result.ok(binanceKlinesMapper.toResponseKlines(dtos.getLast()));
+            return Result.ok(binanceKlinesMapper.toResponseKlines(dtos));
         } catch (Exception ex) {
             return Result.fail(ex.getMessage());
         }

@@ -1,0 +1,53 @@
+<section class="dash-chart" aria-label="Market chart">
+  <header class="dash-chart__header">
+    <div class="dash-chart__title-row">
+      <app-dashboard-chart-symbol-selector
+        [activeSymbol]="selectedSymbol"
+        [options]="symbolOptions"
+        (symbolSelected)="onSymbolSelected($event)"
+      ></app-dashboard-chart-symbol-selector>
+      <span
+        class="dash-chart__live"
+        [class.dash-chart__live--offline]="isOffline"
+        [class.dash-chart__live--loading]="loading"
+      >{{ liveStatusLabel }}</span>
+    </div>
+
+    <app-dashboard-chart-interval-selector
+      [activeInterval]="selectedInterval"
+      [intervals]="intervalOptions"
+      (intervalSelected)="onIntervalSelected($event)"
+    ></app-dashboard-chart-interval-selector>
+  </header>
+
+  <div
+    #chartCanvas
+    class="dash-chart__canvas"
+    role="img"
+    [attr.aria-label]="selectedSymbolLabel + ' candlestick chart for interval ' + selectedInterval"
+  >
+    <div
+      *ngFor="let candle of candles; trackBy: trackByIndex"
+      class="dash-candle"
+      [title]="getTooltip(candle)"
+      [class.dash-candle--up]="candle.trend === 'up'"
+      [class.dash-candle--down]="candle.trend === 'down'"
+      (mouseenter)="onCandleMouseEnter($event, candle, chartCanvas)"
+      (mousemove)="onCandleMouseMove($event, chartCanvas)"
+      (mouseleave)="onCandleMouseLeave()"
+      [style.--wick-top]="candle.wickTop"
+      [style.--wick-bottom]="candle.wickBottom"
+      [style.--body-top]="candle.bodyTop"
+      [style.--body-height]="candle.bodyHeight"
+    ></div>
+
+    <div
+      class="dash-chart__tooltip"
+      [class.dash-chart__tooltip--visible]="tooltipVisible"
+      [style.left.px]="tooltipLeft"
+      [style.top.px]="tooltipTop"
+    >
+      {{ tooltipText }}
+    </div>
+  </div>
+</section>

@@ -1,0 +1,17 @@
+.dash-chart__intervals {
+  display: flex;
+  gap: 6px;
+}
+
+.dash-chart__interval {
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  padding: 5px 8px;
+  color: var(--color-text-muted);
+  font-size: 11px;
+}
+
+.dash-chart__interval--active {
+  background: rgba(78, 222, 163, 0.2);
+  color: var(--color-green-light);
+}

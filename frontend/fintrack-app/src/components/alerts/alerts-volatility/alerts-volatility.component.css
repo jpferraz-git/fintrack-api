@@ -1,0 +1,57 @@
+.alerts-volatility {
+  border: 1px solid var(--color-border-subtle);
+  border-radius: 14px;
+  background: var(--gradient-panel);
+  padding: 14px;
+}
+
+.alerts-volatility header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.alerts-volatility h4 {
+  margin: 0;
+  color: #e6eefb;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.alerts-volatility header span {
+  color: var(--color-green-light);
+  font-size: 11px;
+  text-transform: uppercase;
+}
+
+.alerts-volatility__bars {
+  margin-top: 16px;
+  height: 88px;
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  gap: 8px;
+  align-items: end;
+}
+
+.alerts-volatility__bars span {
+  border-radius: 4px 4px 0 0;
+  background: rgba(115, 133, 161, 0.16);
+  height: 26%;
+}
+
+.alerts-volatility__bars span:nth-child(1) { height: 28%; }
+.alerts-volatility__bars span:nth-child(2) { height: 38%; }
+.alerts-volatility__bars span:nth-child(3) { height: 56%; }
+.alerts-volatility__bars span:nth-child(4) { height: 74%; }
+.alerts-volatility__bars span:nth-child(5) { height: 86%; }
+.alerts-volatility__bars span:nth-child(6) { height: 64%; }
+.alerts-volatility__bars span:nth-child(7) { height: 32%; }
+.alerts-volatility__bars span:nth-child(8) { height: 52%; }
+.alerts-volatility__bars span:nth-child(9) { height: 30%; }
+.alerts-volatility__bars span:nth-child(10) { height: 44%; }
+
+.alerts-volatility__bars span.is-hot {
+  background: rgba(78, 222, 163, 0.25);
+  box-shadow: 0 0 0 1px rgba(78, 222, 163, 0.35) inset;
+}
