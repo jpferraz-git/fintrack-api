@@ -1,0 +1,77 @@
+<article class="settings-card">
+  <div>
+    <h2 class="settings-card__title">Security Protocol</h2>
+    <p class="settings-card__description">Manage credential rotation and authentication.</p>
+  </div>
+
+  <form class="settings-form" (ngSubmit)="updatePassword()">
+    <div class="settings-form__grid settings-form__grid--two-columns">
+      <label class="settings-field" for="settings-current-password">
+        <span class="settings-field__label">Current Password</span>
+        <input
+          id="settings-current-password"
+          class="settings-field__input"
+          type="password"
+          name="currentPassword"
+          [(ngModel)]="currentPassword"
+          placeholder="Enter current password"
+          autocomplete="current-password"
+          required
+        />
+      </label>
+
+      <label class="settings-field" for="settings-new-password">
+        <span class="settings-field__label">New Password</span>
+        <input
+          id="settings-new-password"
+          class="settings-field__input"
+          type="password"
+          name="newPassword"
+          [(ngModel)]="newPassword"
+          placeholder="Min. 12 characters"
+          autocomplete="new-password"
+          required
+        />
+      </label>
+    </div>
+
+    <div class="settings-form__grid">
+      <label class="settings-field" for="settings-confirm-password">
+        <span class="settings-field__label">Confirm Password</span>
+        <input
+          id="settings-confirm-password"
+          class="settings-field__input"
+          type="password"
+          name="confirmPassword"
+          [(ngModel)]="confirmPassword"
+          placeholder="Repeat new password"
+          autocomplete="new-password"
+          required
+        />
+      </label>
+    </div>
+
+    <div class="settings-auth-chip" role="status" aria-label="Two-factor authentication status">
+      <div class="settings-auth-chip__content">
+        <span class="settings-auth-chip__icon" aria-hidden="true">&#128737;</span>
+        <div>
+          <p class="settings-auth-chip__title">Two-Factor Authentication</p>
+          <p class="settings-auth-chip__text">Authentication app is currently active.</p>
+        </div>
+      </div>
+      <button class="settings-auth-chip__action" type="button">Revoke</button>
+    </div>
+
+    <div class="settings-actions">
+      <button class="settings-btn settings-btn--primary" type="submit">Update password</button>
+
+      @if (passwordError) {
+        <p class="settings-feedback settings-feedback--error">{{ passwordError }}</p>
+      }
+
+      @if (passwordUpdated) {
+        <p class="settings-feedback">Password updated successfully.</p>
+      }
+    </div>
+  </form>
+</article>
