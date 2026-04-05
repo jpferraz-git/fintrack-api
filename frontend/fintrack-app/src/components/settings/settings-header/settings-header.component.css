@@ -1,0 +1,22 @@
+.settings-header {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-width: 680px;
+}
+
+.settings-header__title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(29px, 2.4vw, 42px);
+  line-height: 1.1;
+  color: var(--color-text-white);
+  letter-spacing: -0.03em;
+}
+
+.settings-header__subtitle {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: clamp(14px, 1vw, 16px);
+  color: var(--color-text-secondary);
+}

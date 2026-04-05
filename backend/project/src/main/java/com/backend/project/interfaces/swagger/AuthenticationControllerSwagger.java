@@ -14,7 +14,7 @@ import org.springframework.http.ResponseEntity;
 @Tag(name = "Authentication", description = "Operations for user authentication and registration")
 public interface AuthenticationControllerSwagger {
 
-    @Operation(summary = "User login", description = "Authenticates a user with email and password, returning a JWT token")
+        @Operation(summary = "User login", description = "Authenticates a user with email and password, returning a JWT token and user profile data")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Login successful",
                     content = @Content(schema = @Schema(implementation = LoginResponseDTO.class))),

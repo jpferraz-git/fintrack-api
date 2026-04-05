@@ -15,7 +15,9 @@ public interface UserRepository {
 
     boolean existsByEmail(String email);
 
-    UserEntity update(UserEntity user);
+    UserEntity updateUserByEmail(String email, UserEntity user);
+
+    UserEntity updateUser(UserEntity user);
 
     void deleteByEmail(String email);
 

@@ -6,11 +6,13 @@ import { DashboardPriceAlerts } from '../../components/dashboard/dashboard-price
 import { DashboardGainers } from '../../components/dashboard/dashboard-gainers/dashboard-gainers.component';
 import { DashboardMarketTable } from '../../components/dashboard/dashboard-market-table/dashboard-market-table.component';
 import { DashboardStatusbar } from '../../components/dashboard/dashboard-statusbar/dashboard-statusbar.component';
+import { DashboardTopbar } from '../../components/dashboard/dashboard-topbar/dashboard-topbar.component';
 
 @Component({
   selector: 'app-dashboard-page',
   imports: [
     Sidebar,
+    DashboardTopbar,
     DashboardMarketCards,
     DashboardChart,
     DashboardPriceAlerts,

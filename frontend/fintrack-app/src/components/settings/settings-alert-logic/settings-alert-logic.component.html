@@ -1,0 +1,47 @@
+<article class="settings-card settings-card--compact">
+  <h3 class="settings-card__title settings-card__title--small">Alert Logic</h3>
+
+  <label class="settings-toggle" for="toggle-volatility">
+    <span class="settings-toggle__label">Price Volatility Alerts</span>
+    <input
+      id="toggle-volatility"
+      class="settings-toggle__input"
+      type="checkbox"
+      name="priceVolatilityAlerts"
+      [(ngModel)]="priceVolatilityAlerts"
+    />
+  </label>
+
+  <label class="settings-toggle" for="toggle-orders">
+    <span class="settings-toggle__label">Order Execution Logs</span>
+    <input
+      id="toggle-orders"
+      class="settings-toggle__input"
+      type="checkbox"
+      name="orderExecutionLogs"
+      [(ngModel)]="orderExecutionLogs"
+    />
+  </label>
+
+  <label class="settings-toggle" for="toggle-breaches">
+    <span class="settings-toggle__label">Security Breaches</span>
+    <input
+      id="toggle-breaches"
+      class="settings-toggle__input"
+      type="checkbox"
+      name="securityBreaches"
+      [(ngModel)]="securityBreaches"
+    />
+  </label>
+
+  <label class="settings-toggle" for="toggle-maintenance">
+    <span class="settings-toggle__label">System Maintenance</span>
+    <input
+      id="toggle-maintenance"
+      class="settings-toggle__input"
+      type="checkbox"
+      name="systemMaintenance"
+      [(ngModel)]="systemMaintenance"
+    />
+  </label>
+</article>

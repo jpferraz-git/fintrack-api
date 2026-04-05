@@ -7,6 +7,8 @@ import com.backend.project.infrastructure.entity.UserEntity;
 import com.backend.project.interfaces.dto.user.UserMapper;
 import com.backend.project.interfaces.dto.user.UserRequestDTO;
 import com.backend.project.interfaces.dto.user.UserResponseDTO;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -40,13 +42,23 @@ public class UserService {
         }
     }
 
-    public Result<UserResponseDTO> update(String email, UserRequestDTO dto){
+    public Result<UserResponseDTO> updateUserByEmail(String email, UserRequestDTO dto){
         try {
             UserEntity user = userRepository.findByEmail(email);
-            user.setName(dto.name());
-            user.setEmail(dto.email());
-            user.setPassword(dto.password());
-            UserEntity updated = userRepository.update(user);
+            applyUpdates(user, dto);
+            UserEntity updated = userRepository.updateUserByEmail(email, user);
+            return Result.ok(userMapper.toResponse(updated));
+        } catch (Exception ex) {
+            return Result.fail(ex.getMessage());
+        }
+    }
+
+    public Result<UserResponseDTO> updateUser(UserRequestDTO dto){
+        try {
+            String authenticatedEmail = getAuthenticatedEmail();
+            UserEntity user = userRepository.findByEmail(authenticatedEmail);
+            applyUpdates(user, dto);
+            UserEntity updated = userRepository.updateUser(user);
             return Result.ok(userMapper.toResponse(updated));
         } catch (Exception ex) {
             return Result.fail(ex.getMessage());
@@ -75,5 +87,37 @@ public class UserService {
         return userRepository.findAll().stream()
                 .map(userMapper::toResponse)
                 .toList();
+    }
+
+    private void applyUpdates(UserEntity user, UserRequestDTO dto) {
+        if (dto.name() != null && !dto.name().isBlank()) {
+            user.setName(dto.name().trim());
+        }
+        if (dto.email() != null && !dto.email().isBlank()) {
+            user.setEmail(dto.email().trim());
+        }
+        if (dto.password() != null && !dto.password().isBlank()) {
+            user.setPassword(passwordEncoder.encode(dto.password()));
+        }
+        if (dto.role() != null) {
+            user.setRole(roleRepository.findByName(dto.role()));
+        }
+    }
+
+    private String getAuthenticatedEmail() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || !authentication.isAuthenticated()) {
+            throw new IllegalStateException("No authenticated user found.");
+        }
+
+        Object principal = authentication.getPrincipal();
+        if (principal instanceof UserEntity userEntity) {
+            return userEntity.getEmail();
+        }
+        if (principal instanceof String principalEmail && !"anonymousUser".equalsIgnoreCase(principalEmail)) {
+            return principalEmail;
+        }
+
+        throw new IllegalStateException("Unable to resolve authenticated user email.");
     }
 }

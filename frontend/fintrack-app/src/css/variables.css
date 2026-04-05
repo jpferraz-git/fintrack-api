@@ -42,6 +42,9 @@
   --gradient-cta:        linear-gradient(90deg, #4EDEA3 0%, #10B981 100%);
   --gradient-screen-main:linear-gradient(180deg, #061129 0%, #0B1631 55%, #121F3F 100%);
   --gradient-screen-sub: linear-gradient(180deg, #020812 0%, #030C1B 100%);
+  --gradient-screen-settings:
+    radial-gradient(140% 120% at 85% -10%, rgba(78, 222, 163, 0.08) 0%, rgba(78, 222, 163, 0) 52%),
+    linear-gradient(180deg, #040b1a 0%, #050f21 52%, #07142a 100%);
   --gradient-panel:      linear-gradient(180deg, rgba(10, 20, 38, 0.95) 0%, rgba(6, 13, 26, 0.95) 100%);
   --gradient-modal:      linear-gradient(180deg, rgba(8, 16, 33, 0.98) 0%, rgba(6, 13, 26, 0.98) 100%);
 
