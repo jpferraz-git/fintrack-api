@@ -34,6 +34,7 @@ export class LoginPage {
       }).subscribe ({
         next: () => {
           this.loading = false;
+          this.authService.setUser(this.authService.getUser())
           this.router.navigate(['/dashboard']);
         },
         error: () => {

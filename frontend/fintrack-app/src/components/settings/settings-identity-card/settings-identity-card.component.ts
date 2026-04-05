@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { UpdateUserService } from '../../../app/services/update-user.service';
+
 
 @Component({
   selector: 'app-settings-identity-card',
@@ -7,10 +9,36 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './settings-identity-card.component.html',
   styleUrl: './settings-identity-card.component.css'
 })
+
 export class SettingsIdentityCard {
-  fullName = 'Alexander Sterling';
-  email = 'a.sterling@obsidian-terminal.com';
+  name = ''
+  email = ''
   profileSaved = false;
+  user: any;
+
+  constructor(private updateUserService: UpdateUserService) {}
+
+  ngOnInit() {
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) {
+      this.user = JSON.parse(storedUser);
+      this.name = this.user.name;
+      this.email = this.user.email;
+    }
+  }
+
+  updateUser(): void {
+    const updateData = {
+      name: this.name,
+      email: this.email
+    };
+    this.updateUserService.updateUser(updateData).subscribe( () => {
+        console.log('User updated successfully', updateData);
+        this.profileSaved = true
+    }
+    );
+  }
+
 
   saveIdentity(): void {
     this.profileSaved = true;

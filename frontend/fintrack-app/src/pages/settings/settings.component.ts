@@ -5,7 +5,6 @@ import { SettingsIdentityCard } from '../../components/settings/settings-identit
 import { SettingsSecurityCard } from '../../components/settings/settings-security-card/settings-security-card.component';
 import { SettingsAlertLogic } from '../../components/settings/settings-alert-logic/settings-alert-logic.component';
 import { SettingsSyncPanel } from '../../components/settings/settings-sync-panel/settings-sync-panel.component';
-import { SettingsNodeStatus } from '../../components/settings/settings-node-status/settings-node-status.component';
 
 @Component({
   selector: 'app-settings-page',
@@ -15,8 +14,7 @@ import { SettingsNodeStatus } from '../../components/settings/settings-node-stat
     SettingsIdentityCard,
     SettingsSecurityCard,
     SettingsAlertLogic,
-    SettingsSyncPanel,
-    SettingsNodeStatus
+    SettingsSyncPanel
   ],
   templateUrl: './settings.component.html',
   styleUrl: './settings.component.css'
