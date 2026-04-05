@@ -21,7 +21,8 @@ public class BatchEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID batchId;
+    @Column(name = "id", updatable = false, nullable = false)
+    private UUID id;
 
     @CreationTimestamp
     @Column(name = "upload_date", updatable = false)

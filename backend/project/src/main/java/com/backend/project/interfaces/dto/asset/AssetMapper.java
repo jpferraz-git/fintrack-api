@@ -30,7 +30,7 @@ public class AssetMapper {
 
     public AssetResponseDTO toResponse(AssetEntity dto){
         return new AssetResponseDTO(
-                dto.getAssetId(),
+                dto.getId(),
                 dto.getAssetType(),
                 dto.getAssetType(),
                 dto.getCompanyName(),

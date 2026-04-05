@@ -39,7 +39,7 @@ public class UserMapper {
 
     public UserResponseDTO toResponse(UserEntity user){
         return new UserResponseDTO(
-                user.getUserId(),
+                user.getId(),
                 user.getName(),
                 user.getEmail(),
                 user.getPassword(),

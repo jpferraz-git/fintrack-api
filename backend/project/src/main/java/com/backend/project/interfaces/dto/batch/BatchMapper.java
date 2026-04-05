@@ -29,7 +29,7 @@ public class BatchMapper {
 
     public BatchResponseDTO toResponse(BatchEntity entity) {
         return new BatchResponseDTO(
-                entity.getBatchId(),
+                entity.getId(),
                 entity.getUploadDate(),
                 entity.getFileName(),
                 entity.getStatus(),

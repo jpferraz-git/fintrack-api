@@ -54,9 +54,9 @@ public class TransactionMapper {
     public TransactionResponseDTO toResponse(TransactionEntity entity){
         return new TransactionResponseDTO(
                 entity.getId(),
-                userRepository.getReferenceById(entity.getUserId().getUserId()).getUserId(),
-                assetRepository.getReferenceById(entity.getAssetId().getAssetId()).getAssetId(),
-                batchRepository.getReferenceById(entity.getBatchId().getBatchId()).getBatchId(),
+                userRepository.getReferenceById(entity.getUserId().getId()).getId(),
+                assetRepository.getReferenceById(entity.getAssetId().getId()).getId(),
+                batchRepository.getReferenceById(entity.getBatchId().getId()).getId(),
                 entity.getOperationType(),
                 entity.getQuantity(),
                 entity.getUnitPrice(),

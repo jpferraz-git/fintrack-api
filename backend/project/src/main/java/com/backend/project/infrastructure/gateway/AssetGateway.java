@@ -37,11 +37,11 @@ public class AssetGateway implements AssetRepository {
 
     @Override
     public AssetEntity update(AssetEntity asset) {
-        AssetEntity current = jpaRepository.findById(asset.getAssetId())
-                .orElseThrow(() -> new AssetNotFoundException(asset.getAssetId()));
+        AssetEntity current = jpaRepository.findById(asset.getId())
+            .orElseThrow(() -> new AssetNotFoundException(asset.getId()));
 
         AssetEntity byTicker = jpaRepository.findByTicker(asset.getTicker());
-        if (byTicker != null && !byTicker.getAssetId().equals(current.getAssetId())) {
+        if (byTicker != null && !byTicker.getId().equals(current.getId())) {
             throw new AssetAlreadyExistsException(asset.getTicker());
         }
 

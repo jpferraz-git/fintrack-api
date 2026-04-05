@@ -26,7 +26,8 @@ public class AssetEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID assetId;
+    @Column(name = "id", updatable = false, nullable = false)
+    private UUID id;
     private String ticker;
     private String assetType;
     private String companyName;
