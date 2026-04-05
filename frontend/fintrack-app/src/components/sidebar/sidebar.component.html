@@ -14,7 +14,7 @@
       <span class="alerts-sidebar__item-icon" aria-hidden="true">&#9993;</span>
       <span class="alerts-sidebar__item-label">Alerts</span>
     </a>
-    <a class="alerts-sidebar__item" routerLink="/dashboard">
+    <a class="alerts-sidebar__item" routerLink="/settings" routerLinkActive="alerts-sidebar__item--active" [routerLinkActiveOptions]="{ exact: true }">
       <span class="alerts-sidebar__item-icon" aria-hidden="true">&#9881;</span>
       <span class="alerts-sidebar__item-label">Settings</span>
     </a>
