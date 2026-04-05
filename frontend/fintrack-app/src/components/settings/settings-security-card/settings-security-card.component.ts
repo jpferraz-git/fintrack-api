@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { UserService } from '../../../app/services/user.service';
 
 @Component({
   selector: 'app-settings-security-card',
@@ -14,13 +15,16 @@ export class SettingsSecurityCard {
 
   passwordUpdated = false;
   passwordError = '';
+  isSubmitting = false;
+
+  constructor(private userService: UserService) {}
 
   updatePassword(): void {
     this.passwordError = '';
     this.passwordUpdated = false;
 
-    if (this.newPassword.length < 12) {
-      this.passwordError = 'New password must be at least 12 characters.';
+    if (!this.currentPassword.trim()) {
+      this.passwordError = 'Current password is required.';
       return;
     }
 
@@ -29,13 +33,45 @@ export class SettingsSecurityCard {
       return;
     }
 
-    this.currentPassword = '';
-    this.newPassword = '';
-    this.confirmPassword = '';
-    this.passwordUpdated = true;
+    const storedUser = localStorage.getItem('user');
+    if (!storedUser) {
+      this.passwordError = 'Unable to identify logged user.';
+      return;
+    }
 
-    setTimeout(() => {
-      this.passwordUpdated = false;
-    }, 2400);
+    let currentUserEmail = '';
+
+    try {
+      const parsedUser = JSON.parse(storedUser);
+      currentUserEmail = parsedUser?.email ?? '';
+    } catch {
+      this.passwordError = 'Unable to read logged user data.';
+      return;
+    }
+
+    if (!currentUserEmail) {
+      this.passwordError = 'User email not found for password update.';
+      return;
+    }
+
+    this.isSubmitting = true;
+
+    this.userService.updatePasswordByEmail(currentUserEmail, this.newPassword).subscribe({
+      next: () => {
+        this.currentPassword = '';
+        this.newPassword = '';
+        this.confirmPassword = '';
+        this.passwordUpdated = true;
+        this.isSubmitting = false;
+
+        setTimeout(() => {
+          this.passwordUpdated = false;
+        }, 2400);
+      },
+      error: (error) => {
+        this.isSubmitting = false;
+        this.passwordError = error?.error?.message || 'Unable to update password. Please try again.';
+      }
+    });
   }
 }

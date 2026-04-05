@@ -63,7 +63,10 @@
     </div>
 
     <div class="settings-actions">
-      <button class="settings-btn settings-btn--primary" type="submit">Update password</button>
+      <button class="settings-btn settings-btn--primary" type="submit" [disabled]="isSubmitting"
+      (click)="updatePassword()">
+        {{ isSubmitting ? 'Updating...' : 'Update password' }}
+      </button>
 
       @if (passwordError) {
         <p class="settings-feedback settings-feedback--error">{{ passwordError }}</p>
