@@ -40,7 +40,15 @@ public class AuthenticationService {
         }
         var token = tokenService.generateToken(user);
 
-        return new LoginResponseDTO(token);
+        return new LoginResponseDTO(
+                token,
+                new LoginResponseDTO.LoginUserResponseDTO(
+                        user.getName(),
+                        user.getEmail(),
+                        user.getCreatedAt(),
+                        user.getUpdatedAt()
+                )
+        );
     }
     
     public Result<String> register(RegisterDTO dto){
