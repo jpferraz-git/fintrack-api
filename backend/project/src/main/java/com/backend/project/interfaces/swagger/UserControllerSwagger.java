@@ -38,14 +38,29 @@ public interface UserControllerSwagger {
                     content = @Content(schema = @Schema(implementation = UserRequestDTO.class)))
             UserRequestDTO user);
 
-    @Operation(summary = "Update a user", description = "Updates an existing user by email")
+    @Operation(summary = "Update authenticated user", description = "Updates the authenticated user without requiring email in the path")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "User updated successfully",
+                    content = @Content(schema = @Schema(implementation = UserResponseDTO.class))),
+            @ApiResponse(responseCode = "400", description = "Invalid request payload", content = @Content),
+            @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content),
+            @ApiResponse(responseCode = "404", description = "User not found", content = @Content)
+    })
+    ResponseEntity<?> updateUser(
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    description = "Updated user payload",
+                    required = true,
+                    content = @Content(schema = @Schema(implementation = UserRequestDTO.class)))
+            UserRequestDTO user);
+
+    @Operation(summary = "Update a user by email", description = "Updates an existing user using email in the path")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "User updated successfully",
                     content = @Content(schema = @Schema(implementation = UserResponseDTO.class))),
             @ApiResponse(responseCode = "400", description = "Invalid request payload", content = @Content),
             @ApiResponse(responseCode = "404", description = "User not found", content = @Content)
     })
-    ResponseEntity<?> updateUser(
+    ResponseEntity<?> updateUserByEmail(
             @Parameter(description = "Email used to identify the user", example = "user@example.com", required = true)
             String email,
             @io.swagger.v3.oas.annotations.parameters.RequestBody(

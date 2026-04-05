@@ -36,9 +36,19 @@ public class UserController implements UserControllerSwagger {
         return ResponseEntity.status(resolveStatus(result.getMessage())).body(result);
     }
 
+    @PutMapping("/update")
+    public ResponseEntity<?> updateUser(@RequestBody UserRequestDTO user) {
+        Result<UserResponseDTO> result = userService.updateUser(user);
+        System.out.println(result.getValue());
+        if (result.isOk()) {
+            return ResponseEntity.ok(result.getValue());
+        }
+        return ResponseEntity.status(resolveStatus(result.getMessage())).body(result);
+    }
+
     @PutMapping("/{email}")
-    public ResponseEntity<?> updateUser(@PathVariable String email, @RequestBody UserRequestDTO user) {
-        Result<UserResponseDTO> result = userService.update(email, user);
+    public ResponseEntity<?> updateUserByEmail(@PathVariable String email, @RequestBody UserRequestDTO user) {
+        Result<UserResponseDTO> result = userService.updateUserByEmail(email, user);
         if (result.isOk()) {
             return ResponseEntity.ok(result.getValue());
         }
