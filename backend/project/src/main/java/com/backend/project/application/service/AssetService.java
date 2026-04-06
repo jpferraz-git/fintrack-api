@@ -12,6 +12,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
@@ -67,6 +68,14 @@ public class AssetService {
         return assetRepository.findAllByUserId(getAuthenticatedUserId()).stream()
                 .map(assetMapper::toResponse)
                 .toList();
+    }
+
+    public Result<Long> getQuantityByUser() {
+        throw new UnsupportedOperationException("Method getQuantityByUser not implemented yet.");
+    }
+
+    public Result<BigDecimal> getActualValue() {
+        throw new UnsupportedOperationException("Method getActualValue not implemented yet.");
     }
 
     private UUID getAuthenticatedUserId() {

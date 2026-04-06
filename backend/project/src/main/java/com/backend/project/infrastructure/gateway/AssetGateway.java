@@ -8,6 +8,7 @@ import com.backend.project.infrastructure.springdata.AssetJpaRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
@@ -72,5 +73,15 @@ public class AssetGateway implements AssetRepository {
     @Override
     public List<AssetEntity> findAllByUserId(UUID userId) {
         return jpaRepository.findAllByUserId(userId);
+    }
+
+    @Override
+    public Long getQuantityByUser(UUID userId) {
+        throw new UnsupportedOperationException("Method getQuantityByUser not implemented yet.");
+    }
+
+    @Override
+    public BigDecimal getActualValue(UUID userId) {
+        throw new UnsupportedOperationException("Method getActualValue not implemented yet.");
     }
 }
