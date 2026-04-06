@@ -5,6 +5,7 @@ import java.util.UUID;
 
 public record AssetResponseDTO (
         UUID assetId,
+        UUID userId,
         String ticker,
         String assetType,
         String companyName,
