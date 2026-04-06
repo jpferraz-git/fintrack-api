@@ -41,13 +41,15 @@ public class AssetService {
         }
     }
 
-    public Result<AssetResponseDTO> update(String ticker, AssetRequestDTO asset){
+    public Result<AssetResponseDTO> update(String symbol, AssetRequestDTO asset){
         try {
             UUID userId = getAuthenticatedUserId();
-            AssetEntity assetEntity = assetRepository.findByTickerAndUserId(ticker, userId);
-            assetEntity.setTicker(asset.ticker());
-            assetEntity.setAssetType(asset.assetType());
-            assetEntity.setCompanyName(asset.companyName());
+            AssetEntity assetEntity = assetRepository.findBySymbolAndUserId(symbol, userId);
+            assetEntity.setSymbol(asset.symbol());
+            assetEntity.setType(asset.type());
+            assetEntity.setQuantity(asset.quantity());
+            assetEntity.setPrice(asset.price());
+            assetEntity.setAvgPrice(asset.avgPrice());
             AssetEntity updated = assetRepository.update(assetEntity);
             return Result.ok(assetMapper.toResponse(updated));
         } catch (Exception ex) {
@@ -55,9 +57,9 @@ public class AssetService {
         }
     }
 
-    public Result<Void> deleteByTicker(String ticker){
+    public Result<Void> deleteBySymbol(String symbol){
         try {
-            assetRepository.deleteByTickerAndUserId(ticker, getAuthenticatedUserId());
+            assetRepository.deleteBySymbolAndUserId(symbol, getAuthenticatedUserId());
             return Result.ok(null);
         } catch (Exception ex) {
             return Result.fail(ex.getMessage());
