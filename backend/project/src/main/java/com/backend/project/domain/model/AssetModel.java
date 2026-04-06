@@ -7,14 +7,16 @@ import java.util.UUID;
 public class AssetModel {
 
     private UUID assetId;
+    private UUID userId;
     private String ticker;
     private String assetType;
     private String companyName;
     private Instant createdAt;
     private Instant updatedAt;
 
-    public AssetModel(UUID assetId, String ticker, String assetType, String companyName, Instant createdAt, Instant updatedAt) {
+    public AssetModel(UUID assetId, UUID userId, String ticker, String assetType, String companyName, Instant createdAt, Instant updatedAt) {
         this.assetId = assetId;
+        this.userId = userId;
         this.ticker = ticker;
         this.assetType = assetType;
         this.companyName = companyName;
@@ -28,6 +30,14 @@ public class AssetModel {
 
     public void setAssetId(UUID assetId) {
         this.assetId = assetId;
+    }
+
+    public UUID getUserId() {
+        return userId;
+    }
+
+    public void setUserId(UUID userId) {
+        this.userId = userId;
     }
 
     public String getTicker() {
