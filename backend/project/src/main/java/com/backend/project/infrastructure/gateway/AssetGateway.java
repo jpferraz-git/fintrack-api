@@ -24,18 +24,18 @@ public class AssetGateway implements AssetRepository {
             throw new IllegalArgumentException("Asset user is required.");
         }
 
-        if (jpaRepository.existsByTickerAndUserId(asset.getTicker(), asset.getUserId().getId())) {
-            throw new AssetAlreadyExistsException(asset.getTicker());
+        if (jpaRepository.existsBySymbolAndUserId(asset.getSymbol(), asset.getUserId().getId())) {
+            throw new AssetAlreadyExistsException(asset.getSymbol());
         }
         return jpaRepository.save(asset);
     }
 
 
     @Override
-    public AssetEntity findByTickerAndUserId(String ticker, UUID userId) {
-        AssetEntity asset = jpaRepository.findByTickerAndUserId(ticker, userId);
+    public AssetEntity findBySymbolAndUserId(String symbol, UUID userId) {
+        AssetEntity asset = jpaRepository.findBySymbolAndUserId(symbol, userId);
         if (asset == null) {
-            throw new AssetNotFoundException(ticker);
+            throw new AssetNotFoundException(symbol);
         }
         return asset;
     }
@@ -51,17 +51,17 @@ public class AssetGateway implements AssetRepository {
 
         UUID userId = asset.getUserId().getId();
 
-        AssetEntity byTicker = jpaRepository.findByTickerAndUserId(asset.getTicker(), userId);
-        if (byTicker != null && !byTicker.getId().equals(current.getId())) {
-            throw new AssetAlreadyExistsException(asset.getTicker());
+        AssetEntity bySymbol = jpaRepository.findBySymbolAndUserId(asset.getSymbol(), userId);
+        if (bySymbol != null && !bySymbol.getId().equals(current.getId())) {
+            throw new AssetAlreadyExistsException(asset.getSymbol());
         }
 
         return jpaRepository.save(asset);
     }
 
     @Override
-    public void deleteByTickerAndUserId(String ticker, UUID userId) {
-        jpaRepository.delete(findByTickerAndUserId(ticker, userId));
+    public void deleteBySymbolAndUserId(String symbol, UUID userId) {
+        jpaRepository.delete(findBySymbolAndUserId(symbol, userId));
     }
 
     @Override
