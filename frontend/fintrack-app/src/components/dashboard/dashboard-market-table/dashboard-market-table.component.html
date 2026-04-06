@@ -10,15 +10,6 @@
           [(ngModel)]="searchTerm"
           aria-label="Search cryptocurrency"
         />
-        <button
-          type="button"
-          class="dash-table__clear"
-          *ngIf="searchTerm"
-          (click)="clearSearch()"
-          aria-label="Clear search"
-        >
-          x
-        </button>
       </div>
     </div>
   </header>
@@ -32,7 +23,6 @@
           <th>24h Change</th>
           <th>24h Volume</th>
           <th>Market Cap</th>
-          <th>Actions</th>
         </tr>
       </thead>
       <tbody>

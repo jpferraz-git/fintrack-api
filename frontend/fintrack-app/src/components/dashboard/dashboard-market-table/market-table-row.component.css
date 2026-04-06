@@ -59,6 +59,32 @@
   font-weight: 600;
 }
 
+.dash-change--neutral {
+  color: var(--color-text-muted);
+}
+
+.dash-change {
+  white-space: nowrap;
+}
+
+.dash-change__arrow {
+  display: inline-block;
+  margin-right: 6px;
+  font-size: 11px;
+}
+
+.dash-change__arrow--hidden {
+  display: none;
+}
+
+.dash-change--up .dash-change__arrow::before {
+  content: "\2191";
+}
+
+.dash-change--down .dash-change__arrow::before {
+  content: "\2193";
+}
+
 button {
   font-size: 11px;
   text-transform: uppercase;

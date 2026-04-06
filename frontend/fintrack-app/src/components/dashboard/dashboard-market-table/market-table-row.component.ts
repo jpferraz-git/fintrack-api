@@ -29,6 +29,10 @@ export class MarketTableRowComponent implements OnInit, OnDestroy {
     return this.symbol.replace('USDT', '/USDT')
   }
 
+  get hasChangeData(): boolean {
+    return !this.loading && this.changePercent !== '--'
+  }
+
   constructor(private marketDataService: MarketDataService) {}
 
   ngOnInit(): void {
