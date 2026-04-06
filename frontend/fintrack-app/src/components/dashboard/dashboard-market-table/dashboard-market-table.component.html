@@ -2,30 +2,53 @@
   <header class="dash-table__header">
     <h3>Market Overview</h3>
     <div class="dash-table__actions">
-      <a href="#">Filter</a>
-      <a href="#">Export</a>
+      <div class="dash-table__search-wrap">
+        <input
+          type="search"
+          class="dash-table__search"
+          placeholder="Search coin or symbol..."
+          [(ngModel)]="searchTerm"
+          aria-label="Search cryptocurrency"
+        />
+        <button
+          type="button"
+          class="dash-table__clear"
+          *ngIf="searchTerm"
+          (click)="clearSearch()"
+          aria-label="Clear search"
+        >
+          x
+        </button>
+      </div>
     </div>
   </header>
 
-  <table>
-    <thead>
-      <tr>
-        <th>Coin</th>
-        <th>Price</th>
-        <th>24h Change</th>
-        <th>24h Volume</th>
-        <th>Market Cap</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr
-        app-market-table-row
-        *ngFor="let row of rows; trackBy: trackBySymbol"
-        [symbol]="row.symbol"
-        [coinName]="row.coinName"
-        [marketCap]="row.marketCap"
-      ></tr>
-    </tbody>
-  </table>
+  <div class="dash-table__scroll">
+    <table>
+      <thead>
+        <tr>
+          <th>Coin</th>
+          <th>Price</th>
+          <th>24h Change</th>
+          <th>24h Volume</th>
+          <th>Market Cap</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          app-market-table-row
+          *ngFor="let row of filteredRows; trackBy: trackBySymbol"
+          [symbol]="row.symbol"
+          [coinName]="row.coinName"
+          [coinIcon]="row.coinIcon"
+          [marketCap]="row.marketCap"
+        ></tr>
+
+        <tr *ngIf="filteredRows.length === 0">
+          <td colspan="6" class="dash-table__empty">No assets found for this search.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </section>

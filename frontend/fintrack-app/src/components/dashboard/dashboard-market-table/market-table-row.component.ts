@@ -14,6 +14,7 @@ export class MarketTableRowComponent implements OnInit, OnDestroy {
 
   @Input({ required: true }) symbol!: string
   @Input({ required: true }) coinName!: string
+  @Input({ required: true }) coinIcon!: string
   @Input() marketCap = '--'
 
   price = '--'
@@ -23,6 +24,10 @@ export class MarketTableRowComponent implements OnInit, OnDestroy {
   loading = true
   isPositive = true
   isFollowing = false
+
+  get coinPairLabel(): string {
+    return this.symbol.replace('USDT', '/USDT')
+  }
 
   constructor(private marketDataService: MarketDataService) {}
 

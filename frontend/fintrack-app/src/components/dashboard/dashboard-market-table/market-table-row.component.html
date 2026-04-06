@@ -1,4 +1,14 @@
-<td>{{ coinName }}</td>
+<td>
+  <div class="dash-coin-cell">
+    <span class="dash-coin-icon dash-coin-icon--{{ coinIcon }}" aria-hidden="true">
+      {{ coinIcon.toUpperCase() }}
+    </span>
+    <div>
+      <p>{{ coinName }}</p>
+      <span>{{ coinPairLabel }}</span>
+    </div>
+  </div>
+</td>
 <td>{{ loading ? 'Loading...' : price }}</td>
 <td class="dash-change" [class.dash-change--up]="isPositive" [class.dash-change--down]="!isPositive">
   {{ loading ? 'Loading...' : changePercent }}
