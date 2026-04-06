@@ -85,4 +85,32 @@ public class AssetController {
             return ResponseEntity.status(resolveStatus(result.getMessage())).body(result);
         }
     }
+
+    @PostMapping("/calculate-profit-percentage")
+    public ResponseEntity<?> calculateProfitPercentage(@RequestBody AssetActualValueRequestDTO dto) {
+        try {
+            return ResponseEntity.ok(
+                    new AssetCalculationResponseDTO(
+                            assetService.calculateProfitPercentage(dto.symbol())
+                    )
+            );
+        } catch (Exception ex) {
+            Result<AssetCalculationResponseDTO> result = Result.fail(ex.getMessage());
+            return ResponseEntity.status(resolveStatus(result.getMessage())).body(result);
+        }
+    }
+
+    @PostMapping("/calculate-profit-value")
+    public ResponseEntity<?> calculateProfitValue(@RequestBody AssetActualValueRequestDTO dto) {
+        try {
+            return ResponseEntity.ok(
+                    new AssetCalculationResponseDTO(
+                            assetService.calculateProfitValue(dto.symbol())
+                    )
+            );
+        } catch (Exception ex) {
+            Result<AssetCalculationResponseDTO> result = Result.fail(ex.getMessage());
+            return ResponseEntity.status(resolveStatus(result.getMessage())).body(result);
+        }
+    }
 }

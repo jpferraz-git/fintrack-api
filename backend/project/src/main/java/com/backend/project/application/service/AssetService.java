@@ -77,7 +77,6 @@ public class AssetService {
     }
 
     public BigDecimal calculateQuantityByInvestment(String symbol, BigDecimal investedValue) {
-        UUID userId = getAuthenticatedUserId();
         BigDecimal actualCriptoPrice = binanceService.getPrice(symbol).getValue().price();
         BigDecimal quantity = investedValue.divide(actualCriptoPrice, 18, RoundingMode.HALF_DOWN);
         return new BigDecimal(quantity.toPlainString());
@@ -86,8 +85,20 @@ public class AssetService {
     public BigDecimal calculateActualValue(String symbol) {
         UUID userId = getAuthenticatedUserId();
         BigDecimal actualCriptoPrice = binanceService.getPrice(symbol).getValue().price();
-        BigDecimal userQuantity = assetRepository.getQuantityByUser(userId);
+        BigDecimal userQuantity = assetRepository.getAssetQuantityByUserAndSymbol(userId, symbol);
         return actualCriptoPrice.multiply(userQuantity);
+    }
+
+    public BigDecimal calculateProfitPercentage(String symbol) {
+        UUID userId = getAuthenticatedUserId();
+        BigDecimal marketPrice = binanceService.getPrice(symbol).getValue().price();
+        return assetRepository.getUserProfitPercentage(userId, symbol, marketPrice);
+    }
+
+    public BigDecimal calculateProfitValue(String symbol) {
+        UUID userId = getAuthenticatedUserId();
+        BigDecimal marketPrice = binanceService.getPrice(symbol).getValue().price();
+        return assetRepository.getUserProfitValue(userId, symbol, marketPrice);
     }
 
     private UUID getAuthenticatedUserId() {

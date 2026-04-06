@@ -17,5 +17,8 @@ public interface AssetRepository {
     List<AssetEntity> findAllByUserId(UUID userId);
 
     BigDecimal getQuantityByUser(UUID userId);
+    BigDecimal getAssetQuantityByUserAndSymbol(UUID userId, String symbol);
     BigDecimal getActualValue(UUID userId);
+    BigDecimal getUserProfitPercentage(UUID userId, String symbol, BigDecimal marketPrice);
+    BigDecimal getUserProfitValue(UUID userId, String symbol, BigDecimal marketPrice);
 }

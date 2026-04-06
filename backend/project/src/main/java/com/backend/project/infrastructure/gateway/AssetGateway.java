@@ -77,11 +77,30 @@ public class AssetGateway implements AssetRepository {
 
     @Override
     public BigDecimal getQuantityByUser(UUID userId) {
-        return jpaRepository.getQuantityByUserId(userId);
+        BigDecimal quantity = jpaRepository.getQuantityByUserId(userId);
+        return quantity != null ? quantity : BigDecimal.ZERO;
+    }
+
+    @Override
+    public BigDecimal getAssetQuantityByUserAndSymbol(UUID userId, String symbol) {
+        BigDecimal quantity = jpaRepository.getAssetQuantityByUserIdAndSymbol(userId, symbol);
+        return quantity != null ? quantity : BigDecimal.ZERO;
     }
 
     @Override
     public BigDecimal getActualValue(UUID userId) {
         throw new UnsupportedOperationException("Method getActualValue not implemented yet.");
+    }
+
+    @Override
+    public BigDecimal getUserProfitPercentage(UUID userId, String symbol, BigDecimal marketPrice) {
+        BigDecimal percentage = jpaRepository.getUserProfitPercentage(userId, symbol, marketPrice);
+        return percentage != null ? percentage : BigDecimal.ZERO;
+    }
+
+    @Override
+    public BigDecimal getUserProfitValue(UUID userId, String symbol, BigDecimal marketPrice) {
+        BigDecimal profitValue = jpaRepository.getUserProfitValue(userId, symbol, marketPrice);
+        return profitValue != null ? profitValue : BigDecimal.ZERO;
     }
 }
