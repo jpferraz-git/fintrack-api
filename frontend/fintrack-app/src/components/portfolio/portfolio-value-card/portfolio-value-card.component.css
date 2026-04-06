@@ -38,6 +38,10 @@
   vertical-align: middle;
 }
 
+.portfolio-value h2 span.is-negative {
+  color: #ff6f6f;
+}
+
 .portfolio-value__range {
   display: flex;
   gap: 8px;

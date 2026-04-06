@@ -2,7 +2,10 @@
   <header class="portfolio-value__header">
     <div>
       <p class="portfolio-value__eyebrow">Total Portfolio Value</p>
-      <h2>$1,429,842.12 <span>+12.4% (24h)</span></h2>
+      <h2>
+        {{ formattedTotalPortfolioValue }}
+        <span [class.is-negative]="totalPortfolioPercentage < 0">{{ formattedTotalPortfolioPercentage }}</span>
+      </h2>
     </div>
 
     <div class="portfolio-value__range" role="tablist" aria-label="Chart range">
