@@ -3,6 +3,9 @@ package com.backend.project.interfaces.controllers;
 
 import com.backend.project.application.service.AssetService;
 import com.backend.project.application.Result;
+import com.backend.project.interfaces.dto.asset.AssetActualValueRequestDTO;
+import com.backend.project.interfaces.dto.asset.AssetCalculationResponseDTO;
+import com.backend.project.interfaces.dto.asset.AssetQuantityCalculationRequestDTO;
 import com.backend.project.interfaces.dto.asset.AssetRequestDTO;
 import com.backend.project.interfaces.dto.asset.AssetResponseDTO;
 import org.springframework.http.HttpStatus;
@@ -53,5 +56,33 @@ public class AssetController {
             return ResponseEntity.noContent().build();
         }
         return ResponseEntity.status(resolveStatus(result.getMessage())).body(result);
+    }
+
+    @PostMapping("/calculate-quantity")
+    public ResponseEntity<?> calculateQuantityByInvestment(@RequestBody AssetQuantityCalculationRequestDTO dto) {
+        try {
+            return ResponseEntity.ok(
+                    new AssetCalculationResponseDTO(
+                            assetService.calculateQuantityByInvestment(dto.symbol(), dto.investedValue())
+                    )
+            );
+        } catch (Exception ex) {
+            Result<AssetCalculationResponseDTO> result = Result.fail(ex.getMessage());
+            return ResponseEntity.status(resolveStatus(result.getMessage())).body(result);
+        }
+    }
+
+    @PostMapping("/calculate-actual-value")
+    public ResponseEntity<?> calculateActualValue(@RequestBody AssetActualValueRequestDTO dto) {
+        try {
+            return ResponseEntity.ok(
+                    new AssetCalculationResponseDTO(
+                            assetService.calculateActualValue(dto.symbol())
+                    )
+            );
+        } catch (Exception ex) {
+            Result<AssetCalculationResponseDTO> result = Result.fail(ex.getMessage());
+            return ResponseEntity.status(resolveStatus(result.getMessage())).body(result);
+        }
     }
 }

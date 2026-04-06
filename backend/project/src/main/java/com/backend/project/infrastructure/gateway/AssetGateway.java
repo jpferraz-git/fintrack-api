@@ -76,8 +76,8 @@ public class AssetGateway implements AssetRepository {
     }
 
     @Override
-    public Long getQuantityByUser(UUID userId) {
-        throw new UnsupportedOperationException("Method getQuantityByUser not implemented yet.");
+    public BigDecimal getQuantityByUser(UUID userId) {
+        return jpaRepository.getQuantityByUserId(userId);
     }
 
     @Override

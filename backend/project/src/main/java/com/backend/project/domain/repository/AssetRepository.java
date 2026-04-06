@@ -16,6 +16,6 @@ public interface AssetRepository {
     void deleteBySymbolAndUserId(String symbol, UUID userId);
     List<AssetEntity> findAllByUserId(UUID userId);
 
-    Long getQuantityByUser(UUID userId);
+    BigDecimal getQuantityByUser(UUID userId);
     BigDecimal getActualValue(UUID userId);
 }

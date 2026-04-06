@@ -50,7 +50,9 @@ public class AssetService {
             AssetEntity assetEntity = assetRepository.findBySymbolAndUserId(symbol, userId);
             assetEntity.setSymbol(asset.symbol());
             assetEntity.setType(asset.type());
-            assetEntity.setQuantity(asset.quantity());
+            assetEntity.setQuantity(
+                    calculateQuantityByInvestment(symbol, asset.quantity())
+            );
             assetEntity.setAvgPrice(asset.avgPrice());
             AssetEntity updated = assetRepository.update(assetEntity);
             return Result.ok(assetMapper.toResponse(updated));
@@ -74,14 +76,18 @@ public class AssetService {
                 .toList();
     }
 
-    public BigDecimal calculateQuantityByInvestment(String symbol, Integer investedValue) {
+    public BigDecimal calculateQuantityByInvestment(String symbol, BigDecimal investedValue) {
         UUID userId = getAuthenticatedUserId();
         BigDecimal actualCriptoPrice = binanceService.getPrice(symbol).getValue().price();
-        return actualCriptoPrice.divide(BigDecimal.valueOf(investedValue), 12, RoundingMode.UNNECESSARY) ;
+        BigDecimal quantity = investedValue.divide(actualCriptoPrice, 18, RoundingMode.HALF_DOWN);
+        return new BigDecimal(quantity.toPlainString());
     }
 
-    public Result<BigDecimal> getActualValue() {
-        throw new UnsupportedOperationException("Method getActualValue not implemented yet.");
+    public BigDecimal calculateActualValue(String symbol) {
+        UUID userId = getAuthenticatedUserId();
+        BigDecimal actualCriptoPrice = binanceService.getPrice(symbol).getValue().price();
+        BigDecimal userQuantity = assetRepository.getQuantityByUser(userId);
+        return actualCriptoPrice.multiply(userQuantity);
     }
 
     private UUID getAuthenticatedUserId() {
