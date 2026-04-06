@@ -21,10 +21,7 @@ import java.time.Instant;
 import java.util.UUID;
 
 @Entity
-@Table(
-    name = "assets",
-    uniqueConstraints = @UniqueConstraint(name = "uk_assets_user_ticker", columnNames = {"user_id", "ticker"})
-)
+@Table(name = "assets")
 @Getter
 @Setter
 @AllArgsConstructor
@@ -37,7 +34,7 @@ public class AssetEntity {
     private UUID id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "fk_user", nullable = false)
     private UserEntity userId;
 
     private String ticker;
