@@ -19,38 +19,13 @@
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <td>Solana</td>
-        <td>$145.28</td>
-        <td class="dash-change dash-change--up">+12.40%</td>
-        <td>$2.4B</td>
-        <td>$64.5B</td>
-        <td><button type="button">Watch</button></td>
-      </tr>
-      <tr>
-        <td>Cardano</td>
-        <td>$0.452</td>
-        <td class="dash-change dash-change--down">-4.15%</td>
-        <td>$482M</td>
-        <td>$16.1B</td>
-        <td><button type="button">Watch</button></td>
-      </tr>
-      <tr>
-        <td>Polkadot</td>
-        <td>$7.12</td>
-        <td class="dash-change dash-change--up">+2.18%</td>
-        <td>$156M</td>
-        <td>$10.2B</td>
-        <td><button type="button" class="is-following">Following</button></td>
-      </tr>
-      <tr>
-        <td>Ripple</td>
-        <td>$0.612</td>
-        <td class="dash-change dash-change--down">-0.82%</td>
-        <td>$1.2B</td>
-        <td>$33.8B</td>
-        <td><button type="button">Watch</button></td>
-      </tr>
+      <tr
+        app-market-table-row
+        *ngFor="let row of rows; trackBy: trackBySymbol"
+        [symbol]="row.symbol"
+        [coinName]="row.coinName"
+        [marketCap]="row.marketCap"
+      ></tr>
     </tbody>
   </table>
 </section>

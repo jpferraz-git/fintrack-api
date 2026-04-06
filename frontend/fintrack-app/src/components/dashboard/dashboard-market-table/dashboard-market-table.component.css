@@ -42,37 +42,6 @@
   padding: 10px 8px;
 }
 
-.dash-table td {
-  padding: 12px 8px;
-  border-top: 1px solid var(--color-border-subtle);
-  color: var(--color-text-secondary);
-  font-size: 13px;
-}
-
-.dash-change--up {
-  color: var(--color-green-light);
-  font-weight: 600;
-}
-
-.dash-change--down {
-  color: var(--color-red-light);
-  font-weight: 600;
-}
-
-.dash-table td button {
-  font-size: 11px;
-  text-transform: uppercase;
-  color: var(--color-green-light);
-  border: 1px solid rgba(78, 222, 163, 0.35);
-  border-radius: 6px;
-  padding: 6px 10px;
-}
-
-.dash-table td button.is-following {
-  color: var(--color-green-deeper);
-  background: rgba(78, 222, 163, 0.88);
-}
-
 @media (max-width: 900px) {
   .dash-table {
     overflow-x: auto;

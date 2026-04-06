@@ -8,6 +8,15 @@ export interface MarketIndividualPrice {
     price: number | string
 }
 
+export interface Market24hTickerResponse {
+    symbol: string
+    priceChange: number | string
+    priceChangePercent: number | string
+    lastPrice: number | string
+    volume: number | string
+    quoteVolume: number | string
+}
+
 export interface MarketIndividualKlineResponse {
     openTime: string,
     open: number | string,
@@ -46,6 +55,14 @@ export class MarketDataService {
                 symbol,
                 interval,
                 limit: 80
+            }
+        })
+    }
+
+    get24hTicker(symbol: string): Observable<Market24hTickerResponse> {
+        return this.http.get<Market24hTickerResponse>(`${environment.apiUrl}/binance/24h`, {
+            params: {
+                symbol
             }
         })
     }

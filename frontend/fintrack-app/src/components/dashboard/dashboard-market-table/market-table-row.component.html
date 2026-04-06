@@ -1,0 +1,12 @@
+<td>{{ coinName }}</td>
+<td>{{ loading ? 'Loading...' : price }}</td>
+<td class="dash-change" [class.dash-change--up]="isPositive" [class.dash-change--down]="!isPositive">
+  {{ loading ? 'Loading...' : changePercent }}
+</td>
+<td>{{ loading ? 'Loading...' : volume24h }}</td>
+<td>{{ marketCapDisplay }}</td>
+<td>
+  <button type="button" [class.is-following]="isFollowing" (click)="toggleWatch()">
+    {{ isFollowing ? 'Following' : 'Watch' }}
+  </button>
+</td>
