@@ -13,6 +13,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 import java.util.UUID;
 
@@ -22,11 +23,13 @@ public class AssetService {
     private final AssetRepository assetRepository;
     private final UserRepository userRepository;
     private final AssetMapper assetMapper;
+    private final BinanceService binanceService;
 
-    public AssetService(AssetRepository assetRepository, UserRepository userRepository, AssetMapper assetMapper) {
+    public AssetService(AssetRepository assetRepository, UserRepository userRepository, AssetMapper assetMapper, BinanceService binanceService) {
         this.assetRepository = assetRepository;
         this.userRepository = userRepository;
         this.assetMapper = assetMapper;
+        this.binanceService = binanceService;
     }
 
     public Result<AssetResponseDTO> create(AssetRequestDTO asset){
@@ -72,8 +75,10 @@ public class AssetService {
                 .toList();
     }
 
-    public Result<Long> getQuantityByUser() {
-        throw new UnsupportedOperationException("Method getQuantityByUser not implemented yet.");
+    public BigDecimal calculateQuantityByInvestment(String symbol, Integer investedValue) {
+        UUID userId = getAuthenticatedUserId();
+        BigDecimal actualCriptoPrice = binanceService.getPrice(symbol).getValue().price();
+        return actualCriptoPrice.divide(BigDecimal.valueOf(investedValue), 12, RoundingMode.UNNECESSARY) ;
     }
 
     public Result<BigDecimal> getActualValue() {
