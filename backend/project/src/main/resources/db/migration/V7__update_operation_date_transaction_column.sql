@@ -1,2 +1,0 @@
-ALTER TABLE transactions
-    ALTER COLUMN operation_date SET DEFAULT CURRENT_DATE;

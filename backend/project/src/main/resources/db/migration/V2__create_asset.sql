@@ -5,7 +5,4 @@ CREATE TABLE assets (
     quantity DECIMAL(18,8) NOT NULL,
     price DECIMAL(18,2) NOT NULL,
     avg_price DECIMAL(18,2) NOT NULL
-
-    CONSTRAINT chk_asset_type
-    CHECK (asset_type IN ('ACAO', 'FII'))
 );
