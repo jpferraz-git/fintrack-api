@@ -20,6 +20,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.math.BigDecimal;
+import java.util.UUID;
+
 @ExtendWith(MockitoExtension.class)
 class TransactionControllerTest {
 
@@ -40,7 +43,13 @@ class TransactionControllerTest {
 
     @Test
     void createShouldReturnConflictWhenTransactionAlreadyExists() throws Exception {
-        TransactionRequestDTO request = new TransactionRequestDTO("BUY", 10, 65000.0);
+        TransactionRequestDTO request = new TransactionRequestDTO(
+            UUID.randomUUID(),
+            "BTCUSDT",
+            "BUY",
+            new BigDecimal("10.00000000"),
+            new BigDecimal("65000.00")
+        );
 
         when(transactionService.create(any(TransactionRequestDTO.class)))
                 .thenReturn(Result.fail("Transaction with identifier 'tx-1' already exists."));

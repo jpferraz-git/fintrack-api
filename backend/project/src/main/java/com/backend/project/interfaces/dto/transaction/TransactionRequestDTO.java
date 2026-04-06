@@ -1,7 +1,12 @@
 package com.backend.project.interfaces.dto.transaction;
 
+import java.math.BigDecimal;
+import java.util.UUID;
+
 public record TransactionRequestDTO (
-        String operationType,
-        int quantity,
-        double unitPrice
+        UUID fkUser,
+        String symbol,
+        String type,
+        BigDecimal quantity,
+        BigDecimal price
 ){}

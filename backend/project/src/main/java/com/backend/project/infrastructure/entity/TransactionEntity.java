@@ -1,6 +1,5 @@
 package com.backend.project.infrastructure.entity;
 
-import com.backend.project.domain.model.UserModel;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -8,10 +7,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import org.springframework.data.annotation.CreatedDate;
 
+import java.math.BigDecimal;
 import java.time.Instant;
-import java.util.Date;
 import java.util.UUID;
 
 
@@ -25,26 +23,24 @@ public class TransactionEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = "id", updatable = false, nullable = false)
     private UUID id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "fk_user", nullable = false)
     private UserEntity userId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "asset_id", nullable = false)
-    private AssetEntity assetId;
+    @Column(name = "symbol", nullable = false)
+    private String symbol;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "batch_id", nullable = false)
-    private BatchEntity batchId;
+    @Column(name = "type", nullable = false)
+    private String type;
 
-    private String operationType;
-    private int quantity;
-    private double unitPrice;
+    @Column(name = "quantity", nullable = false)
+    private BigDecimal quantity;
 
-    @CreatedDate
-    private Date operationDate;
+    @Column(name = "price", nullable = false)
+    private BigDecimal price;
 
     @CreationTimestamp
     @Column(name = "created_at", updatable = false)

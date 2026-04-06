@@ -1,16 +1,15 @@
 CREATE TABLE transactions (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
 
-    user_id UUID NOT NULL,
+    fk_user UUID NOT NULL,
 
     symbol VARCHAR(10) NOT NULL,
     type VARCHAR(10) NOT NULL,
     quantity NUMERIC(18,8) NOT NULL,
     price NUMERIC(18,2) NOT NULL,
-    total_usd NUMERIC(18,2) NOT NULL,
 
     CONSTRAINT fk_transaction_user
-        FOREIGN KEY (user_id)
+        FOREIGN KEY (fk_user)
         REFERENCES users(id)
         ON DELETE CASCADE,
 
