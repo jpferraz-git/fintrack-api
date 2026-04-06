@@ -1,5 +1,6 @@
 package com.backend.project.domain.model;
 
+import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.UUID;
 
@@ -8,18 +9,22 @@ public class AssetModel {
 
     private UUID assetId;
     private UUID userId;
-    private String ticker;
-    private String assetType;
-    private String companyName;
+    private String symbol;
+    private String type;
+    private BigDecimal quantity;
+    private BigDecimal price;
+    private BigDecimal avgPrice;
     private Instant createdAt;
     private Instant updatedAt;
 
-    public AssetModel(UUID assetId, UUID userId, String ticker, String assetType, String companyName, Instant createdAt, Instant updatedAt) {
+    public AssetModel(UUID assetId, UUID userId, String symbol, String type, BigDecimal quantity, BigDecimal price, BigDecimal avgPrice, Instant createdAt, Instant updatedAt) {
         this.assetId = assetId;
         this.userId = userId;
-        this.ticker = ticker;
-        this.assetType = assetType;
-        this.companyName = companyName;
+        this.symbol = symbol;
+        this.type = type;
+        this.quantity = quantity;
+        this.price = price;
+        this.avgPrice = avgPrice;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
@@ -40,28 +45,44 @@ public class AssetModel {
         this.userId = userId;
     }
 
-    public String getTicker() {
-        return ticker;
+    public String getSymbol() {
+        return symbol;
     }
 
-    public void setTicker(String ticker) {
-        this.ticker = ticker;
+    public void setSymbol(String symbol) {
+        this.symbol = symbol;
     }
 
-    public String getAssetType() {
-        return assetType;
+    public String getType() {
+        return type;
     }
 
-    public void setAssetType(String assetType) {
-        this.assetType = assetType;
+    public void setType(String type) {
+        this.type = type;
     }
 
-    public String getCompanyName() {
-        return companyName;
+    public BigDecimal getQuantity() {
+        return quantity;
     }
 
-    public void setCompanyName(String companyName) {
-        this.companyName = companyName;
+    public void setQuantity(BigDecimal quantity) {
+        this.quantity = quantity;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
+    }
+
+    public BigDecimal getAvgPrice() {
+        return avgPrice;
+    }
+
+    public void setAvgPrice(BigDecimal avgPrice) {
+        this.avgPrice = avgPrice;
     }
 
     public Instant getCreatedAt() {

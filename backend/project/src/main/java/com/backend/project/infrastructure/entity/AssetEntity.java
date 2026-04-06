@@ -17,6 +17,7 @@ import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.UUID;
 
@@ -37,9 +38,20 @@ public class AssetEntity {
     @JoinColumn(name = "fk_user", nullable = false)
     private UserEntity userId;
 
-    private String ticker;
-    private String assetType;
-    private String companyName;
+    @Column(name = "symbol", nullable = false)
+    private String symbol;
+
+    @Column(name = "type", nullable = false)
+    private String type;
+
+    @Column(name = "quantity", nullable = false)
+    private BigDecimal quantity;
+
+    @Column(name = "price", nullable = false)
+    private BigDecimal price;
+
+    @Column(name = "avg_price", nullable = false)
+    private BigDecimal avgPrice;
 
     @CreationTimestamp
     @Column(name = "created_at", updatable = false)
