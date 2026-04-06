@@ -19,7 +19,11 @@ public class AssetGateway implements AssetRepository {
 
     @Override
     public AssetEntity create(AssetEntity asset) {
-        if (jpaRepository.existsByTicker(asset.getTicker())) {
+        if (asset.getUserId() == null || asset.getUserId().getId() == null) {
+            throw new IllegalArgumentException("Asset user is required.");
+        }
+
+        if (jpaRepository.existsByTickerAndUserId(asset.getTicker(), asset.getUserId().getId())) {
             throw new AssetAlreadyExistsException(asset.getTicker());
         }
         return jpaRepository.save(asset);
@@ -27,8 +31,8 @@ public class AssetGateway implements AssetRepository {
 
 
     @Override
-    public AssetEntity findByTicker(String ticker) {
-        AssetEntity asset = jpaRepository.findByTicker(ticker);
+    public AssetEntity findByTickerAndUserId(String ticker, UUID userId) {
+        AssetEntity asset = jpaRepository.findByTickerAndUserId(ticker, userId);
         if (asset == null) {
             throw new AssetNotFoundException(ticker);
         }
@@ -40,7 +44,13 @@ public class AssetGateway implements AssetRepository {
         AssetEntity current = jpaRepository.findById(asset.getId())
             .orElseThrow(() -> new AssetNotFoundException(asset.getId()));
 
-        AssetEntity byTicker = jpaRepository.findByTicker(asset.getTicker());
+        if (asset.getUserId() == null) {
+            asset.setUserId(current.getUserId());
+        }
+
+        UUID userId = asset.getUserId().getId();
+
+        AssetEntity byTicker = jpaRepository.findByTickerAndUserId(asset.getTicker(), userId);
         if (byTicker != null && !byTicker.getId().equals(current.getId())) {
             throw new AssetAlreadyExistsException(asset.getTicker());
         }
@@ -49,8 +59,8 @@ public class AssetGateway implements AssetRepository {
     }
 
     @Override
-    public void deleteByTicker(String ticker) {
-        jpaRepository.delete(findByTicker(ticker));
+    public void deleteByTickerAndUserId(String ticker, UUID userId) {
+        jpaRepository.delete(findByTickerAndUserId(ticker, userId));
     }
 
     @Override
@@ -60,7 +70,7 @@ public class AssetGateway implements AssetRepository {
     }
 
     @Override
-    public List<AssetEntity> findAll() {
-        return jpaRepository.findAll();
+    public List<AssetEntity> findAllByUserId(UUID userId) {
+        return jpaRepository.findAllByUserId(userId);
     }
 }
