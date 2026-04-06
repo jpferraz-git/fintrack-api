@@ -8,6 +8,5 @@ public record AssetRequestDTO (
         String symbol,
         String type,
         BigDecimal quantity,
-        BigDecimal price,
         BigDecimal avgPrice
 ){}

@@ -14,7 +14,6 @@ public class AssetMapper {
                 model.getSymbol(),
                 model.getType(),
                 model.getQuantity(),
-                model.getPrice(),
                 model.getAvgPrice(),
                 null,
                 null
@@ -24,11 +23,10 @@ public class AssetMapper {
         return new AssetModel(
                 null,
                 dto.fkUser(),
-            dto.symbol(),
-            dto.type(),
-            dto.quantity(),
-            dto.price(),
-            dto.avgPrice(),
+                dto.symbol(),
+                dto.type(),
+                dto.quantity(),
+                dto.avgPrice(),
                 null,
                 null
         );
@@ -41,7 +39,6 @@ public class AssetMapper {
                 dto.getSymbol(),
                 dto.getType(),
                 dto.getQuantity(),
-                dto.getPrice(),
                 dto.getAvgPrice(),
                 dto.getCreatedAt(),
                 dto.getUpdatedAt()

@@ -50,7 +50,6 @@ class AssetControllerTest {
                 "BTC",
                 "CRYPTO",
                 new BigDecimal("10.00000000"),
-                new BigDecimal("65000.00"),
                 new BigDecimal("63000.00")
         );
 
@@ -73,7 +72,6 @@ class AssetControllerTest {
                 "XYZ",
                 "CRYPTO",
                 new BigDecimal("1.00000000"),
-                new BigDecimal("1.00"),
                 new BigDecimal("1.00")
         );
 

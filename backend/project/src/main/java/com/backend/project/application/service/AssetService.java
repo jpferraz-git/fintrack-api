@@ -51,7 +51,6 @@ public class AssetService {
             assetEntity.setSymbol(asset.symbol());
             assetEntity.setType(asset.type());
             assetEntity.setQuantity(asset.quantity());
-            assetEntity.setPrice(asset.price());
             assetEntity.setAvgPrice(asset.avgPrice());
             AssetEntity updated = assetRepository.update(assetEntity);
             return Result.ok(assetMapper.toResponse(updated));

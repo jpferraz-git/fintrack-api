@@ -10,7 +10,6 @@ public record AssetResponseDTO (
         String symbol,
         String type,
         BigDecimal quantity,
-        BigDecimal price,
         BigDecimal avgPrice,
         Instant createdAt,
         Instant updatedAt

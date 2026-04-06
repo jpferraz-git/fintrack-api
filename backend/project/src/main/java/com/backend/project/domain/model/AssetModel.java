@@ -12,18 +12,16 @@ public class AssetModel {
     private String symbol;
     private String type;
     private BigDecimal quantity;
-    private BigDecimal price;
     private BigDecimal avgPrice;
     private Instant createdAt;
     private Instant updatedAt;
 
-    public AssetModel(UUID assetId, UUID userId, String symbol, String type, BigDecimal quantity, BigDecimal price, BigDecimal avgPrice, Instant createdAt, Instant updatedAt) {
+    public AssetModel(UUID assetId, UUID userId, String symbol, String type, BigDecimal quantity, BigDecimal avgPrice, Instant createdAt, Instant updatedAt) {
         this.assetId = assetId;
         this.userId = userId;
         this.symbol = symbol;
         this.type = type;
         this.quantity = quantity;
-        this.price = price;
         this.avgPrice = avgPrice;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
@@ -67,14 +65,6 @@ public class AssetModel {
 
     public void setQuantity(BigDecimal quantity) {
         this.quantity = quantity;
-    }
-
-    public BigDecimal getPrice() {
-        return price;
-    }
-
-    public void setPrice(BigDecimal price) {
-        this.price = price;
     }
 
     public BigDecimal getAvgPrice() {

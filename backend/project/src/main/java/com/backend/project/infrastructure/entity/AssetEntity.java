@@ -47,9 +47,6 @@ public class AssetEntity {
     @Column(name = "quantity", nullable = false)
     private BigDecimal quantity;
 
-    @Column(name = "price", nullable = false)
-    private BigDecimal price;
-
     @Column(name = "avg_price", nullable = false)
     private BigDecimal avgPrice;
 

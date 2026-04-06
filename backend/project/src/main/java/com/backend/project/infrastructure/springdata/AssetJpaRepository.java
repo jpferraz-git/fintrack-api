@@ -2,6 +2,7 @@ package com.backend.project.infrastructure.springdata;
 
 import com.backend.project.infrastructure.entity.AssetEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -18,5 +19,11 @@ public interface AssetJpaRepository extends JpaRepository<AssetEntity, UUID> {
 
     @Query("SELECT a FROM AssetEntity a WHERE a.userId.id = :userId")
     List<AssetEntity> findAllByUserId(@Param("userId") UUID userId);
+
+    @Query("SELECT SUM(a.quantity) FROM AssetEntity a WHERE a.userId.id = :userId")
+    Long getFullQuantityByUserId(UUID userId);
+
+    @Query("SELECT SUM(a.quantity) FROM AssetEntity a WHERE a.userId.id = :userId AND a.symbol = :symbol")
+    Long getAssetQuantityByUserIdAndSymbol(UUID userId, String symbol);
 
 }
