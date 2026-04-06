@@ -37,9 +37,9 @@ public class AssetController {
         return ResponseEntity.status(resolveStatus(result.getMessage())).body(result);
     }
 
-    @PutMapping("/{ticker}")
-    public ResponseEntity<?> update(@PathVariable String ticker, @RequestBody AssetRequestDTO asset) {
-        Result<AssetResponseDTO> result = assetService.update(ticker, asset);
+    @PutMapping("/{symbol}")
+    public ResponseEntity<?> update(@PathVariable String symbol, @RequestBody AssetRequestDTO asset) {
+        Result<AssetResponseDTO> result = assetService.update(symbol, asset);
         if (result.isOk()) {
             return ResponseEntity.ok(result.getValue());
         }
@@ -47,8 +47,8 @@ public class AssetController {
     }
 
     @DeleteMapping
-    public ResponseEntity<?> deleteByTicker(@RequestParam String ticker) {
-        Result<Void> result = assetService.deleteByTicker(ticker);
+    public ResponseEntity<?> deleteBySymbol(@RequestParam String symbol) {
+        Result<Void> result = assetService.deleteBySymbol(symbol);
         if (result.isOk()) {
             return ResponseEntity.noContent().build();
         }

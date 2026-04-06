@@ -38,7 +38,7 @@ public interface AssetControllerSwagger {
                     content = @Content(schema = @Schema(implementation = AssetRequestDTO.class)))
             AssetRequestDTO asset);
 
-    @Operation(summary = "Update an asset", description = "Updates an existing asset by its ticker symbol")
+        @Operation(summary = "Update an asset", description = "Updates an existing asset by its symbol")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Asset updated successfully",
                     content = @Content(schema = @Schema(implementation = AssetResponseDTO.class))),
@@ -46,21 +46,21 @@ public interface AssetControllerSwagger {
             @ApiResponse(responseCode = "404", description = "Asset not found", content = @Content)
     })
     ResponseEntity<?> update(
-            @Parameter(description = "Ticker symbol used to identify the asset", example = "AAPL", required = true)
-            String ticker,
+            @Parameter(description = "Symbol used to identify the asset", example = "AAPL", required = true)
+            String symbol,
             @io.swagger.v3.oas.annotations.parameters.RequestBody(
                     description = "Updated asset payload",
                     required = true,
                     content = @Content(schema = @Schema(implementation = AssetRequestDTO.class)))
             AssetRequestDTO asset);
 
-    @Operation(summary = "Delete an asset", description = "Deletes an asset by ticker symbol")
+    @Operation(summary = "Delete an asset", description = "Deletes an asset by symbol")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Asset deleted successfully", content = @Content),
             @ApiResponse(responseCode = "404", description = "Asset not found", content = @Content)
     })
-    ResponseEntity<?> deleteByTicker(
-            @Parameter(description = "Ticker symbol of the asset to delete", example = "AAPL", required = true)
-            String ticker);
+    ResponseEntity<?> deleteBySymbol(
+            @Parameter(description = "Symbol of the asset to delete", example = "AAPL", required = true)
+            String symbol);
 }
 
