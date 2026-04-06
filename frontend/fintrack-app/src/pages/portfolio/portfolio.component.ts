@@ -25,6 +25,7 @@ import { AddAssetModal } from '../../components/modals/add-asset-modal/add-asset
 })
 export class PortfolioPage {
   isAddAssetModalOpen = false;
+  refreshTrigger = 0;
 
   openAddAssetModal(): void {
     this.isAddAssetModalOpen = true;
@@ -32,5 +33,9 @@ export class PortfolioPage {
 
   closeAddAssetModal(): void {
     this.isAddAssetModalOpen = false;
+  }
+
+  handleAssetCreated(): void {
+    this.refreshTrigger += 1;
   }
 }

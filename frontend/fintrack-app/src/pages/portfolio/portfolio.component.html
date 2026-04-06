@@ -4,7 +4,7 @@
   <main class="portfolio-main">
   
     <section class="portfolio-overview-grid">
-      <app-portfolio-value-card></app-portfolio-value-card>
+      <app-portfolio-value-card [refreshTrigger]="refreshTrigger"></app-portfolio-value-card>
 
       <div class="portfolio-overview-grid__right">
         <app-portfolio-action-card (openModal)="openAddAssetModal()"></app-portfolio-action-card>
@@ -12,12 +12,13 @@
       </div>
     </section>
 
-    <app-portfolio-holdings-table></app-portfolio-holdings-table>
+    <app-portfolio-holdings-table [refreshTrigger]="refreshTrigger"></app-portfolio-holdings-table>
     <app-portfolio-statusbar></app-portfolio-statusbar>
   </main>
 
   <app-add-asset-modal
     [open]="isAddAssetModalOpen"
     (closed)="closeAddAssetModal()"
+    (assetCreated)="handleAssetCreated(); closeAddAssetModal()"
   ></app-add-asset-modal>
 </div>

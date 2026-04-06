@@ -139,6 +139,17 @@
   font-size: 26px;
 }
 
+.text-green {
+  color: var(--color-green-light);
+}
+
+.terminal-modal__error {
+  margin-top: 10px;
+  margin-bottom: 0;
+  color: #ff8ea2;
+  font-size: 12px;
+}
+
 .terminal-modal__footer {
   margin-top: 18px;
   display: grid;
@@ -172,6 +183,11 @@
 .terminal-button--primary {
   background: var(--gradient-cta);
   color: var(--color-green-deeper);
+}
+
+.terminal-button--primary:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
 }
 
 @media (max-width: 680px) {

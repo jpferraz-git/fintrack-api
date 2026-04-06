@@ -40,10 +40,9 @@ public interface AssetJpaRepository extends JpaRepository<AssetEntity, UUID> {
 
     @Query
             ("""
-
                     SELECT COALESCE(SUM((a.quantity * :marketPrice) - (a.quantity * a.avgPrice)), 0)
-      FROM AssetEntity a
-      WHERE a.userId.id = :userId AND a.symbol = :symbol
+                    FROM AssetEntity a
+                    WHERE a.userId.id = :userId AND a.symbol = :symbol
     """)
         BigDecimal getUserProfitValue(@Param("userId") UUID userId, @Param("symbol") String symbol, @Param("marketPrice") BigDecimal marketPrice);
 

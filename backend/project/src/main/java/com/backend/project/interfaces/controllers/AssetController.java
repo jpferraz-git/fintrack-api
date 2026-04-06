@@ -113,4 +113,32 @@ public class AssetController {
             return ResponseEntity.status(resolveStatus(result.getMessage())).body(result);
         }
     }
+
+    @GetMapping("/calculate-total-profit-percentage")
+    public ResponseEntity<?> calculateTotalProfitPercentage() {
+        try {
+            return ResponseEntity.ok(
+                    new AssetCalculationResponseDTO(
+                            assetService.calculateTotalProfitPercentage()
+                    )
+            );
+        } catch (Exception ex) {
+            Result<AssetCalculationResponseDTO> result = Result.fail(ex.getMessage());
+            return ResponseEntity.status(resolveStatus(result.getMessage())).body(result);
+        }
+    }
+
+    @GetMapping("/calculate-total-profit-value")
+    public ResponseEntity<?> calculateTotalProfitValue() {
+        try {
+            return ResponseEntity.ok(
+                    new AssetCalculationResponseDTO(
+                            assetService.calculateTotalProfitValue()
+                    )
+            );
+        } catch (Exception ex) {
+            Result<AssetCalculationResponseDTO> result = Result.fail(ex.getMessage());
+            return ResponseEntity.status(resolveStatus(result.getMessage())).body(result);
+        }
+    }
 }

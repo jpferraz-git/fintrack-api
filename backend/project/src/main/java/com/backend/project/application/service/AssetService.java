@@ -8,6 +8,7 @@ import com.backend.project.infrastructure.entity.UserEntity;
 import com.backend.project.interfaces.dto.asset.AssetMapper;
 import com.backend.project.interfaces.dto.asset.AssetRequestDTO;
 import com.backend.project.interfaces.dto.asset.AssetResponseDTO;
+import com.backend.project.interfaces.dto.binance.price.BinancePriceResponseDTO;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -36,6 +37,8 @@ public class AssetService {
         try {
             AssetEntity entity = assetMapper.toEntity(assetMapper.toModel(asset));
             entity.setUserId(getAuthenticatedUser());
+            entity.setSymbol(normalizeSymbol(asset.symbol()));
+            entity.setType(resolveType(asset.type()));
 
             AssetEntity saved = assetRepository.create(entity);
             return Result.ok(assetMapper.toResponse(saved));
@@ -47,11 +50,14 @@ public class AssetService {
     public Result<AssetResponseDTO> update(String symbol, AssetRequestDTO asset){
         try {
             UUID userId = getAuthenticatedUserId();
-            AssetEntity assetEntity = assetRepository.findBySymbolAndUserId(symbol, userId);
-            assetEntity.setSymbol(asset.symbol());
-            assetEntity.setType(asset.type());
+            String normalizedCurrentSymbol = normalizeSymbol(symbol);
+            String normalizedNewSymbol = normalizeSymbol(asset.symbol());
+
+            AssetEntity assetEntity = assetRepository.findBySymbolAndUserId(normalizedCurrentSymbol, userId);
+            assetEntity.setSymbol(normalizedNewSymbol);
+            assetEntity.setType(resolveType(asset.type()));
             assetEntity.setQuantity(
-                    calculateQuantityByInvestment(symbol, asset.quantity())
+                    calculateQuantityByInvestment(normalizedNewSymbol, asset.quantity())
             );
             assetEntity.setAvgPrice(asset.avgPrice());
             AssetEntity updated = assetRepository.update(assetEntity);
@@ -63,7 +69,7 @@ public class AssetService {
 
     public Result<Void> deleteBySymbol(String symbol){
         try {
-            assetRepository.deleteBySymbolAndUserId(symbol, getAuthenticatedUserId());
+            assetRepository.deleteBySymbolAndUserId(normalizeSymbol(symbol), getAuthenticatedUserId());
             return Result.ok(null);
         } catch (Exception ex) {
             return Result.fail(ex.getMessage());
@@ -77,28 +83,109 @@ public class AssetService {
     }
 
     public BigDecimal calculateQuantityByInvestment(String symbol, BigDecimal investedValue) {
-        BigDecimal actualCriptoPrice = binanceService.getPrice(symbol).getValue().price();
+        BigDecimal actualCriptoPrice = getCurrentMarketPrice(symbol);
         BigDecimal quantity = investedValue.divide(actualCriptoPrice, 18, RoundingMode.HALF_DOWN);
         return new BigDecimal(quantity.toPlainString());
     }
 
     public BigDecimal calculateActualValue(String symbol) {
         UUID userId = getAuthenticatedUserId();
-        BigDecimal actualCriptoPrice = binanceService.getPrice(symbol).getValue().price();
-        BigDecimal userQuantity = assetRepository.getAssetQuantityByUserAndSymbol(userId, symbol);
+        String normalizedSymbol = normalizeSymbol(symbol);
+        BigDecimal actualCriptoPrice = getCurrentMarketPrice(normalizedSymbol);
+        BigDecimal userQuantity = assetRepository.getAssetQuantityByUserAndSymbol(userId, normalizedSymbol);
         return actualCriptoPrice.multiply(userQuantity);
     }
 
     public BigDecimal calculateProfitPercentage(String symbol) {
         UUID userId = getAuthenticatedUserId();
-        BigDecimal marketPrice = binanceService.getPrice(symbol).getValue().price();
-        return assetRepository.getUserProfitPercentage(userId, symbol, marketPrice);
+        String normalizedSymbol = normalizeSymbol(symbol);
+        BigDecimal marketPrice = getCurrentMarketPrice(normalizedSymbol);
+        return assetRepository.getUserProfitPercentage(userId, normalizedSymbol, marketPrice);
     }
 
     public BigDecimal calculateProfitValue(String symbol) {
         UUID userId = getAuthenticatedUserId();
-        BigDecimal marketPrice = binanceService.getPrice(symbol).getValue().price();
-        return assetRepository.getUserProfitValue(userId, symbol, marketPrice);
+        String normalizedSymbol = normalizeSymbol(symbol);
+        BigDecimal marketPrice = getCurrentMarketPrice(normalizedSymbol);
+        return assetRepository.getUserProfitValue(userId, normalizedSymbol, marketPrice);
+    }
+
+    public BigDecimal calculateTotalProfitPercentage() {
+        UUID userId = getAuthenticatedUserId();
+        List<AssetEntity> userAssets = assetRepository.findAllByUserId(userId);
+
+        if (userAssets.isEmpty()) {
+            return BigDecimal.ZERO;
+        }
+
+        BigDecimal totalInvestedValue = BigDecimal.ZERO;
+        BigDecimal totalCurrentValue = BigDecimal.ZERO;
+
+        for (AssetEntity asset : userAssets) {
+            BigDecimal currentPrice = getCurrentMarketPrice(asset.getSymbol());
+            BigDecimal investedValue = asset.getQuantity().multiply(asset.getAvgPrice());
+            BigDecimal currentValue = asset.getQuantity().multiply(currentPrice);
+
+            totalInvestedValue = totalInvestedValue.add(investedValue);
+            totalCurrentValue = totalCurrentValue.add(currentValue);
+        }
+
+        if (totalInvestedValue.compareTo(BigDecimal.ZERO) == 0) {
+            return BigDecimal.ZERO;
+        }
+
+        BigDecimal totalProfitValue = totalCurrentValue.subtract(totalInvestedValue);
+        return totalProfitValue
+                .divide(totalInvestedValue, 8, RoundingMode.HALF_UP)
+                .multiply(BigDecimal.valueOf(100));
+    }
+
+    public BigDecimal calculateTotalProfitValue() {
+        UUID userId = getAuthenticatedUserId();
+        List<AssetEntity> userAssets = assetRepository.findAllByUserId(userId);
+
+        BigDecimal totalProfitValue = BigDecimal.ZERO;
+        for (AssetEntity asset : userAssets) {
+            BigDecimal currentPrice = getCurrentMarketPrice(asset.getSymbol());
+            BigDecimal positionProfit = currentPrice
+                    .subtract(asset.getAvgPrice())
+                    .multiply(asset.getQuantity());
+
+            totalProfitValue = totalProfitValue.add(positionProfit);
+        }
+
+        return totalProfitValue;
+    }
+
+    private BigDecimal getCurrentMarketPrice(String symbol) {
+        String normalizedSymbol = normalizeSymbol(symbol);
+        Result<BinancePriceResponseDTO> priceResult = binanceService.getPrice(normalizedSymbol);
+        if (!priceResult.isOk() || priceResult.getValue() == null || priceResult.getValue().price() == null) {
+            throw new IllegalStateException("Unable to fetch market price for symbol: " + normalizedSymbol);
+        }
+
+        return priceResult.getValue().price();
+    }
+
+    private String normalizeSymbol(String symbol) {
+        if (symbol == null || symbol.isBlank()) {
+            throw new IllegalArgumentException("Symbol is required.");
+        }
+
+        String normalizedSymbol = symbol.trim().toUpperCase().replaceAll("[^A-Z0-9]", "");
+        if (normalizedSymbol.isBlank()) {
+            throw new IllegalArgumentException("Symbol is required.");
+        }
+
+        return normalizedSymbol;
+    }
+
+    private String resolveType(String type) {
+        if (type == null || type.isBlank()) {
+            return "CRYPTO";
+        }
+
+        return type.trim().toUpperCase();
     }
 
     private UUID getAuthenticatedUserId() {
