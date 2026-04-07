@@ -49,13 +49,6 @@ public class AssetGateway implements AssetRepository {
             asset.setUserId(current.getUserId());
         }
 
-        UUID userId = asset.getUserId().getId();
-
-        AssetEntity bySymbol = jpaRepository.findBySymbolAndUserId(asset.getSymbol(), userId);
-        if (bySymbol != null && !bySymbol.getId().equals(current.getId())) {
-            throw new AssetAlreadyExistsException(asset.getSymbol());
-        }
-
         return jpaRepository.save(asset);
     }
 
