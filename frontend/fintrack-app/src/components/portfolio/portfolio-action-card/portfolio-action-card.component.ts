@@ -7,5 +7,6 @@ import { Component, EventEmitter, Output } from '@angular/core';
   styleUrl: './portfolio-action-card.component.css'
 })
 export class PortfolioActionCard {
-  @Output() openModal = new EventEmitter<void>();
+  @Output() openAddModal = new EventEmitter<void>();
+  @Output() openSellModal = new EventEmitter<void>();
 }

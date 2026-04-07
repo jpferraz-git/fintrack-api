@@ -16,6 +16,21 @@ export class PortfolioTransactionsTable implements OnInit, OnChanges, OnDestroy 
   isTransactionsLoading = true;
   hasTransactionsError = false;
 
+  private readonly assetNames: Record<string, string> = {
+    BTC: 'Bitcoin',
+    ETH: 'Ethereum',
+    SOL: 'Solana',
+    BNB: 'BNB',
+    XRP: 'XRP',
+    ADA: 'Cardano',
+    DOGE: 'Dogecoin',
+    AVAX: 'Avalanche',
+    DOT: 'Polkadot',
+    LINK: 'Chainlink',
+    LTC: 'Litecoin',
+    TRX: 'TRON'
+  };
+
   private readonly destroy$ = new Subject<void>();
 
   constructor(private portfolioService: PortfolioService) {}
@@ -40,12 +55,27 @@ export class PortfolioTransactionsTable implements OnInit, OnChanges, OnDestroy 
     return transaction.id;
   }
 
-  getAssetLabel(symbol: string): string {
+  getAssetTicker(symbol: string): string {
     return symbol.endsWith('USDT') ? symbol.slice(0, -4) : symbol;
   }
 
+  getAssetName(symbol: string): string {
+    const ticker = this.getAssetTicker(symbol);
+    return this.assetNames[ticker] ?? ticker;
+  }
+
+  getAssetAvatar(symbol: string): string {
+    const ticker = this.getAssetTicker(symbol);
+    return ticker.charAt(0);
+  }
+
+  getAssetAvatarClass(symbol: string): string {
+    const ticker = this.getAssetTicker(symbol).toLowerCase();
+    return `portfolio-asset-avatar--${ticker}`;
+  }
+
   formatTransactionType(type: string): string {
-    return type === 'SELL' ? 'Sold' : 'Bought';
+    return type === 'SELL' ? 'SELL' : 'BUY';
   }
 
   formatQuantity(value: number | string): string {
@@ -79,6 +109,49 @@ export class PortfolioTransactionsTable implements OnInit, OnChanges, OnDestroy 
       hour: '2-digit',
       minute: '2-digit'
     });
+  }
+
+  formatDatePart(dateValue: string): string {
+    const date = new Date(dateValue);
+    if (Number.isNaN(date.getTime())) {
+      return '--';
+    }
+
+    return date.toLocaleDateString('pt-BR', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric'
+    });
+  }
+
+  formatTimePart(dateValue: string): string {
+    const date = new Date(dateValue);
+    if (Number.isNaN(date.getTime())) {
+      return '--';
+    }
+
+    return date.toLocaleTimeString('pt-BR', {
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+  }
+
+  getTransactionStatus(transaction: PortfolioTransactionResponse): 'PENDING' | 'COMPLETED' {
+    const createdAt = new Date(transaction.createdAt).getTime();
+    if (!Number.isFinite(createdAt)) {
+      return 'COMPLETED';
+    }
+
+    const elapsed = Date.now() - createdAt;
+    return elapsed < 10 * 60 * 1000 ? 'PENDING' : 'COMPLETED';
+  }
+
+  isPending(transaction: PortfolioTransactionResponse): boolean {
+    return this.getTransactionStatus(transaction) === 'PENDING';
+  }
+
+  formatQuantityWithTicker(transaction: PortfolioTransactionResponse): string {
+    return `${this.formatQuantity(transaction.quantity)} ${this.getAssetTicker(transaction.symbol)}`;
   }
 
   formatTotal(transaction: PortfolioTransactionResponse): string {

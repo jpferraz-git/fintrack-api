@@ -1,0 +1,206 @@
+.terminal-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(1, 8, 18, 0.72);
+  backdrop-filter: blur(7px);
+  display: grid;
+  place-items: center;
+  z-index: 90;
+  padding: 16px;
+}
+
+.terminal-modal {
+  width: min(100%, 560px);
+  border-radius: 14px;
+  border: 1px solid rgba(255, 120, 120, 0.42);
+  background: var(--gradient-modal);
+  box-shadow: 0 36px 80px rgba(0, 0, 0, 0.45);
+  padding: 22px;
+}
+
+.terminal-modal--asset {
+  width: min(100%, 500px);
+}
+
+.terminal-modal__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 14px;
+}
+
+.terminal-modal__header h2 {
+  color: #f2f8ff;
+  font-family: var(--font-display);
+  font-size: 36px;
+  line-height: 1;
+  text-transform: uppercase;
+  letter-spacing: 1.4px;
+}
+
+.terminal-modal__close {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--color-text-muted);
+  font-size: 16px;
+  line-height: 1;
+}
+
+.terminal-modal__subtitle {
+  margin-top: 5px;
+  color: var(--color-text-muted);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1.4px;
+}
+
+.terminal-modal__body {
+  margin-top: 18px;
+}
+
+.terminal-modal__label {
+  display: block;
+  margin-top: 12px;
+  color: var(--color-text-muted);
+  font-size: 10px;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+}
+
+.terminal-modal__field {
+  width: 100%;
+  margin-top: 6px;
+  border: 1px solid var(--color-border-subtle);
+  border-radius: 8px;
+  background: var(--color-field-deep);
+  color: var(--color-text-primary);
+  padding: 11px 12px;
+  font-size: 14px;
+  outline: none;
+}
+
+.terminal-modal__field:focus {
+  border-color: rgba(255, 120, 120, 0.42);
+  box-shadow: 0 0 0 3px rgba(255, 120, 120, 0.12);
+}
+
+.terminal-modal__search-row {
+  margin-top: 6px;
+  display: block;
+}
+
+.terminal-modal__search-row .terminal-modal__field {
+  margin-top: 0;
+}
+
+.terminal-modal__state {
+  margin-top: 10px;
+  margin-bottom: 0;
+  color: var(--color-text-muted);
+  font-size: 12px;
+}
+
+.terminal-modal__summary {
+  margin-top: 14px;
+  border: 1px solid rgba(255, 120, 120, 0.24);
+  border-radius: 8px;
+  background: linear-gradient(90deg, rgba(255, 120, 120, 0.1) 0%, rgba(255, 120, 120, 0.03) 100%);
+  padding: 12px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.terminal-modal__summary span {
+  display: block;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 9px;
+}
+
+.terminal-modal__summary strong {
+  display: block;
+  margin-top: 4px;
+  color: #eff7ff;
+  font-family: var(--font-display);
+  font-size: 26px;
+}
+
+.text-red {
+  color: #ff9ea7;
+}
+
+.terminal-modal__hint {
+  margin-top: 10px;
+  margin-bottom: 0;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  font-size: 10px;
+}
+
+.terminal-modal__error {
+  margin-top: 10px;
+  margin-bottom: 0;
+  color: #ff8ea2;
+  font-size: 12px;
+}
+
+.terminal-modal__footer {
+  margin-top: 18px;
+  display: grid;
+  grid-template-columns: 1fr 1.6fr;
+  gap: 10px;
+}
+
+.terminal-modal__footer--stack {
+  grid-template-columns: 1fr;
+}
+
+.terminal-modal__footer--stack p {
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  font-size: 9px;
+  text-align: center;
+  margin-top: 8px;
+}
+
+.terminal-button {
+  min-height: 44px;
+  border-radius: 8px;
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  font-weight: 700;
+  font-size: 12px;
+}
+
+.terminal-button--danger {
+  background: linear-gradient(135deg, #ff9ba6 0%, #ff6f7d 100%);
+  color: #3f0d16;
+}
+
+.terminal-button--danger:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+@media (max-width: 680px) {
+  .terminal-modal {
+    padding: 16px;
+  }
+
+  .terminal-modal__header h2 {
+    font-size: 28px;
+  }
+
+  .terminal-modal__summary,
+  .terminal-modal__footer {
+    grid-template-columns: 1fr;
+  }
+}

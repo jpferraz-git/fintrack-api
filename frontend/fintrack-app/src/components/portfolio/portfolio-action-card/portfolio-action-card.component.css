@@ -7,29 +7,17 @@
 .portfolio-action {
   min-height: 154px;
   padding: 20px;
-  text-align: center;
+  text-align: left;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-.portfolio-action__plus {
-  width: 34px;
-  height: 34px;
-  border-radius: 50%;
-  margin-bottom: 8px;
-  border: 1px solid rgba(78, 222, 163, 0.32);
-  background: rgba(78, 222, 163, 0.14);
-  color: var(--color-green-light);
-  font-size: 24px;
-  line-height: 34px;
+  align-items: stretch;
+  justify-content: flex-start;
 }
 
 .portfolio-action h3 {
   color: #e8f0ff;
   font-family: var(--font-display);
-  font-size: 28px;
+  font-size: 24px;
   line-height: 1;
 }
 
@@ -43,17 +31,31 @@
   width: 100%;
   margin-top: 14px;
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: 1fr 1fr;
   gap: 8px;
 }
 
 .portfolio-action__buttons button {
-  border: 1px solid rgba(78, 222, 163, 0.25);
+  border: 1px solid rgba(78, 222, 163, 0.32);
   border-radius: 8px;
-  color: var(--color-green-light);
-  background: rgba(78, 222, 163, 0.08);
+  color: #e8f0ff;
+  background: rgba(78, 222, 163, 0.1);
   text-transform: uppercase;
   letter-spacing: 0.8px;
   font-size: 10px;
   padding: 8px 6px;
+  font-family: var(--font-display);
+}
+
+.portfolio-action__buy:hover {
+  background: rgba(78, 222, 163, 0.18);
+}
+
+.portfolio-action__sell {
+  border-color: rgba(255, 111, 111, 0.35);
+  background: rgba(255, 111, 111, 0.12);
+}
+
+.portfolio-action__sell:hover {
+  background: rgba(255, 111, 111, 0.2);
 }
