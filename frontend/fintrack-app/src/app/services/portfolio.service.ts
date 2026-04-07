@@ -67,6 +67,10 @@ export class PortfolioService {
 		return this.http.post<PortfolioTransactionResponse>(`${environment.apiUrl}/transaction`, payload)
 	}
 
+	getTransactions(): Observable<PortfolioTransactionResponse[]> {
+		return this.http.get<PortfolioTransactionResponse[]>(`${environment.apiUrl}/transaction`)
+	}
+
 	calculateTotalProfitValue(): Observable<PortfolioCalculationResponse> {
 		return this.http.get<PortfolioCalculationResponse>(
 			`${environment.apiUrl}/asset/calculate-total-profit-value`

@@ -34,6 +34,8 @@ export class DashboardMarketTable {
     { symbol: 'TRXUSDT', coinName: 'TRON', coinIcon: 'trx', marketCap: '$10.7B' }
   ]
 
+  constructor() {}
+
   get filteredRows(): MarketRow[] {
     const normalizedSearch = this.searchTerm.trim().toLowerCase()
     if (!normalizedSearch) {
@@ -53,4 +55,5 @@ export class DashboardMarketTable {
   trackBySymbol(index: number, row: MarketRow): string {
     return row.symbol
   }
+
 }

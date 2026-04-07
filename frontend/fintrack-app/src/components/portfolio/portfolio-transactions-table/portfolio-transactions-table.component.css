@@ -1,0 +1,96 @@
+.portfolio-transactions {
+  margin-top: 16px;
+  padding: 14px;
+}
+
+.portfolio-transactions__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.portfolio-transactions__header h3 {
+  font-size: 18px;
+  color: var(--color-text-primary);
+  font-family: var(--font-display);
+}
+
+.portfolio-transactions__state {
+  padding: 12px 8px;
+  color: var(--color-text-muted);
+  font-size: 12px;
+  border-top: 1px solid var(--color-border-subtle);
+}
+
+.portfolio-transactions__state--error {
+  color: var(--color-red-light);
+}
+
+.portfolio-transactions__scroll {
+  max-height: 320px;
+  overflow-y: auto;
+  overflow-x: auto;
+  border-top: 1px solid var(--color-border-subtle);
+}
+
+.portfolio-transactions table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.portfolio-transactions th {
+  text-align: left;
+  font-size: 10px;
+  color: var(--color-text-dim);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 10px 8px;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: rgba(19, 27, 46, 0.98);
+}
+
+.portfolio-transactions td {
+  padding: 12px 8px;
+  border-top: 1px solid var(--color-border-subtle);
+  color: var(--color-text-secondary);
+  font-size: 13px;
+}
+
+.portfolio-transactions__empty {
+  text-align: center;
+  color: var(--color-text-muted);
+  padding: 18px 8px;
+  font-size: 12px;
+}
+
+.portfolio-transaction-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 68px;
+  border-radius: 999px;
+  font-size: 10px;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  font-weight: 700;
+}
+
+.portfolio-transaction-badge--buy {
+  color: var(--color-green-light);
+  background: rgba(78, 222, 163, 0.14);
+}
+
+.portfolio-transaction-badge--sell {
+  color: var(--color-red-light);
+  background: rgba(255, 111, 111, 0.14);
+}
+
+@media (max-width: 900px) {
+  .portfolio-transactions table {
+    min-width: 720px;
+  }
+}

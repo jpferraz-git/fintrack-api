@@ -1,0 +1,53 @@
+<section class="portfolio-card portfolio-transactions" aria-label="Transaction history">
+  <header class="portfolio-transactions__header">
+    <h3>Transaction History</h3>
+  </header>
+
+  <div class="portfolio-transactions__state" *ngIf="isTransactionsLoading">Loading transactions...</div>
+  <div
+    class="portfolio-transactions__state portfolio-transactions__state--error"
+    *ngIf="!isTransactionsLoading && hasTransactionsError"
+  >
+    Could not load transaction history.
+  </div>
+
+  <div
+    class="portfolio-transactions__scroll"
+    *ngIf="!isTransactionsLoading && !hasTransactionsError"
+  >
+    <table>
+      <thead>
+        <tr>
+          <th>Asset</th>
+          <th>Action</th>
+          <th>Quantity</th>
+          <th>Unit Price</th>
+          <th>Total</th>
+          <th>Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let transaction of transactions; trackBy: trackByTransactionId">
+          <td>{{ getAssetLabel(transaction.symbol) }}</td>
+          <td>
+            <span
+              class="portfolio-transaction-badge"
+              [class.portfolio-transaction-badge--buy]="transaction.type === 'BUY'"
+              [class.portfolio-transaction-badge--sell]="transaction.type === 'SELL'"
+            >
+              {{ formatTransactionType(transaction.type) }}
+            </span>
+          </td>
+          <td>{{ formatQuantity(transaction.quantity) }}</td>
+          <td>{{ formatUsd(transaction.price) }}</td>
+          <td>{{ formatTotal(transaction) }}</td>
+          <td>{{ formatDate(transaction.createdAt) }}</td>
+        </tr>
+
+        <tr *ngIf="transactions.length === 0">
+          <td colspan="6" class="portfolio-transactions__empty">No transactions registered yet.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>

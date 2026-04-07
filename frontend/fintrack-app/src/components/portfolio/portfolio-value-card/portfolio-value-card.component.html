@@ -1,18 +1,20 @@
 <section class="portfolio-card portfolio-value" aria-label="Total portfolio value">
   <header class="portfolio-value__header">
-    <div>
-      <p class="portfolio-value__eyebrow">Total Portfolio Profit</p>
+    <ng-container *ngIf="metricsState$ | async as vm">
+      <div>
+        <p class="portfolio-value__eyebrow">Total Portfolio Profit</p>
 
-      <p class="portfolio-value__status" *ngIf="isLoading">Loading market data...</p>
-      <p class="portfolio-value__status portfolio-value__status--error" *ngIf="hasError">
-        Could not load profit metrics.
-      </p>
+        <p class="portfolio-value__status" *ngIf="vm.isLoading">Loading market data...</p>
+        <p class="portfolio-value__status portfolio-value__status--error" *ngIf="vm.hasError">
+          Could not load profit metrics.
+        </p>
 
-      <h2 *ngIf="!isLoading && !hasError">
-        {{ formattedTotalPortfolioValue }}
-        <span [class.is-negative]="totalPortfolioPercentage < 0">{{ formattedTotalPortfolioPercentage }}</span>
-      </h2>
-    </div>
+        <h2 *ngIf="!vm.isLoading && !vm.hasError">
+          {{ vm.formattedTotalPortfolioValue }}
+          <span [class.is-negative]="vm.totalPortfolioPercentage < 0">{{ vm.formattedTotalPortfolioPercentage }}</span>
+        </h2>
+      </div>
+    </ng-container>
 
     <div class="portfolio-value__range" role="tablist" aria-label="Chart range">
       <button type="button">1D</button>
