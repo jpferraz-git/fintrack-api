@@ -8,57 +8,42 @@
     <p class="terminal-modal__subtitle">Manual portfolio expansion</p>
 
     <form #assetForm="ngForm" class="terminal-modal__body" (ngSubmit)="addToPortfolio(assetForm)">
-      <label class="terminal-modal__label" for="assetSymbol">Search Assets</label>
+      <label class="terminal-modal__label" for="assetSymbol">Select Asset</label>
       <div class="terminal-modal__search-row">
-        <input
+        <select
           id="assetSymbol"
           class="terminal-modal__field"
-          type="search"
-          placeholder="Search (e.g. BTCUSDT, ETHUSDT, SOLUSDT)..."
           name="symbol"
-          [(ngModel)]="symbolInput"
+          [(ngModel)]="selectedSymbol"
+          (ngModelChange)="onSymbolChange($event)"
           required
-        />
-        <span>PAIR</span>
+        >
+          <option *ngFor="let option of cryptoOptions" [ngValue]="option.symbol">
+            {{ option.label }}
+          </option>
+        </select>
       </div>
 
-      <div class="terminal-modal__split">
-        <div>
-          <label class="terminal-modal__label" for="assetQuantity">Amount Held</label>
-          <input
-            id="assetQuantity"
-            class="terminal-modal__field"
-            type="number"
-            name="quantity"
-            [(ngModel)]="quantity"
-            min="0.00000001"
-            step="0.00000001"
-            required
-          />
-        </div>
-        <div>
-          <label class="terminal-modal__label" for="assetAvgPrice">Avg Buy Price (USD)</label>
-          <input
-            id="assetAvgPrice"
-            class="terminal-modal__field"
-            type="number"
-            name="avgPrice"
-            [(ngModel)]="avgPrice"
-            min="0.00000001"
-            step="0.01"
-            required
-          />
-        </div>
-      </div>
+      <label class="terminal-modal__label" for="assetInvestedValue">Amount to Buy (USD)</label>
+      <input
+        id="assetInvestedValue"
+        class="terminal-modal__field"
+        type="number"
+        name="investedValue"
+        [(ngModel)]="investedValue"
+        min="0.01"
+        step="0.01"
+        required
+      />
 
       <div class="terminal-modal__summary">
         <article>
-          <span>Estimated Value</span>
-          <strong>{{ formattedEstimatedValue }}</strong>
+          <span>Current {{ assetCode }} Price</span>
+          <strong>{{ isLoadingPrice ? 'Loading...' : formattedCurrentPrice }}</strong>
         </article>
         <article>
-          <span>Asset Type</span>
-          <strong class="text-green">CRYPTO</strong>
+          <span>Equivalent Quantity</span>
+          <strong class="text-green">{{ isLoadingPrice ? 'Loading...' : formattedEquivalentQuantity }}</strong>
         </article>
       </div>
 
@@ -68,7 +53,7 @@
         <button
           type="submit"
           class="terminal-button terminal-button--primary"
-          [disabled]="assetForm.invalid || isSubmitting"
+          [disabled]="assetForm.invalid || isSubmitting || isLoadingPrice || !currentPrice"
         >
           {{ isSubmitting ? 'Saving...' : 'Add to Portfolio' }}
         </button>

@@ -1,28 +1,60 @@
-import { NgIf } from '@angular/common';
+import { NgFor, NgIf } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
+import { MarketDataService } from '../../../app/services/market-data.service';
 import { PortfolioService } from '../../../app/services/portfolio.service';
+
+interface CryptoOption {
+  label: string
+  symbol: string
+}
 
 @Component({
   selector: 'app-add-asset-modal',
-  imports: [NgIf, FormsModule],
+  imports: [NgIf, NgFor, FormsModule],
   templateUrl: './add-asset-modal.component.html',
   styleUrl: './add-asset-modal.component.css'
 })
-export class AddAssetModal {
+export class AddAssetModal implements OnChanges {
   @Input() open = false;
   @Output() closed = new EventEmitter<void>();
   @Output() assetCreated = new EventEmitter<void>();
 
-  symbolInput = '';
-  quantity: number | null = null;
-  avgPrice: number | null = null;
+  readonly cryptoOptions: CryptoOption[] = [
+    { label: 'Bitcoin (BTCUSDT)', symbol: 'BTCUSDT' },
+    { label: 'Ethereum (ETHUSDT)', symbol: 'ETHUSDT' },
+    { label: 'BNB (BNBUSDT)', symbol: 'BNBUSDT' },
+    { label: 'Solana (SOLUSDT)', symbol: 'SOLUSDT' },
+    { label: 'Ripple (XRPUSDT)', symbol: 'XRPUSDT' },
+    { label: 'Cardano (ADAUSDT)', symbol: 'ADAUSDT' },
+    { label: 'Dogecoin (DOGEUSDT)', symbol: 'DOGEUSDT' },
+    { label: 'Avalanche (AVAXUSDT)', symbol: 'AVAXUSDT' },
+    { label: 'Polkadot (DOTUSDT)', symbol: 'DOTUSDT' },
+    { label: 'Chainlink (LINKUSDT)', symbol: 'LINKUSDT' },
+    { label: 'Litecoin (LTCUSDT)', symbol: 'LTCUSDT' },
+    { label: 'TRON (TRXUSDT)', symbol: 'TRXUSDT' }
+  ]
+
+  selectedSymbol = 'BTCUSDT';
+  investedValue: number | null = null;
+  currentPrice: number | null = null;
 
   isSubmitting = false;
+  isLoadingPrice = false;
   submitError = '';
 
-  constructor(private portfolioService: PortfolioService) {}
+  constructor(
+    private portfolioService: PortfolioService,
+    private marketDataService: MarketDataService
+  ) {}
+
+  ngOnChanges(changes: SimpleChanges): void {
+    const openChange = changes['open']
+    if (openChange?.currentValue === true) {
+      this.loadCurrentPrice()
+    }
+  }
 
   close(): void {
     this.resetTransientState();
@@ -35,27 +67,30 @@ export class AddAssetModal {
     }
   }
 
+  onSymbolChange(symbol: string): void {
+    this.selectedSymbol = symbol
+    this.loadCurrentPrice()
+  }
+
   addToPortfolio(form: NgForm): void {
     if (form.invalid || this.isSubmitting) {
       return;
     }
 
-    const normalizedSymbol = this.normalizeSymbol(this.symbolInput);
-    if (!normalizedSymbol) {
-      this.submitError = 'Please provide a valid symbol.';
+    const normalizedInvestedValue = Number(this.investedValue);
+    if (!Number.isFinite(normalizedInvestedValue) || normalizedInvestedValue <= 0) {
+      this.submitError = 'Investment amount must be greater than zero.';
       return;
     }
 
-    const normalizedQuantity = Number(this.quantity);
-    const normalizedAvgPrice = Number(this.avgPrice);
-
-    if (!Number.isFinite(normalizedQuantity) || normalizedQuantity <= 0) {
-      this.submitError = 'Amount held must be greater than zero.';
+    if (!this.currentPrice || !Number.isFinite(this.currentPrice) || this.currentPrice <= 0) {
+      this.submitError = 'Could not load current market price. Please try again.';
       return;
     }
 
-    if (!Number.isFinite(normalizedAvgPrice) || normalizedAvgPrice <= 0) {
-      this.submitError = 'Average buy price must be greater than zero.';
+    const calculatedQuantity = normalizedInvestedValue / this.currentPrice;
+    if (!Number.isFinite(calculatedQuantity) || calculatedQuantity <= 0) {
+      this.submitError = 'Could not calculate quantity for this purchase.';
       return;
     }
 
@@ -63,12 +98,12 @@ export class AddAssetModal {
     this.submitError = '';
 
     this.portfolioService
-      .createAsset({
+      .createTransaction({
         fkUser: null,
-        symbol: normalizedSymbol,
-        type: 'CRYPTO',
-        quantity: normalizedQuantity,
-        avgPrice: normalizedAvgPrice
+        symbol: this.selectedSymbol,
+        type: 'BUY',
+        quantity: Number(calculatedQuantity.toFixed(8)),
+        price: this.currentPrice
       })
       .subscribe({
         next: () => {
@@ -85,28 +120,62 @@ export class AddAssetModal {
       });
   }
 
-  get estimatedValue(): number {
-    const currentQuantity = this.quantity ?? 0;
-    const currentAvgPrice = this.avgPrice ?? 0;
-    return currentQuantity * currentAvgPrice;
+  get equivalentQuantity(): number {
+    if (!this.currentPrice || !this.investedValue || this.currentPrice <= 0) {
+      return 0
+    }
+
+    const quantity = Number(this.investedValue) / this.currentPrice
+    return Number.isFinite(quantity) ? quantity : 0
   }
 
-  get formattedEstimatedValue(): string {
+  get formattedEquivalentQuantity(): string {
+    if (this.equivalentQuantity <= 0) {
+      return '--'
+    }
+
+    return `${this.equivalentQuantity.toLocaleString('en-US', {
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 8
+    })} ${this.assetCode}`
+  }
+
+  get formattedCurrentPrice(): string {
+    if (!this.currentPrice || this.currentPrice <= 0) {
+      return '--'
+    }
+
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
       currency: 'USD',
       minimumFractionDigits: 2,
       maximumFractionDigits: 2
-    }).format(this.estimatedValue);
+    }).format(this.currentPrice)
   }
 
-  private normalizeSymbol(rawSymbol: string): string {
-    const cleanedSymbol = rawSymbol.trim().toUpperCase().replace(/[^A-Z0-9]/g, '');
-    if (!cleanedSymbol) {
-      return '';
-    }
+  get assetCode(): string {
+    return this.selectedSymbol.replace('USDT', '')
+  }
 
-    return cleanedSymbol.endsWith('USDT') ? cleanedSymbol : `${cleanedSymbol}USDT`;
+  private loadCurrentPrice(): void {
+    this.isLoadingPrice = true
+    this.submitError = ''
+
+    this.marketDataService.getPrice(this.selectedSymbol).subscribe({
+      next: (priceResponse) => {
+        this.currentPrice = this.parseNumeric(priceResponse.price)
+        this.isLoadingPrice = false
+      },
+      error: () => {
+        this.currentPrice = null
+        this.isLoadingPrice = false
+      }
+    })
+  }
+
+  private parseNumeric(value: number | string): number {
+    const parsed = typeof value === 'number' ? value : Number(value)
+    return Number.isFinite(parsed) ? parsed : 0
   }
 
   private resolveErrorMessage(error: HttpErrorResponse): string {
@@ -119,14 +188,15 @@ export class AddAssetModal {
       return rawError;
     }
 
-    return 'Could not create asset. Please try again.';
+    return 'Could not register transaction. Please try again.';
   }
 
   private resetTransientState(): void {
     this.isSubmitting = false;
+    this.isLoadingPrice = false;
     this.submitError = '';
-    this.symbolInput = '';
-    this.quantity = null;
-    this.avgPrice = null;
+    this.selectedSymbol = 'BTCUSDT';
+    this.investedValue = null;
+    this.currentPrice = null;
   }
 }

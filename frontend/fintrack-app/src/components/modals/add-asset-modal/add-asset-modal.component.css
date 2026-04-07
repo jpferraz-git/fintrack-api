@@ -95,21 +95,11 @@
 
 .terminal-modal__search-row {
   margin-top: 6px;
-  display: grid;
-  grid-template-columns: 1fr auto;
-  gap: 10px;
-  align-items: center;
+  display: block;
 }
 
 .terminal-modal__search-row .terminal-modal__field {
   margin-top: 0;
-}
-
-.terminal-modal__search-row span {
-  color: var(--color-text-muted);
-  text-transform: uppercase;
-  font-size: 9px;
-  letter-spacing: 1px;
 }
 
 .terminal-modal__summary {
@@ -202,10 +192,6 @@
   .terminal-modal__split,
   .terminal-modal__summary,
   .terminal-modal__footer {
-    grid-template-columns: 1fr;
-  }
-
-  .terminal-modal__search-row {
     grid-template-columns: 1fr;
   }
 }

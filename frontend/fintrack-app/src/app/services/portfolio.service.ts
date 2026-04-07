@@ -30,6 +30,25 @@ export interface PortfolioAssetResponse {
 	updatedAt: string
 }
 
+export interface PortfolioTransactionRequest {
+	fkUser?: string | null
+	symbol: string
+	type: 'BUY' | 'SELL'
+	quantity: number
+	price: number
+}
+
+export interface PortfolioTransactionResponse {
+	id: string
+	fkUser: string
+	symbol: string
+	type: string
+	quantity: number | string
+	price: number | string
+	createdAt: string
+	updatedAt: string
+}
+
 @Injectable({
 	providedIn: 'root'
 })
@@ -42,6 +61,10 @@ export class PortfolioService {
 
 	createAsset(payload: PortfolioAssetRequest): Observable<PortfolioAssetResponse> {
 		return this.http.post<PortfolioAssetResponse>(`${environment.apiUrl}/asset`, payload)
+	}
+
+	createTransaction(payload: PortfolioTransactionRequest): Observable<PortfolioTransactionResponse> {
+		return this.http.post<PortfolioTransactionResponse>(`${environment.apiUrl}/transaction`, payload)
 	}
 
 	calculateTotalProfitValue(): Observable<PortfolioCalculationResponse> {

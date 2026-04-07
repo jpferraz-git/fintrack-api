@@ -24,13 +24,10 @@ export class MarketTableRowComponent implements OnInit, OnDestroy {
   loading = true
   isPositive = true
   isFollowing = false
+  hasChangeData = false
 
   get coinPairLabel(): string {
     return this.symbol.replace('USDT', '/USDT')
-  }
-
-  get hasChangeData(): boolean {
-    return !this.loading && this.changePercent !== '--'
   }
 
   constructor(private marketDataService: MarketDataService) {}
@@ -73,11 +70,12 @@ export class MarketTableRowComponent implements OnInit, OnDestroy {
 
         const changeValue = Number(marketData.ticker24h.priceChangePercent)
         const hasChange = Number.isFinite(changeValue)
-
+        
         this.price = formatUsd(marketData.price.price)
         this.volume24h = this.formatCompactUsd(marketData.ticker24h.quoteVolume)
         this.isPositive = !hasChange || changeValue >= 0
         this.changePercent = hasChange ? `${changeValue >= 0 ? '+' : ''}${changeValue.toFixed(2)}%` : '--'
+        this.hasChangeData = hasChange  
       })
   }
 
