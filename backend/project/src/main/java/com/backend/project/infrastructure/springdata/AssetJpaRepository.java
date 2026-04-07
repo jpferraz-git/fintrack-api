@@ -14,6 +14,14 @@ public interface AssetJpaRepository extends JpaRepository<AssetEntity, UUID> {
     @Query("SELECT a FROM AssetEntity a WHERE a.symbol = :symbol AND a.userId.id = :userId")
     AssetEntity findBySymbolAndUserId(@Param("symbol") String symbol, @Param("userId") UUID userId);
 
+        @Query("""
+                        SELECT a
+                        FROM AssetEntity a
+                        WHERE a.symbol = :symbol AND a.userId.id = :userId
+                        ORDER BY a.updatedAt DESC, a.createdAt DESC, a.id DESC
+                        """)
+        List<AssetEntity> findAllBySymbolAndUserId(@Param("symbol") String symbol, @Param("userId") UUID userId);
+
     @Query("SELECT COUNT(a) > 0 FROM AssetEntity a WHERE a.symbol = :symbol AND a.userId.id = :userId")
     boolean existsBySymbolAndUserId(@Param("symbol") String symbol, @Param("userId") UUID userId);
 

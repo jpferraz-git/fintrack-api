@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 import java.util.UUID;
 
@@ -33,11 +34,47 @@ public class AssetGateway implements AssetRepository {
 
     @Override
     public AssetEntity findBySymbolAndUserId(String symbol, UUID userId) {
-        AssetEntity asset = jpaRepository.findBySymbolAndUserId(symbol, userId);
-        if (asset == null) {
+        List<AssetEntity> assets = jpaRepository.findAllBySymbolAndUserId(symbol, userId);
+        if (assets.isEmpty()) {
             throw new AssetNotFoundException(symbol);
         }
-        return asset;
+
+        if (assets.size() == 1) {
+            return assets.get(0);
+        }
+
+        // Self-heal duplicated rows for same user+symbol by merging into a single position.
+        AssetEntity primary = assets.get(0);
+
+        BigDecimal mergedQuantity = BigDecimal.ZERO;
+        BigDecimal mergedCost = BigDecimal.ZERO;
+        for (AssetEntity asset : assets) {
+            BigDecimal quantity = asset.getQuantity() != null ? asset.getQuantity() : BigDecimal.ZERO;
+            BigDecimal avgPrice = asset.getAvgPrice() != null ? asset.getAvgPrice() : BigDecimal.ZERO;
+
+            mergedQuantity = mergedQuantity.add(quantity);
+            mergedCost = mergedCost.add(quantity.multiply(avgPrice));
+        }
+
+        if (mergedQuantity.compareTo(BigDecimal.ZERO) <= 0) {
+            jpaRepository.deleteAll(assets);
+            throw new AssetNotFoundException(symbol);
+        }
+
+        BigDecimal mergedAvgPrice = mergedCost.divide(mergedQuantity, 8, RoundingMode.HALF_UP);
+
+        primary.setQuantity(mergedQuantity);
+        primary.setAvgPrice(mergedAvgPrice);
+        if (primary.getType() == null || primary.getType().isBlank()) {
+            primary.setType("CRYPTO");
+        }
+
+        AssetEntity normalizedAsset = jpaRepository.save(primary);
+        for (int i = 1; i < assets.size(); i++) {
+            jpaRepository.delete(assets.get(i));
+        }
+
+        return normalizedAsset;
     }
 
     @Override
@@ -54,7 +91,11 @@ public class AssetGateway implements AssetRepository {
 
     @Override
     public void deleteBySymbolAndUserId(String symbol, UUID userId) {
-        jpaRepository.delete(findBySymbolAndUserId(symbol, userId));
+        List<AssetEntity> assets = jpaRepository.findAllBySymbolAndUserId(symbol, userId);
+        if (assets.isEmpty()) {
+            throw new AssetNotFoundException(symbol);
+        }
+        jpaRepository.deleteAll(assets);
     }
 
     @Override

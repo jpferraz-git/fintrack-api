@@ -52,10 +52,10 @@ public class TransactionService {
             entity.setType(resolveTransactionType(transaction.type()));
             entity.setQuantity(requirePositive(transaction.quantity(), "quantity"));
             entity.setPrice(requirePositive(transaction.price(), "price"));
-
             synchronizeAssetPosition(authenticatedUser, entity);
 
             TransactionEntity saved = transactionRepository.create(entity);
+
             return Result.ok(transactionMapper.toResponse(saved));
         } catch (Exception ex) {
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
