@@ -5,11 +5,12 @@ import {
   Observable,
   Subject,
   catchError,
-  combineLatest,
+  filter,
   forkJoin,
   map,
   merge,
   of,
+  scan,
   startWith,
   switchMap,
   timer
@@ -109,31 +110,18 @@ export class PortfolioValueCard implements OnChanges, OnDestroy {
             currentPortfolioValue
           })
         }),
-        catchError(() =>
-          of(this.buildViewModel({
-            isLoading: false,
-            hasError: true,
-            totalPortfolioValue: 0,
-            totalPortfolioPercentage: 0,
-            currentPortfolioValue: 0
-          }))
-        ),
-        startWith(this.buildViewModel({
-          isLoading: true,
-          hasError: false,
-          totalPortfolioValue: 0,
-          totalPortfolioPercentage: 0,
-          currentPortfolioValue: 0
-        }))
+        catchError(() => of(null))
       )
-    )
+    ),
+    scan<PortfolioMetricsViewModel | null, PortfolioMetricsViewModel | null>(
+      (previousState, nextState) => nextState ?? previousState,
+      null
+    ),
+    filter((state): state is PortfolioMetricsViewModel => state !== null)
   )
 
-  readonly chartState$ = combineLatest([
-    merge(this.autoRefresh$, this.refreshRequest$),
-    this.rangeSelection$
-  ]).pipe(
-    switchMap(([, range]) => this.loadChartState(range))
+  readonly chartState$ = this.rangeSelection$.pipe(
+    switchMap((range) => this.loadChartState(range))
   )
 
   constructor(
@@ -154,10 +142,6 @@ export class PortfolioValueCard implements OnChanges, OnDestroy {
   }
 
   onRangeSelected(range: PortfolioChartRange): void {
-    if (this.selectedRange === range) {
-      return
-    }
-
     this.selectedRange = range
     this.rangeSelection$.next(range)
   }

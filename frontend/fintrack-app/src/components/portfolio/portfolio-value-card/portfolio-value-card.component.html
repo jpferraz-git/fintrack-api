@@ -2,21 +2,15 @@
   <header class="portfolio-value__header">
     <ng-container *ngIf="metricsState$ | async as vm">
       <div>
-        <p class="portfolio-value__eyebrow">Total Portfolio Profit</p>
+        <p class="portfolio-value__eyebrow">Current Portfolio Value</p>
 
-        <p class="portfolio-value__status" *ngIf="vm.isLoading">Loading market data...</p>
-        <p class="portfolio-value__status portfolio-value__status--error" *ngIf="vm.hasError">
-          Could not load profit metrics.
-        </p>
-
-        <h2 *ngIf="!vm.isLoading && !vm.hasError">
-          {{ vm.formattedTotalPortfolioValue }}
-          <span [class.is-negative]="vm.totalPortfolioPercentage < 0">{{ vm.formattedTotalPortfolioPercentage }}</span>
+        <h2>
+          {{ vm.formattedCurrentPortfolioValue }}
         </h2>
 
-        <p class="portfolio-value__current" *ngIf="!vm.isLoading && !vm.hasError">
-          <span>Current Portfolio Value</span>
-          <strong>{{ vm.formattedCurrentPortfolioValue }}</strong>
+        <p class="portfolio-value__current">
+          <span>Portfolio Variation</span>
+          <strong>{{ vm.formattedTotalPortfolioValue }}</strong>
           <em [class.is-negative]="vm.totalPortfolioPercentage < 0">{{ vm.formattedTotalPortfolioPercentage }}</em>
         </p>
       </div>
@@ -33,7 +27,8 @@
   </header>
 
   <div class="portfolio-value__chart" aria-hidden="true">
-    <ng-container *ngIf="chartState$ | async as chart">
+    <!-- <ng-container *ngIf="chartState$ | async as chart"> -->
+      <ng-container *ngIf="chartState$ | async as chart">
       <p class="portfolio-value__chart-status" *ngIf="chart.isLoading">Loading historical chart...</p>
       <p class="portfolio-value__chart-status portfolio-value__chart-status--error" *ngIf="!chart.isLoading && chart.hasError">
         Could not load chart history.
