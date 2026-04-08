@@ -31,6 +31,21 @@ export class PortfolioTransactionsTable implements OnInit, OnChanges, OnDestroy 
     TRX: 'TRON'
   };
 
+  private readonly coinIconByCode: Record<string, string> = {
+    BTC: 'btc',
+    ETH: 'eth',
+    BNB: 'bnb',
+    SOL: 'sol',
+    XRP: 'xrp',
+    ADA: 'ada',
+    DOGE: 'doge',
+    AVAX: 'avax',
+    DOT: 'dot',
+    LINK: 'link',
+    LTC: 'ltc',
+    TRX: 'trx'
+  };
+
   private readonly destroy$ = new Subject<void>();
 
   constructor(private portfolioService: PortfolioService) {}
@@ -64,14 +79,9 @@ export class PortfolioTransactionsTable implements OnInit, OnChanges, OnDestroy 
     return this.assetNames[ticker] ?? ticker;
   }
 
-  getAssetAvatar(symbol: string): string {
+  getAssetIcon(symbol: string): string {
     const ticker = this.getAssetTicker(symbol);
-    return ticker.charAt(0);
-  }
-
-  getAssetAvatarClass(symbol: string): string {
-    const ticker = this.getAssetTicker(symbol).toLowerCase();
-    return `portfolio-asset-avatar--${ticker}`;
+    return this.coinIconByCode[ticker] ?? ticker.toLowerCase();
   }
 
   formatTransactionType(type: string): string {

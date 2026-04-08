@@ -22,13 +22,12 @@
     <table>
       <thead>
         <tr>
-          <th>Data/Hora</th>
-          <th>Ativo</th>
-          <th>Tipo</th>
-          <th>Quantidade</th>
-          <th>Preco</th>
-          <th>Valor Total</th>
-          <th>Status</th>
+          <th>Asset</th>
+          <th>Type</th>
+          <th>Quantity</th>
+          <th>Price</th>
+          <th>Total Value</th>
+            <th>Date</th>
         </tr>
       </thead>
       <tbody>
@@ -39,8 +38,8 @@
           </td>
           <td>
             <div class="portfolio-asset-cell">
-              <span class="portfolio-asset-avatar" [class]="'portfolio-asset-avatar ' + getAssetAvatarClass(transaction.symbol)">
-                {{ getAssetAvatar(transaction.symbol) }}
+              <span class="dash-coin-icon dash-coin-icon--{{ getAssetIcon(transaction.symbol) }}" aria-hidden="true">
+                {{ getAssetTicker(transaction.symbol).toUpperCase() }}
               </span>
               <div class="portfolio-asset-meta">
                 <span class="portfolio-asset-name">{{ getAssetName(transaction.symbol) }}</span>

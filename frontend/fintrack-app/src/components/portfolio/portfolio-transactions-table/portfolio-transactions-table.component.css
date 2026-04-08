@@ -123,29 +123,11 @@
   gap: 10px;
 }
 
-.portfolio-asset-avatar {
+.portfolio-asset-cell .dash-coin-icon {
   width: 20px;
   height: 20px;
-  border-radius: 50%;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 11px;
-  font-weight: 700;
-  color: #041224;
-  background: #9ad0ff;
-}
-
-.portfolio-asset-avatar--btc {
-  background: #44f6bf;
-}
-
-.portfolio-asset-avatar--eth {
-  background: #7db0ff;
-}
-
-.portfolio-asset-avatar--sol {
-  background: #ffc96f;
+  min-width: 20px;
+  font-size: 6px;
 }
 
 .portfolio-asset-meta {
