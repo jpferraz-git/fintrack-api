@@ -19,31 +19,8 @@
   gap: 10px;
 }
 
-.dash-coin-icon {
-  height: 30px;
-  min-width: 30px;
-  border-radius: 50%;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+.dash-market-card__instrument .dash-coin-icon {
   font-size: 9px;
-  font-weight: 800;
-  letter-spacing: 0.2px;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  color: #f6f7fb;
-}
-
-.dash-coin-icon--btc {
-  background: radial-gradient(circle at 30% 30%, #ffbd70 0%, #f7931a 70%);
-}
-
-.dash-coin-icon--eth {
-  background: radial-gradient(circle at 30% 30%, #9cb0ff 0%, #627eea 70%);
-}
-
-.dash-coin-icon--bnb {
-  background: radial-gradient(circle at 30% 30%, #ffe08d 0%, #f3ba2f 70%);
-  color: #2f2a10;
 }
 
 .dash-market-card__trend {
