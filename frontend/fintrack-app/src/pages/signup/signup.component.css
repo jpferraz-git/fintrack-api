@@ -37,6 +37,33 @@
   gap: 16px;
 }
 
+.password-field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.password-toggle {
+  align-self: flex-end;
+  border: 0;
+  background: transparent;
+  color: var(--color-green-light);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.password-toggle:hover {
+  text-decoration: underline;
+}
+
+.password-hint {
+  margin-top: -10px;
+  color: var(--color-text-secondary);
+  font-size: 12px;
+  line-height: 1.4;
+}
+
 .form-field--checkbox {
   display: flex;
   flex-direction: row;

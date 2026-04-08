@@ -20,6 +20,9 @@ export class SignupPage {
   email = '';
   password = '';
   confirmPassword = '';
+  showPassword = false;
+  showConfirmPassword = false;
+  passwordValidationError = '';
   showPasswordMismatchWarning = false;
 
   constructor(
@@ -29,6 +32,15 @@ export class SignupPage {
 
   onSignupSubmit(event: Event): void {
     event.preventDefault();
+    this.passwordValidationError = '';
+    this.showPasswordMismatchWarning = false;
+
+    const passwordValidationError = this.getPasswordValidationError(this.password);
+    if (passwordValidationError) {
+      this.passwordValidationError = passwordValidationError;
+      return;
+    }
+
     const passwordsMatch = this.password === this.confirmPassword;
     this.showPasswordMismatchWarning = !passwordsMatch;
     
@@ -45,6 +57,38 @@ export class SignupPage {
       }
     })
 
+  }
+
+  togglePasswordVisibility(): void {
+    this.showPassword = !this.showPassword;
+  }
+
+  toggleConfirmPasswordVisibility(): void {
+    this.showConfirmPassword = !this.showConfirmPassword;
+  }
+
+  private getPasswordValidationError(password: string): string {
+    if (password.length < 8) {
+      return 'Password must be at least 8 characters long.';
+    }
+
+    if (!/[A-Z]/.test(password)) {
+      return 'Password must include at least one uppercase letter.';
+    }
+
+    if (!/[a-z]/.test(password)) {
+      return 'Password must include at least one lowercase letter.';
+    }
+
+    if (!/\d/.test(password)) {
+      return 'Password must include at least one number.';
+    }
+
+    if (!/[^A-Za-z0-9]/.test(password)) {
+      return 'Password must include at least one special character.';
+    }
+
+    return '';
   }
 
 }
