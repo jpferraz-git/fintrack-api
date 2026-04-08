@@ -8,5 +8,4 @@ import { Component, Input } from '@angular/core';
 })
 export class AuthCard {
   @Input({ required: true }) title = '';
-  @Input({ required: true }) subtitle = '';
 }

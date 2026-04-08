@@ -1,16 +1,16 @@
 <app-auth-layout>
   <section class="brand" aria-label="Brand" layout-brand>
     <h1 class="brand__logo">FINTRACK</h1>
+    <p class="brand__tagline">Manage your crypto finances</p>
   </section>
 
   <app-auth-card
     layout-card
-    title="Create Account"
-    subtitle=""
+    title="Sign Up"
   >
     <form class="auth-form" novalidate card-body (submit)="onSignupSubmit($event)">
       <app-form-input
-        label="Full Name"
+        label="Name"
         id="full-name"
         type="text"
         name="fullName"
@@ -24,7 +24,7 @@
       </app-form-input>
 
       <app-form-input
-        label="Email Address"
+        label="Email"
         id="email"
         type="email"
         name="email"
@@ -69,13 +69,13 @@
         </app-form-input>
       </div>
 
-      <div class="form-field form-field--checkbox">
+      <!-- <div class="form-field form-field--checkbox">
         <input class="form-field__checkbox" type="checkbox" id="terms" name="terms" />
         <label class="form-field__checkbox-label" for="terms">
           I agree to the <a class="form-field__link" href="#">Terms of Service</a> and
           <a class="form-field__link" href="#">Privacy Policy</a>.
         </label>
-      </div>
+      </div> -->
 
       <p class="form-warning" *ngIf="showPasswordMismatchWarning">
         Passwords do not match.
