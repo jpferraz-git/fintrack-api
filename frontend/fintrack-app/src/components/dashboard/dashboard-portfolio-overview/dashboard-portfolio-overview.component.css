@@ -4,6 +4,8 @@
   border-radius: 10px;
   padding: 14px;
   height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .dash-portfolio__header {
@@ -19,12 +21,6 @@
   font-weight: 700;
 }
 
-.dash-portfolio__live {
-  color: var(--color-green-light);
-  text-transform: uppercase;
-  letter-spacing: 0.9px;
-  font-size: 10px;
-}
 
 .dash-field-label {
   display: block;
@@ -59,35 +55,9 @@
   line-height: 1.05;
 }
 
-.dash-portfolio__chart {
-  width: 74px;
-  height: 74px;
-  border-radius: 50%;
-  position: relative;
-  display: grid;
-  place-items: center;
-}
-
-.dash-portfolio__chart::before {
-  content: '';
-  position: absolute;
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  background: rgba(10, 18, 35, 0.98);
-}
-
-.dash-portfolio__chart span {
-  position: relative;
-  z-index: 1;
-  color: #f3fbff;
-  font-size: 10px;
-  letter-spacing: 0.8px;
-  text-transform: uppercase;
-}
-
 .dash-portfolio__list {
   margin-top: 12px;
+  flex: 1;
 }
 
 .dash-portfolio__item {
@@ -156,7 +126,6 @@
   border-radius: 8px;
   border: 1px solid rgba(78, 222, 163, 0.35);
   background: rgba(78, 222, 163, 0.1);
-  color: var(--color-green-light);
   font-size: 11px;
   letter-spacing: 0.9px;
   text-transform: uppercase;
@@ -164,6 +133,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
+
 }
 
 .dash-portfolio__manage-button:hover {
