@@ -1,0 +1,170 @@
+.dash-portfolio {
+  background: rgba(19, 27, 46, 0.95);
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  padding: 14px;
+}
+
+.dash-portfolio__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.dash-panel-title {
+  color: var(--color-text-primary);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.dash-portfolio__live {
+  color: var(--color-green-light);
+  text-transform: uppercase;
+  letter-spacing: 0.9px;
+  font-size: 10px;
+}
+
+.dash-field-label {
+  display: block;
+  color: var(--color-text-dim);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.dash-portfolio__state {
+  margin-top: 12px;
+  color: var(--color-text-muted);
+  font-size: 12px;
+}
+
+.dash-portfolio__state--error {
+  color: var(--color-red-light);
+}
+
+.dash-portfolio__summary {
+  margin-top: 12px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 12px;
+}
+
+.dash-portfolio__summary p {
+  color: #f3fbff;
+  font-family: var(--font-display);
+  font-size: 26px;
+  line-height: 1.05;
+}
+
+.dash-portfolio__chart {
+  width: 74px;
+  height: 74px;
+  border-radius: 50%;
+  position: relative;
+  display: grid;
+  place-items: center;
+}
+
+.dash-portfolio__chart::before {
+  content: '';
+  position: absolute;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(10, 18, 35, 0.98);
+}
+
+.dash-portfolio__chart span {
+  position: relative;
+  z-index: 1;
+  color: #f3fbff;
+  font-size: 10px;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+}
+
+.dash-portfolio__list {
+  margin-top: 12px;
+}
+
+.dash-portfolio__item {
+  padding: 10px 0;
+  border-top: 1px solid var(--color-border-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.dash-coin-cell {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.dash-coin-cell p {
+  color: var(--color-text-primary);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.dash-coin-cell span {
+  color: var(--color-text-muted);
+  font-size: 10px;
+}
+
+.dash-coin-icon {
+  height: 30px;
+  min-width: 30px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 7px;
+  font-weight: 800;
+  letter-spacing: 0.2px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #f6f7fb;
+}
+
+.dash-coin-icon--btc { background: radial-gradient(circle at 30% 30%, #ffbd70 0%, #f7931a 70%); }
+.dash-coin-icon--eth { background: radial-gradient(circle at 30% 30%, #9cb0ff 0%, #627eea 70%); }
+.dash-coin-icon--bnb { background: radial-gradient(circle at 30% 30%, #ffe08d 0%, #f3ba2f 70%); color: #2f2a10; }
+.dash-coin-icon--sol { background: radial-gradient(circle at 30% 30%, #78ffe2 0%, #4edea3 70%); color: #08362b; }
+.dash-coin-icon--xrp { background: radial-gradient(circle at 30% 30%, #e2e8f3 0%, #a0aec0 70%); color: #1f2937; }
+.dash-coin-icon--ada { background: radial-gradient(circle at 30% 30%, #79c4ff 0%, #3579f6 70%); }
+.dash-coin-icon--doge { background: radial-gradient(circle at 30% 30%, #ffe08d 0%, #c2a633 70%); color: #2f2a10; }
+.dash-coin-icon--avax { background: radial-gradient(circle at 30% 30%, #ff9baa 0%, #e84161 70%); }
+.dash-coin-icon--dot { background: radial-gradient(circle at 30% 30%, #ff9fce 0%, #e74296 70%); }
+.dash-coin-icon--link { background: radial-gradient(circle at 30% 30%, #b7c8ff 0%, #4678ff 70%); }
+.dash-coin-icon--ltc { background: radial-gradient(circle at 30% 30%, #ecf0f3 0%, #bcc6d0 70%); color: #263238; }
+.dash-coin-icon--trx { background: radial-gradient(circle at 30% 30%, #ff9a9a 0%, #e53935 70%); }
+
+.dash-portfolio__value {
+  color: #f3fbff;
+  font-weight: 700;
+  font-size: 12px;
+}
+
+.dash-portfolio__manage-button {
+  margin-top: 12px;
+  width: 100%;
+  min-height: 36px;
+  border-radius: 8px;
+  border: 1px solid rgba(78, 222, 163, 0.35);
+  background: rgba(78, 222, 163, 0.1);
+  color: var(--color-green-light);
+  font-size: 11px;
+  letter-spacing: 0.9px;
+  text-transform: uppercase;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dash-portfolio__manage-button:hover {
+  background: rgba(78, 222, 163, 0.16);
+}
