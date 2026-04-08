@@ -53,6 +53,38 @@
   color: #ff6f6f;
 }
 
+.portfolio-value__current {
+  margin-top: 10px;
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.portfolio-value__current span {
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 10px;
+}
+
+.portfolio-value__current strong {
+  color: #f5fbff;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.portfolio-value__current em {
+  color: var(--color-green-light);
+  font-style: normal;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.portfolio-value__current em.is-negative {
+  color: #ff6f6f;
+}
+
 .portfolio-value__range {
   display: flex;
   gap: 8px;

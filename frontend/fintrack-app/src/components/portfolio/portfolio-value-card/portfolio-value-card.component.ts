@@ -2,15 +2,17 @@ import { CommonModule } from '@angular/common';
 import { Component, Input, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
 import {
   BehaviorSubject,
+  Observable,
   Subject,
   catchError,
   combineLatest,
   forkJoin,
   map,
+  merge,
   of,
   startWith,
   switchMap,
-  throttleTime
+  timer
 } from 'rxjs';
 import { MarketDataService, MarketKlinesResponse } from '../../../app/services/market-data.service';
 import {
@@ -31,8 +33,10 @@ interface PortfolioMetricsViewModel {
   hasError: boolean
   totalPortfolioValue: number
   totalPortfolioPercentage: number
+  currentPortfolioValue: number
   formattedTotalPortfolioValue: string
   formattedTotalPortfolioPercentage: string
+  formattedCurrentPortfolioValue: string
 }
 
 interface PortfolioChartViewModel {
@@ -83,23 +87,26 @@ export class PortfolioValueCard implements OnChanges, OnDestroy {
 
   private readonly refreshRequest$ = new Subject<void>()
   private readonly rangeSelection$ = new BehaviorSubject<PortfolioChartRange>(this.selectedRange)
+  private readonly autoRefresh$ = timer(0, 2000)
 
-  readonly metricsState$ = this.refreshRequest$.pipe(
-    startWith(void 0),
+  readonly metricsState$ = merge(this.autoRefresh$, this.refreshRequest$).pipe(
     switchMap(() =>
       forkJoin({
         value: this.portfolioService.calculateTotalProfitValue(),
-        percentage: this.portfolioService.calculateTotalProfitPercentage()
+        percentage: this.portfolioService.calculateTotalProfitPercentage(),
+        currentValue: this.loadCurrentPortfolioValue()
       }).pipe(
-        map(({ value, percentage }) => {
+        map(({ value, percentage, currentValue }) => {
           const totalPortfolioValue = this.parseNumeric(value.value)
           const totalPortfolioPercentage = this.parseNumeric(percentage.value)
+          const currentPortfolioValue = this.parseNumeric(currentValue)
 
           return this.buildViewModel({
             isLoading: false,
             hasError: false,
             totalPortfolioValue,
-            totalPortfolioPercentage
+            totalPortfolioPercentage,
+            currentPortfolioValue
           })
         }),
         catchError(() =>
@@ -107,24 +114,23 @@ export class PortfolioValueCard implements OnChanges, OnDestroy {
             isLoading: false,
             hasError: true,
             totalPortfolioValue: 0,
-            totalPortfolioPercentage: 0
+            totalPortfolioPercentage: 0,
+            currentPortfolioValue: 0
           }))
         ),
         startWith(this.buildViewModel({
           isLoading: true,
           hasError: false,
           totalPortfolioValue: 0,
-          totalPortfolioPercentage: 0
+          totalPortfolioPercentage: 0,
+          currentPortfolioValue: 0
         }))
       )
     )
   )
 
   readonly chartState$ = combineLatest([
-    this.refreshRequest$.pipe(
-      startWith(void 0),
-      throttleTime(30000, undefined, { leading: true, trailing: true })
-    ),
+    merge(this.autoRefresh$, this.refreshRequest$),
     this.rangeSelection$
   ]).pipe(
     switchMap(([, range]) => this.loadChartState(range))
@@ -394,6 +400,32 @@ export class PortfolioValueCard implements OnChanges, OnDestroy {
     return { interval: '1d', limit: 1000 }
   }
 
+  private loadCurrentPortfolioValue(): Observable<number> {
+    return this.portfolioService.getAssets().pipe(
+      switchMap((assets) => {
+        if (!assets.length) {
+          return of(0)
+        }
+
+        const requests = assets.map((asset) =>
+          this.marketDataService.getPrice(asset.symbol).pipe(
+            map((marketPrice) => {
+              const quantity = this.parseNumeric(asset.quantity)
+              const price = this.parseNumeric(marketPrice.price)
+              return quantity * price
+            }),
+            catchError(() => of(0))
+          )
+        )
+
+        return forkJoin(requests).pipe(
+          map((values) => values.reduce((acc, value) => acc + value, 0))
+        )
+      }),
+      catchError(() => of(0))
+    )
+  }
+
   private emptyChartState(isLoading: boolean, hasError: boolean): PortfolioChartViewModel {
     return {
       isLoading,
@@ -424,6 +456,7 @@ export class PortfolioValueCard implements OnChanges, OnDestroy {
     hasError: boolean
     totalPortfolioValue: number
     totalPortfolioPercentage: number
+    currentPortfolioValue: number
   }): PortfolioMetricsViewModel {
     const formattedTotalPortfolioValue = new Intl.NumberFormat('en-US', {
       style: 'currency',
@@ -432,13 +465,21 @@ export class PortfolioValueCard implements OnChanges, OnDestroy {
       maximumFractionDigits: 2
     }).format(state.totalPortfolioValue)
 
+    const formattedCurrentPortfolioValue = new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD',
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    }).format(state.currentPortfolioValue)
+
     const sign = state.totalPortfolioPercentage > 0 ? '+' : ''
     const formattedTotalPortfolioPercentage = `${sign}${state.totalPortfolioPercentage.toFixed(2)}%`
 
     return {
       ...state,
       formattedTotalPortfolioValue,
-      formattedTotalPortfolioPercentage
+      formattedTotalPortfolioPercentage,
+      formattedCurrentPortfolioValue
     }
   }
 }

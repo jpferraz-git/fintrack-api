@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
-import { Subject, takeUntil } from 'rxjs';
+import { Subject, catchError, map, merge, of, switchMap, takeUntil, timer } from 'rxjs';
 import { PortfolioService, PortfolioTransactionResponse } from '../../../app/services/portfolio.service';
 
 @Component({
@@ -47,23 +47,25 @@ export class PortfolioTransactionsTable implements OnInit, OnChanges, OnDestroy 
   };
 
   private readonly destroy$ = new Subject<void>();
+  private readonly manualRefresh$ = new Subject<void>();
 
   constructor(private portfolioService: PortfolioService) {}
 
   ngOnInit(): void {
-    this.loadTransactions();
+    this.startPolling();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     const refreshTriggerChange = changes['refreshTrigger'];
     if (refreshTriggerChange && !refreshTriggerChange.firstChange) {
-      this.loadTransactions();
+      this.manualRefresh$.next();
     }
   }
 
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
+    this.manualRefresh$.complete();
   }
 
   trackByTransactionId(index: number, transaction: PortfolioTransactionResponse): string {
@@ -170,27 +172,34 @@ export class PortfolioTransactionsTable implements OnInit, OnChanges, OnDestroy 
     return this.formatUsd(quantity * price);
   }
 
-  private loadTransactions(): void {
-    this.isTransactionsLoading = true;
-    this.hasTransactionsError = false;
+  private startPolling(): void {
+    merge(timer(0, 2000), this.manualRefresh$)
+      .pipe(
+        switchMap(() =>
+          this.portfolioService.getTransactions().pipe(
+            map((transactions) =>
+              [...transactions].sort((a, b) => {
+                const first = new Date(a.createdAt).getTime();
+                const second = new Date(b.createdAt).getTime();
+                return second - first;
+              })
+            ),
+            catchError(() => of(null))
+          )
+        ),
+        takeUntil(this.destroy$)
+      )
+      .subscribe((transactions) => {
+        this.isTransactionsLoading = false;
 
-    this.portfolioService
-      .getTransactions()
-      .pipe(takeUntil(this.destroy$))
-      .subscribe({
-        next: (transactions: PortfolioTransactionResponse[]) => {
-          this.transactions = [...transactions].sort((a, b) => {
-            const first = new Date(a.createdAt).getTime();
-            const second = new Date(b.createdAt).getTime();
-            return second - first;
-          });
-          this.isTransactionsLoading = false;
-        },
-        error: () => {
+        if (!transactions) {
           this.transactions = [];
           this.hasTransactionsError = true;
-          this.isTransactionsLoading = false;
+          return;
         }
+
+        this.transactions = transactions;
+        this.hasTransactionsError = false;
       });
   }
 

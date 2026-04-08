@@ -13,6 +13,12 @@
           {{ vm.formattedTotalPortfolioValue }}
           <span [class.is-negative]="vm.totalPortfolioPercentage < 0">{{ vm.formattedTotalPortfolioPercentage }}</span>
         </h2>
+
+        <p class="portfolio-value__current" *ngIf="!vm.isLoading && !vm.hasError">
+          <span>Current Portfolio Value</span>
+          <strong>{{ vm.formattedCurrentPortfolioValue }}</strong>
+          <em [class.is-negative]="vm.totalPortfolioPercentage < 0">{{ vm.formattedTotalPortfolioPercentage }}</em>
+        </p>
       </div>
     </ng-container>
 
