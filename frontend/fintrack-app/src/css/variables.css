@@ -8,6 +8,7 @@
   --color-bg-input:      #2D3449;
   --color-bg-hover:      #171F33;
   --color-bg-deep:       #060E20;
+  --color-bg-component:   rgba(19, 27, 46, 0.95);;
 
   /* Border */
   --color-border:        rgba(60, 74, 66, 0.20);
