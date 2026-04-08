@@ -2,9 +2,7 @@
   margin-top: 16px;
   padding: 0;
   overflow: hidden;
-  background:
-    radial-gradient(circle at 10% -35%, rgba(60, 178, 255, 0.2), transparent 45%),
-    linear-gradient(180deg, rgba(10, 18, 35, 0.96) 0%, rgba(8, 14, 27, 0.96) 100%);
+  background: var(--color-bg-component);
 }
 
 .portfolio-transactions__header {
@@ -78,7 +76,7 @@
   position: sticky;
   top: 0;
   z-index: 2;
-  background: rgba(8, 14, 27, 0.98);
+  background: var(--color-ui-track);
   font-weight: 600;
 }
 

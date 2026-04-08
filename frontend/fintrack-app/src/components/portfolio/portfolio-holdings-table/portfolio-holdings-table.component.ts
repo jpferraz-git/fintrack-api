@@ -22,6 +22,21 @@ interface PortfolioHoldingRow {
 export class PortfolioHoldingsTable implements OnInit, OnChanges, OnDestroy {
   @Input() refreshTrigger = 0
 
+  private readonly assetNames: Record<string, string> = {
+    BTC: 'Bitcoin',
+    ETH: 'Ethereum',
+    SOL: 'Solana',
+    BNB: 'BNB',
+    XRP: 'XRP',
+    ADA: 'Cardano',
+    DOGE: 'Dogecoin',
+    AVAX: 'Avalanche',
+    DOT: 'Polkadot',
+    LINK: 'Chainlink',
+    LTC: 'Litecoin',
+    TRX: 'TRON'
+  }
+
   private readonly coinIconByCode: Record<string, string> = {
     BTC: 'btc',
     ETH: 'eth',
@@ -91,13 +106,19 @@ export class PortfolioHoldingsTable implements OnInit, OnChanges, OnDestroy {
     return `${sign}${percentage.toFixed(2)}%`
   }
 
-  symbolLabel(symbol: string): string {
-    return symbol.endsWith('USDT') ? symbol.slice(0, -4) : symbol
+  getAssetTicker(symbol: string): string {
+    const ticker = symbol.endsWith('USDT') ? symbol.slice(0, -4) : symbol
+    return ticker.toUpperCase()
   }
 
-  symbolIcon(symbol: string): string {
-    const code = this.symbolLabel(symbol).toUpperCase()
-    return this.coinIconByCode[code] ?? code.toLowerCase()
+  getAssetName(symbol: string): string {
+    const ticker = this.getAssetTicker(symbol)
+    return this.assetNames[ticker] ?? ticker
+  }
+
+  getAssetIcon(symbol: string): string {
+    const ticker = this.getAssetTicker(symbol)
+    return this.coinIconByCode[ticker] ?? ticker.toLowerCase()
   }
 
   private startPolling(): void {

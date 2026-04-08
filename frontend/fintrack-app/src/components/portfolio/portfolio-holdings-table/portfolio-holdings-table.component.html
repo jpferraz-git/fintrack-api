@@ -16,7 +16,7 @@
     <table class="portfolio-holdings__table">
       <thead>
         <tr>
-          <th>Asset</th>
+          <th class="portfolio-holdings__asset-col">Asset</th>
           <th>Amount</th>
           <th>Holding Value</th>
           <th>Current Price</th>
@@ -25,14 +25,14 @@
       </thead>
       <tbody>
         <tr *ngFor="let row of rows; trackBy: trackByAssetId">
-          <td>
+          <td class="portfolio-holdings__asset-col">
             <div class="portfolio-asset">
-              <span class="dash-coin-icon dash-coin-icon--{{ symbolIcon(row.symbol) }}" aria-hidden="true">
-                {{ symbolLabel(row.symbol).toUpperCase() }}
+              <span class="dash-coin-icon dash-coin-icon--{{ getAssetIcon(row.symbol) }}" aria-hidden="true">
+                {{ getAssetTicker(row.symbol).toUpperCase() }}
               </span>
-              <div>
-                <p>{{ symbolLabel(row.symbol) }}</p>
-                <span>{{ row.symbol }}</span>
+              <div class="portfolio-asset-meta">
+                <span class="portfolio-asset-name">{{ getAssetName(row.symbol) }}</span>
+                <span class="portfolio-asset-ticker">({{ getAssetTicker(row.symbol) }})</span>
               </div>
             </div>
           </td>
