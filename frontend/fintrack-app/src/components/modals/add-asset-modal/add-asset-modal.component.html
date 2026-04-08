@@ -5,8 +5,6 @@
       <button type="button" class="terminal-modal__close" aria-label="Close asset modal" (click)="close()">x</button>
     </header>
 
-    <p class="terminal-modal__subtitle">Manual portfolio expansion</p>
-
     <form #assetForm="ngForm" class="terminal-modal__body" (ngSubmit)="addToPortfolio(assetForm)">
       <label class="terminal-modal__label" for="assetSymbol">Select Asset</label>
       <div class="terminal-modal__search-row">
@@ -57,7 +55,6 @@
         >
           {{ isSubmitting ? 'Saving...' : 'Add to Portfolio' }}
         </button>
-        <p>Data will be synced to your portfolio immediately after save.</p>
       </footer>
     </form>
   </section>

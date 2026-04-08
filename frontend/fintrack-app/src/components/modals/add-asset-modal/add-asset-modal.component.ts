@@ -21,20 +21,25 @@ export class AddAssetModal implements OnChanges {
   @Output() closed = new EventEmitter<void>();
   @Output() assetCreated = new EventEmitter<void>();
 
-  readonly cryptoOptions: CryptoOption[] = [
-    { label: 'Bitcoin (BTCUSDT)', symbol: 'BTCUSDT' },
-    { label: 'Ethereum (ETHUSDT)', symbol: 'ETHUSDT' },
-    { label: 'BNB (BNBUSDT)', symbol: 'BNBUSDT' },
-    { label: 'Solana (SOLUSDT)', symbol: 'SOLUSDT' },
-    { label: 'Ripple (XRPUSDT)', symbol: 'XRPUSDT' },
-    { label: 'Cardano (ADAUSDT)', symbol: 'ADAUSDT' },
-    { label: 'Dogecoin (DOGEUSDT)', symbol: 'DOGEUSDT' },
-    { label: 'Avalanche (AVAXUSDT)', symbol: 'AVAXUSDT' },
-    { label: 'Polkadot (DOTUSDT)', symbol: 'DOTUSDT' },
-    { label: 'Chainlink (LINKUSDT)', symbol: 'LINKUSDT' },
-    { label: 'Litecoin (LTCUSDT)', symbol: 'LTCUSDT' },
-    { label: 'TRON (TRXUSDT)', symbol: 'TRXUSDT' }
+  private readonly marketOverviewCryptos = [
+    { symbol: 'BTCUSDT', coinName: 'Bitcoin' },
+    { symbol: 'ETHUSDT', coinName: 'Ethereum' },
+    { symbol: 'BNBUSDT', coinName: 'BNB' },
+    { symbol: 'SOLUSDT', coinName: 'Solana' },
+    { symbol: 'XRPUSDT', coinName: 'Ripple' },
+    { symbol: 'ADAUSDT', coinName: 'Cardano' },
+    { symbol: 'DOGEUSDT', coinName: 'Dogecoin' },
+    { symbol: 'AVAXUSDT', coinName: 'Avalanche' },
+    { symbol: 'DOTUSDT', coinName: 'Polkadot' },
+    { symbol: 'LINKUSDT', coinName: 'Chainlink' },
+    { symbol: 'LTCUSDT', coinName: 'Litecoin' },
+    { symbol: 'TRXUSDT', coinName: 'TRON' }
   ]
+
+  readonly cryptoOptions: CryptoOption[] = this.marketOverviewCryptos.map((asset) => ({
+    symbol: asset.symbol,
+    label: `${asset.coinName} (${asset.symbol})`
+  }))
 
   selectedSymbol = 'BTCUSDT';
   investedValue: number | null = null;
