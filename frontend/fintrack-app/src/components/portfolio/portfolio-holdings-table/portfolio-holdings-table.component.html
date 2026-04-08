@@ -31,7 +31,9 @@
         <tr *ngFor="let row of rows; trackBy: trackByAssetId">
           <td>
             <div class="portfolio-asset">
-              <span class="portfolio-asset__icon">{{ symbolLabel(row.symbol).charAt(0) }}</span>
+              <span class="dash-coin-icon dash-coin-icon--{{ symbolIcon(row.symbol) }}" aria-hidden="true">
+                {{ symbolLabel(row.symbol).toUpperCase() }}
+              </span>
               <div>
                 <p>{{ symbolLabel(row.symbol) }}</p>
                 <span>{{ row.symbol }}</span>

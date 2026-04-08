@@ -22,6 +22,21 @@ interface PortfolioHoldingRow {
 export class PortfolioHoldingsTable implements OnInit, OnChanges {
   @Input() refreshTrigger = 0
 
+  private readonly coinIconByCode: Record<string, string> = {
+    BTC: 'btc',
+    ETH: 'eth',
+    BNB: 'bnb',
+    SOL: 'sol',
+    XRP: 'xrp',
+    ADA: 'ada',
+    DOGE: 'doge',
+    AVAX: 'avax',
+    DOT: 'dot',
+    LINK: 'link',
+    LTC: 'ltc',
+    TRX: 'trx'
+  }
+
   rows: PortfolioHoldingRow[] = []
   isLoading = true
   hasError = false
@@ -69,6 +84,11 @@ export class PortfolioHoldingsTable implements OnInit, OnChanges {
 
   symbolLabel(symbol: string): string {
     return symbol.endsWith('USDT') ? symbol.slice(0, -4) : symbol
+  }
+
+  symbolIcon(symbol: string): string {
+    const code = this.symbolLabel(symbol).toUpperCase()
+    return this.coinIconByCode[code] ?? code.toLowerCase()
   }
 
   private loadRows(): void {

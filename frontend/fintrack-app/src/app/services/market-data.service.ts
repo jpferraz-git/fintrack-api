@@ -49,12 +49,12 @@ export class MarketDataService {
         })
     }
 
-    getKlines(symbol: string, interval: string): Observable<MarketKlinesResponse> {
+    getKlines(symbol: string, interval: string, limit = 80): Observable<MarketKlinesResponse> {
         return this.http.get<MarketKlinesResponse>(`${environment.apiUrl}/binance/klines`, {
             params: {
                 symbol,
                 interval,
-                limit: 80
+                limit
             }
         })
     }
