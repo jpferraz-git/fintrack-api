@@ -1,10 +1,10 @@
 <section class="portfolio-card portfolio-transactions" aria-label="Transaction history">
   <header class="portfolio-transactions__header">
-    <h3>Historico de Transacoes</h3>
-    <div class="portfolio-transactions__actions">
+    <h3>Transaction History</h3>
+    <!-- <div class="portfolio-transactions__actions">
       <button type="button" class="portfolio-transactions__action">Exportar CSV</button>
       <button type="button" class="portfolio-transactions__action">Filtrar</button>
-    </div>
+    </div> -->
   </header>
 
   <div class="portfolio-transactions__state" *ngIf="isTransactionsLoading">Loading transactions...</div>
@@ -27,7 +27,7 @@
           <th>Quantity</th>
           <th>Price</th>
           <th>Total Value</th>
-            <th>Date</th>
+          <th>Date</th>
         </tr>
       </thead>
       <tbody>
@@ -60,13 +60,13 @@
           <td>{{ formatUsd(transaction.price) }}</td>
           <td class="portfolio-transactions__total">{{ formatTotal(transaction) }}</td>
           <td>
-            <span
+            <!-- <span
               class="portfolio-status-badge"
               [class.portfolio-status-badge--pending]="isPending(transaction)"
               [class.portfolio-status-badge--completed]="!isPending(transaction)"
             >
               {{ getTransactionStatus(transaction) }}
-            </span>
+            </span> -->
           </td>
         </tr>
 

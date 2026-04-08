@@ -77,6 +77,8 @@
   top: 0;
   z-index: 2;
   background: var(--color-ui-track);
+  border-top: 1px solid #565b5f;
+  border-bottom: 1px solid #565b5f;
   font-weight: 600;
 }
 

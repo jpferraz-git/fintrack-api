@@ -58,6 +58,8 @@
   letter-spacing: 0.5px;
   padding: 12px 20px;
   background-color: var(--color-ui-track);
+  border-top: 1px solid #565b5f;
+  border-bottom: 1px solid #565b5f;
 }
 
 .portfolio-holdings__table td {
