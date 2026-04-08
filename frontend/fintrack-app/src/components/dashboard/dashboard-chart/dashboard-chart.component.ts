@@ -27,7 +27,7 @@ type RenderCandle = {
   bodyHeight: string;
 };
 
-type ChartInterval = '15m' | '1h' | '1d' | '1w';
+type ChartInterval = '1m' | '15m' | '1h' | '1d' | '1w';
 
 @Component({
   selector: 'app-dashboard-chart',
@@ -40,6 +40,7 @@ export class DashboardChart implements OnInit, OnDestroy {
   private readonly refreshParams$ = new Subject<void>();
 
   readonly intervalOptions: ChartIntervalOption[] = [
+    { value: '1m', label: '1m' },
     { value: '15m', label: '15m' },
     { value: '1h', label: '1h' },
     { value: '1d', label: '1d' },
@@ -47,10 +48,18 @@ export class DashboardChart implements OnInit, OnDestroy {
   ];
 
   readonly symbolOptions: ChartSymbolOption[] = [
-    { symbol: 'BTCUSDT', label: 'BTC / USDT' },
-    { symbol: 'ETHUSDT', label: 'ETH / USDT' },
-    { symbol: 'BNBUSDT', label: 'BNB / USDT' },
-    { symbol: 'SOLUSDT', label: 'SOL / USDT' }
+    { symbol: 'BTCUSDT', label: 'Bitcoin' },
+    { symbol: 'ETHUSDT', label: 'Ethereum' },
+    { symbol: 'BNBUSDT', label: 'BNB' },
+    { symbol: 'SOLUSDT', label: 'Solana' },
+    { symbol: 'XRPUSDT', label: 'Ripple' },
+    { symbol: 'ADAUSDT', label: 'Cardano' },
+    { symbol: 'DOGEUSDT', label: 'Dogecoin' },
+    { symbol: 'AVAXUSDT', label: 'Avalanche' },
+    { symbol: 'DOTUSDT', label: 'Polkadot' },
+    { symbol: 'LINKUSDT', label: 'Chainlink' },
+    { symbol: 'LTCUSDT', label: 'Litecoin' },
+    { symbol: 'TRXUSDT', label: 'TRON' }
   ];
 
   selectedInterval: ChartInterval = '15m';

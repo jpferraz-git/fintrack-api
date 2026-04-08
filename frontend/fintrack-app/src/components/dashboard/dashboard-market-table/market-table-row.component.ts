@@ -47,7 +47,7 @@ export class MarketTableRowComponent implements OnInit, OnDestroy {
   }
 
   private startPolling(): void {
-    timer(0, 4000)
+    timer(0, 1000)
       .pipe(
         exhaustMap(() =>
           forkJoin({

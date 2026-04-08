@@ -25,17 +25,14 @@
           <th>Asset</th>
           <th>Type</th>
           <th>Quantity</th>
-          <th>Price</th>
           <th>Total Value</th>
+          <th>Price</th>
           <th>Date</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let transaction of transactions; trackBy: trackByTransactionId">
-          <td>
-            <span class="portfolio-transactions__date">{{ formatDatePart(transaction.createdAt) }}</span>
-            <span class="portfolio-transactions__time">{{ formatTimePart(transaction.createdAt) }}</span>
-          </td>
+      
           <td>
             <div class="portfolio-asset-cell">
               <span class="dash-coin-icon dash-coin-icon--{{ getAssetIcon(transaction.symbol) }}" aria-hidden="true">
@@ -56,17 +53,13 @@
               {{ formatTransactionType(transaction.type) }}
             </span>
           </td>
+         
           <td>{{ formatQuantityWithTicker(transaction) }}</td>
-          <td>{{ formatUsd(transaction.price) }}</td>
           <td class="portfolio-transactions__total">{{ formatTotal(transaction) }}</td>
+          <td>{{ formatUsd(transaction.price) }}</td>  
           <td>
-            <!-- <span
-              class="portfolio-status-badge"
-              [class.portfolio-status-badge--pending]="isPending(transaction)"
-              [class.portfolio-status-badge--completed]="!isPending(transaction)"
-            >
-              {{ getTransactionStatus(transaction) }}
-            </span> -->
+            <span class="portfolio-transactions__date">{{ formatDatePart(transaction.createdAt) }}</span>
+            <span class="portfolio-transactions__time">{{ formatTimePart(transaction.createdAt) }}</span>
           </td>
         </tr>
 

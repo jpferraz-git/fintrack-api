@@ -1,25 +1,30 @@
+.portfolio-card {
+  border: 1px solid var(--color-border-subtle);
+  border-radius: 12px;
+  background: var(--color-bg-component);
+}
+
 .portfolio-transactions {
   margin-top: 16px;
   padding: 0;
   overflow: hidden;
-  background: var(--color-bg-component);
 }
 
 .portfolio-transactions__header {
+  min-height: 56px;
+  border-bottom: 1px solid var(--color-border-subtle);
+  padding: 0 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 18px 20px 14px;
-  border-bottom: 1px solid rgba(92, 117, 156, 0.28);
 }
 
 .portfolio-transactions__header h3 {
-  font-size: 12px;
-  color: #e6f0ff;
-  letter-spacing: 1.6px;
+  color: #e7efff;
   text-transform: uppercase;
+  letter-spacing: 2px;
+  font-size: 20px;
   font-family: var(--font-display);
-  margin: 0;
 }
 
 .portfolio-transactions__actions {
@@ -44,21 +49,19 @@
 }
 
 .portfolio-transactions__state {
-  padding: 14px 20px;
+  padding: 20px;
   color: var(--color-text-muted);
-  font-size: 12px;
-  border-top: 1px solid rgba(92, 117, 156, 0.25);
+  font-size: 13px;
 }
 
 .portfolio-transactions__state--error {
-  color: var(--color-red-light);
+  color: #ff95ab;
 }
 
 .portfolio-transactions__scroll {
   max-height: 340px;
-  overflow-y: auto;
   overflow-x: auto;
-  border-top: 1px solid rgba(92, 117, 156, 0.2);
+  overflow-y: auto;
 }
 
 .portfolio-transactions table {
@@ -67,11 +70,10 @@
 }
 
 .portfolio-transactions th {
-  text-align: left;
-  font-size: 10px;
-  color: #8ea6cf;
+  text-align: center;
+  font-size: 12px;
   text-transform: uppercase;
-  letter-spacing: 1.1px;
+  letter-spacing: 0.5px;
   padding: 12px 20px;
   position: sticky;
   top: 0;
@@ -79,14 +81,16 @@
   background: var(--color-ui-track);
   border-top: 1px solid #565b5f;
   border-bottom: 1px solid #565b5f;
-  font-weight: 600;
 }
 
 .portfolio-transactions td {
-  padding: 14px 20px;
-  border-top: 1px solid rgba(86, 108, 144, 0.18);
-  color: #d7e7ff;
+  padding: 16px 20px;
+  border-top: 1px solid var(--color-border-subtle);
+  text-align: center;
+  color: #d5dff0;
   font-size: 14px;
+  white-space: nowrap;
+  font-weight: 600;
   vertical-align: middle;
 }
 
@@ -100,49 +104,49 @@
 
 .portfolio-transactions__empty {
   text-align: center;
-  color: #8ea6cf;
+  color: var(--color-text-muted);
   padding: 24px 20px;
   font-size: 13px;
 }
 
 .portfolio-transactions__date {
   display: block;
-  font-weight: 500;
+  color: #f5fbff;
+  font-weight: 600;
 }
 
 .portfolio-transactions__time {
   display: block;
-  color: #7e95bb;
+  color: var(--color-text-muted);
   font-size: 12px;
   margin-top: 2px;
 }
 
 .portfolio-asset-cell {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
 }
 
 .portfolio-asset-cell .dash-coin-icon {
-  width: 20px;
-  height: 20px;
-  min-width: 20px;
-  font-size: 6px;
+  width: 28px;
+  height: 28px;
+  min-width: 28px;
 }
 
 .portfolio-asset-meta {
   display: inline-flex;
-  gap: 6px;
   align-items: baseline;
+  gap: 6px;
 }
 
 .portfolio-asset-name {
+  color: #f5fbff;
   font-weight: 600;
-  color: #f1f7ff;
 }
 
 .portfolio-asset-ticker {
-  color: #8ea6cf;
+  color: var(--color-text-muted);
   font-size: 12px;
 }
 
