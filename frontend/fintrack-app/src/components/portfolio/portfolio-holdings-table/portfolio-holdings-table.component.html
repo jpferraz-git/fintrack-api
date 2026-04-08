@@ -18,7 +18,7 @@
         <tr>
           <th>Asset</th>
           <th>Amount</th>
-          <th>Avg Buy Price</th>
+          <th>Holding Value</th>
           <th>Current Price</th>
           <th>Profit/Loss %</th>
         </tr>
@@ -37,7 +37,7 @@
             </div>
           </td>
           <td>{{ formatQuantity(row.quantity) }}</td>
-          <td>{{ formatPrice(row.avgPrice) }}</td>
+          <td class="portfolio-holdings__price">{{ formatPrice(row.positionValue) }}</td>
           <td class="portfolio-holdings__price">{{ formatPrice(row.currentPrice) }}</td>
           <td>
             <span class="portfolio-pill" [class.portfolio-pill--up]="row.profitPercentage >= 0" [class.portfolio-pill--down]="row.profitPercentage < 0">

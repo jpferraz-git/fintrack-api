@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { catchError, forkJoin, map, of, switchMap } from 'rxjs';
+import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
+import { Subject, catchError, forkJoin, map, merge, of, switchMap, takeUntil, timer } from 'rxjs';
 import { MarketDataService } from '../../../app/services/market-data.service';
 import { PortfolioAssetResponse, PortfolioService } from '../../../app/services/portfolio.service';
 
@@ -8,7 +8,7 @@ interface PortfolioHoldingRow {
   assetId: string
   symbol: string
   quantity: number
-  avgPrice: number
+  positionValue: number
   currentPrice: number
   profitPercentage: number
 }
@@ -19,7 +19,7 @@ interface PortfolioHoldingRow {
   templateUrl: './portfolio-holdings-table.component.html',
   styleUrl: './portfolio-holdings-table.component.css'
 })
-export class PortfolioHoldingsTable implements OnInit, OnChanges {
+export class PortfolioHoldingsTable implements OnInit, OnChanges, OnDestroy {
   @Input() refreshTrigger = 0
 
   private readonly coinIconByCode: Record<string, string> = {
@@ -41,20 +41,29 @@ export class PortfolioHoldingsTable implements OnInit, OnChanges {
   isLoading = true
   hasError = false
 
+  private readonly destroy$ = new Subject<void>()
+  private readonly manualRefresh$ = new Subject<void>()
+
   constructor(
     private portfolioService: PortfolioService,
     private marketDataService: MarketDataService
   ) {}
 
   ngOnInit(): void {
-    this.loadRows()
+    this.startPolling()
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     const refreshTriggerChange = changes['refreshTrigger']
     if (refreshTriggerChange && !refreshTriggerChange.firstChange) {
-      this.loadRows()
+      this.manualRefresh$.next()
     }
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next()
+    this.destroy$.complete()
+    this.manualRefresh$.complete()
   }
 
   trackByAssetId(index: number, row: PortfolioHoldingRow): string {
@@ -91,39 +100,44 @@ export class PortfolioHoldingsTable implements OnInit, OnChanges {
     return this.coinIconByCode[code] ?? code.toLowerCase()
   }
 
-  private loadRows(): void {
-    this.isLoading = true
-    this.hasError = false
-
-    this.portfolioService
-      .getAssets()
+  private startPolling(): void {
+    merge(timer(0, 2000), this.manualRefresh$)
       .pipe(
-        switchMap((assets: PortfolioAssetResponse[]) => {
-          if (assets.length === 0) {
-            return of([] as PortfolioHoldingRow[])
-          }
-
-          const rowRequests = assets.map((asset) =>
-            this.marketDataService.getPrice(asset.symbol).pipe(
-              map((marketPrice) => this.toRow(asset, this.parseNumeric(marketPrice.price))),
-              catchError(() => of(this.toRow(asset, 0)))
-            )
-          )
-
-          return forkJoin(rowRequests)
-        })
+        switchMap(() => this.fetchRows()),
+        takeUntil(this.destroy$)
       )
-      .subscribe({
-        next: (rows: PortfolioHoldingRow[]) => {
-          this.rows = rows.sort((a, b) => a.symbol.localeCompare(b.symbol))
-          this.isLoading = false
-        },
-        error: () => {
+      .subscribe((rows) => {
+        this.isLoading = false
+
+        if (!rows) {
           this.rows = []
           this.hasError = true
-          this.isLoading = false
+          return
         }
+
+        this.rows = rows.sort((a, b) => a.symbol.localeCompare(b.symbol))
+        this.hasError = false
       })
+  }
+
+  private fetchRows() {
+    return this.portfolioService.getAssets().pipe(
+      switchMap((assets: PortfolioAssetResponse[]) => {
+        if (assets.length === 0) {
+          return of([] as PortfolioHoldingRow[])
+        }
+
+        const rowRequests = assets.map((asset) =>
+          this.marketDataService.getPrice(asset.symbol).pipe(
+            map((marketPrice) => this.toRow(asset, this.parseNumeric(marketPrice.price))),
+            catchError(() => of(this.toRow(asset, 0)))
+          )
+        )
+
+        return forkJoin(rowRequests)
+      }),
+      catchError(() => of(null))
+    )
   }
 
   private toRow(asset: PortfolioAssetResponse, currentPrice: number): PortfolioHoldingRow {
@@ -132,12 +146,13 @@ export class PortfolioHoldingsTable implements OnInit, OnChanges {
     const profitPercentage = avgPrice <= 0
       ? 0
       : ((currentPrice - avgPrice) / avgPrice) * 100
+    const positionValue = quantity * currentPrice
 
     return {
       assetId: asset.assetId,
       symbol: asset.symbol,
       quantity,
-      avgPrice,
+      positionValue,
       currentPrice,
       profitPercentage
     }
