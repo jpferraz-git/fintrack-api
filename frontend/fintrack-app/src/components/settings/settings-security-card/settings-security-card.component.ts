@@ -9,9 +9,10 @@ import { UserService } from '../../../app/services/user.service';
   styleUrl: './settings-security-card.component.css'
 })
 export class SettingsSecurityCard {
-  currentPassword = '';
   newPassword = '';
   confirmPassword = '';
+  showNewPassword = false;
+  showConfirmPassword = false;
 
   passwordUpdated = false;
   passwordError = '';
@@ -23,8 +24,14 @@ export class SettingsSecurityCard {
     this.passwordError = '';
     this.passwordUpdated = false;
 
-    if (!this.currentPassword.trim()) {
-      this.passwordError = 'Current password is required.';
+    if (!this.newPassword.trim() || !this.confirmPassword.trim()) {
+      this.passwordError = 'New password and confirmation are required.';
+      return;
+    }
+
+    const passwordValidationError = this.getPasswordValidationError(this.newPassword);
+    if (passwordValidationError) {
+      this.passwordError = passwordValidationError;
       return;
     }
 
@@ -58,11 +65,18 @@ export class SettingsSecurityCard {
 
     this.userService.updatePasswordByEmail(currentUserEmail, this.newPassword).subscribe({
       next: () => {
-        this.currentPassword = '';
         this.newPassword = '';
         this.confirmPassword = '';
         this.passwordUpdated = true;
         this.isSubmitting = false;
+
+        this.syncSessionUser(currentUserEmail);
+
+        setTimeout(() => {
+          if (typeof window !== 'undefined') {
+            window.location.reload();
+          }
+        }, 700);
 
         setTimeout(() => {
           this.passwordUpdated = false;
@@ -73,5 +87,62 @@ export class SettingsSecurityCard {
         this.passwordError = error?.error?.message || 'Unable to update password. Please try again.';
       }
     });
+  }
+
+  toggleNewPasswordVisibility(): void {
+    this.showNewPassword = !this.showNewPassword;
+  }
+
+  toggleConfirmPasswordVisibility(): void {
+    this.showConfirmPassword = !this.showConfirmPassword;
+  }
+
+  private getPasswordValidationError(password: string): string {
+    if (password.length < 8) {
+      return 'Password must be at least 8 characters long.';
+    }
+
+    if (!/[A-Z]/.test(password)) {
+      return 'Password must include at least one uppercase letter.';
+    }
+
+    if (!/[a-z]/.test(password)) {
+      return 'Password must include at least one lowercase letter.';
+    }
+
+    if (!/\d/.test(password)) {
+      return 'Password must include at least one number.';
+    }
+
+    if (!/[^A-Za-z0-9]/.test(password)) {
+      return 'Password must include at least one special character.';
+    }
+
+    return '';
+  }
+
+  private syncSessionUser(email: string): void {
+    if (typeof window === 'undefined' || typeof sessionStorage === 'undefined') {
+      return;
+    }
+
+    const localUserRaw = localStorage.getItem('user');
+    let user = {
+      email
+    };
+
+    if (localUserRaw) {
+      try {
+        user = {
+          ...JSON.parse(localUserRaw),
+          email
+        };
+      } catch {
+        user = { email };
+      }
+    }
+
+    sessionStorage.setItem('user', JSON.stringify(user));
+    sessionStorage.setItem('security:lastPasswordUpdate', new Date().toISOString());
   }
 }
