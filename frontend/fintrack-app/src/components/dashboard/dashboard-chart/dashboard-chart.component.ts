@@ -48,17 +48,17 @@ export class DashboardChart implements OnInit, OnDestroy {
   ];
 
   readonly symbolOptions: ChartSymbolOption[] = [
-    { symbol: 'BTCUSDT', label: 'Bitcoin' },
-    { symbol: 'ETHUSDT', label: 'Ethereum' },
-    { symbol: 'BNBUSDT', label: 'BNB' },
-    { symbol: 'SOLUSDT', label: 'Solana' },
-    { symbol: 'XRPUSDT', label: 'Ripple' },
-    { symbol: 'ADAUSDT', label: 'Cardano' },
-    { symbol: 'DOGEUSDT', label: 'Dogecoin' },
     { symbol: 'AVAXUSDT', label: 'Avalanche' },
-    { symbol: 'DOTUSDT', label: 'Polkadot' },
+    { symbol: 'BNBUSDT', label: 'BNB' },
+    { symbol: 'BTCUSDT', label: 'Bitcoin' },
+    { symbol: 'ADAUSDT', label: 'Cardano' },
     { symbol: 'LINKUSDT', label: 'Chainlink' },
+    { symbol: 'DOGEUSDT', label: 'Dogecoin' },
+    { symbol: 'ETHUSDT', label: 'Ethereum' },
     { symbol: 'LTCUSDT', label: 'Litecoin' },
+    { symbol: 'DOTUSDT', label: 'Polkadot' },
+    { symbol: 'XRPUSDT', label: 'Ripple' },
+    { symbol: 'SOLUSDT', label: 'Solana' },
     { symbol: 'TRXUSDT', label: 'TRON' }
   ];
 

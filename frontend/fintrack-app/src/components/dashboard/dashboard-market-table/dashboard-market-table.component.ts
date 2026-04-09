@@ -20,17 +20,17 @@ export class DashboardMarketTable {
   searchTerm = ''
 
   readonly rows: MarketRow[] = [
-    { symbol: 'BTCUSDT', coinName: 'Bitcoin', coinIcon: 'btc', marketCap: '$1.34T' },
-    { symbol: 'ETHUSDT', coinName: 'Ethereum', coinIcon: 'eth', marketCap: '$421.9B' },
-    { symbol: 'BNBUSDT', coinName: 'BNB', coinIcon: 'bnb', marketCap: '$84.2B' },
-    { symbol: 'SOLUSDT', coinName: 'Solana', coinIcon: 'sol', marketCap: '$64.5B' },
-    { symbol: 'XRPUSDT', coinName: 'Ripple', coinIcon: 'xrp', marketCap: '$33.8B' },
-    { symbol: 'ADAUSDT', coinName: 'Cardano', coinIcon: 'ada', marketCap: '$16.1B' },
-    { symbol: 'DOGEUSDT', coinName: 'Dogecoin', coinIcon: 'doge', marketCap: '$25.4B' },
     { symbol: 'AVAXUSDT', coinName: 'Avalanche', coinIcon: 'avax', marketCap: '$12.8B' },
-    { symbol: 'DOTUSDT', coinName: 'Polkadot', coinIcon: 'dot', marketCap: '$10.2B' },
+    { symbol: 'BNBUSDT', coinName: 'BNB', coinIcon: 'bnb', marketCap: '$84.2B' },
+    { symbol: 'BTCUSDT', coinName: 'Bitcoin', coinIcon: 'btc', marketCap: '$1.34T' },
+    { symbol: 'ADAUSDT', coinName: 'Cardano', coinIcon: 'ada', marketCap: '$16.1B' },
     { symbol: 'LINKUSDT', coinName: 'Chainlink', coinIcon: 'link', marketCap: '$11.4B' },
+    { symbol: 'DOGEUSDT', coinName: 'Dogecoin', coinIcon: 'doge', marketCap: '$25.4B' },
+    { symbol: 'ETHUSDT', coinName: 'Ethereum', coinIcon: 'eth', marketCap: '$421.9B' },
     { symbol: 'LTCUSDT', coinName: 'Litecoin', coinIcon: 'ltc', marketCap: '$7.8B' },
+    { symbol: 'DOTUSDT', coinName: 'Polkadot', coinIcon: 'dot', marketCap: '$10.2B' },
+    { symbol: 'XRPUSDT', coinName: 'Ripple', coinIcon: 'xrp', marketCap: '$33.8B' },
+    { symbol: 'SOLUSDT', coinName: 'Solana', coinIcon: 'sol', marketCap: '$64.5B' },
     { symbol: 'TRXUSDT', coinName: 'TRON', coinIcon: 'trx', marketCap: '$10.7B' }
   ]
 

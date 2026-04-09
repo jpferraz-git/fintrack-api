@@ -23,18 +23,18 @@ export class PortfolioHoldingsTable implements OnInit, OnChanges, OnDestroy {
   @Input() refreshTrigger = 0
 
   private readonly assetNames: Record<string, string> = {
-    BTC: 'Bitcoin',
-    ETH: 'Ethereum',
-    SOL: 'Solana',
-    BNB: 'BNB',
-    XRP: 'XRP',
-    ADA: 'Cardano',
-    DOGE: 'Dogecoin',
     AVAX: 'Avalanche',
-    DOT: 'Polkadot',
+    BNB: 'BNB',
+    BTC: 'Bitcoin',
+    ADA: 'Cardano',
     LINK: 'Chainlink',
+    DOGE: 'Dogecoin',
+    ETH: 'Ethereum',
     LTC: 'Litecoin',
-    TRX: 'TRON'
+    DOT: 'Polkadot',
+    SOL: 'Solana',
+    TRX: 'TRON',
+    XRP: 'XRP'
   }
 
   private readonly coinIconByCode: Record<string, string> = {

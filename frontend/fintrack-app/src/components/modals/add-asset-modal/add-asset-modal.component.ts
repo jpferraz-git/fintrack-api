@@ -22,17 +22,17 @@ export class AddAssetModal implements OnChanges {
   @Output() assetCreated = new EventEmitter<void>();
 
   private readonly marketOverviewCryptos = [
-    { symbol: 'BTCUSDT', coinName: 'Bitcoin' },
-    { symbol: 'ETHUSDT', coinName: 'Ethereum' },
-    { symbol: 'BNBUSDT', coinName: 'BNB' },
-    { symbol: 'SOLUSDT', coinName: 'Solana' },
-    { symbol: 'XRPUSDT', coinName: 'Ripple' },
-    { symbol: 'ADAUSDT', coinName: 'Cardano' },
-    { symbol: 'DOGEUSDT', coinName: 'Dogecoin' },
     { symbol: 'AVAXUSDT', coinName: 'Avalanche' },
-    { symbol: 'DOTUSDT', coinName: 'Polkadot' },
+    { symbol: 'BNBUSDT', coinName: 'BNB' },
+    { symbol: 'BTCUSDT', coinName: 'Bitcoin' },
+    { symbol: 'ADAUSDT', coinName: 'Cardano' },
     { symbol: 'LINKUSDT', coinName: 'Chainlink' },
+    { symbol: 'DOGEUSDT', coinName: 'Dogecoin' },
+    { symbol: 'ETHUSDT', coinName: 'Ethereum' },
     { symbol: 'LTCUSDT', coinName: 'Litecoin' },
+    { symbol: 'DOTUSDT', coinName: 'Polkadot' },
+    { symbol: 'XRPUSDT', coinName: 'Ripple' },
+    { symbol: 'SOLUSDT', coinName: 'Solana' },
     { symbol: 'TRXUSDT', coinName: 'TRON' }
   ]
 

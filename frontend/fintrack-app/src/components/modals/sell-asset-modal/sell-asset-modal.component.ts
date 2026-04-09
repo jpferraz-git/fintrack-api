@@ -37,17 +37,17 @@ export class SellAssetModal implements OnChanges, OnDestroy {
   private readonly destroy$ = new Subject<void>();
 
   private readonly assetNames: Record<string, string> = {
-    BTC: 'Bitcoin',
-    ETH: 'Ethereum',
-    BNB: 'BNB',
-    SOL: 'Solana',
-    XRP: 'Ripple',
-    ADA: 'Cardano',
-    DOGE: 'Dogecoin',
     AVAX: 'Avalanche',
-    DOT: 'Polkadot',
+    BNB: 'BNB',
+    BTC: 'Bitcoin',
+    ADA: 'Cardano',
     LINK: 'Chainlink',
+    DOGE: 'Dogecoin',
+    ETH: 'Ethereum',
     LTC: 'Litecoin',
+    DOT: 'Polkadot',
+    XRP: 'Ripple',
+    SOL: 'Solana',
     TRX: 'TRON'
   };
 
@@ -204,7 +204,7 @@ export class SellAssetModal implements OnChanges, OnDestroy {
               };
             })
             .filter((option) => option.availableQuantity > 0)
-            .sort((a, b) => a.symbol.localeCompare(b.symbol));
+            .sort((a, b) => a.label.localeCompare(b.label));
 
           if (this.sellOptions.length === 0) {
             this.selectedSymbol = '';
