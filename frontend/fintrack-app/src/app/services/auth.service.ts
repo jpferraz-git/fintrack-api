@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core'
 import { HttpClient } from '@angular/common/http'
 import { Observable, tap } from 'rxjs'
 import { environment } from '../../environments/environment'
+import { UtilsService } from './utils.service'
 
 interface LoginRequest {
     email: string
@@ -30,7 +31,10 @@ export class AuthService {
     private readonly tokenKey = 'token'
     user: UserProfileResponse | null = null
 
-    constructor(private http: HttpClient) {}
+    constructor(
+        private http: HttpClient,
+        private utilsService: UtilsService
+    ) {}
 
     login(body: LoginRequest): Observable<LoginResponse> {
         return this.http.post<LoginResponse>(`${environment.apiUrl}/auth/login`, body)
@@ -58,12 +62,7 @@ export class AuthService {
     }
 
     getUser() {
-        if (!this.isBrowserStorageAvailable()) {
-            return null
-        }
-        const user = localStorage.getItem('user')
-        console.log('Getting user from AuthService:', user)
-        return user ? JSON.parse(user) : null
+        return this.utilsService.getStoredUser<UserProfileResponse>()
     }
 
     setUser(user: UserProfileResponse): void {
