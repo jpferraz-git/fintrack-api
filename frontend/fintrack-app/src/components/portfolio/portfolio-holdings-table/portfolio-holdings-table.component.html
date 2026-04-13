@@ -2,110 +2,47 @@
   <header class="portfolio-holdings__header">
     <h3>My Holdings</h3>
 
-    <div class="portfolio-holdings__actions">
-      <button type="button">Filter</button>
-      <button type="button">Export</button>
-    </div>
   </header>
 
-  <div class="portfolio-holdings__table-wrap">
+  <div class="portfolio-holdings__state" *ngIf="isLoading">Loading holdings...</div>
+  <div class="portfolio-holdings__state portfolio-holdings__state--error" *ngIf="!isLoading && hasError">
+    Could not load holdings data.
+  </div>
+  <div class="portfolio-holdings__state" *ngIf="!isLoading && !hasError && rows.length === 0">
+    No assets in your portfolio yet.
+  </div>
+
+  <div class="portfolio-holdings__table-wrap" *ngIf="!isLoading && !hasError && rows.length > 0">
     <table class="portfolio-holdings__table">
       <thead>
         <tr>
-          <th>Asset</th>
+          <th class="portfolio-holdings__asset-col">Asset</th>
           <th>Amount</th>
-          <th>Avg Buy Price</th>
+          <th>Holding Value</th>
           <th>Current Price</th>
           <th>Profit/Loss %</th>
-          <th>Actions</th>
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td>
+        <tr *ngFor="let row of rows; trackBy: trackByAssetId">
+          <td class="portfolio-holdings__asset-col">
             <div class="portfolio-asset">
-              <span class="portfolio-asset__icon portfolio-asset__icon--btc">B</span>
-              <div>
-                <p>Bitcoin</p>
-                <span>BTC</span>
+              <span class="dash-coin-icon dash-coin-icon--{{ getAssetIcon(row.symbol) }}" aria-hidden="true">
+                {{ getAssetTicker(row.symbol).toUpperCase() }}
+              </span>
+              <div class="portfolio-asset-meta">
+                <span class="portfolio-asset-name">{{ getAssetName(row.symbol) }}</span>
+                <span class="portfolio-asset-ticker">({{ getAssetTicker(row.symbol) }})</span>
               </div>
             </div>
           </td>
-          <td>12.4500000</td>
-          <td>$42,150.00</td>
-          <td class="portfolio-holdings__price">$64,812.24</td>
-          <td><span class="portfolio-pill portfolio-pill--up">+53.76%</span></td>
+          <td>{{ formatQuantity(row.quantity) }}</td>
+          <td class="portfolio-holdings__price">{{ formatPrice(row.positionValue) }}</td>
+          <td class="portfolio-holdings__price">{{ formatPrice(row.currentPrice) }}</td>
           <td>
-            <div class="portfolio-row-actions">
-              <button type="button">Buy</button>
-              <button type="button">Sell</button>
-            </div>
-          </td>
-        </tr>
-
-        <tr>
-          <td>
-            <div class="portfolio-asset">
-              <span class="portfolio-asset__icon portfolio-asset__icon--eth">E</span>
-              <div>
-                <p>Ethereum</p>
-                <span>ETH</span>
-              </div>
-            </div>
-          </td>
-          <td>142.203100</td>
-          <td>$2,210.15</td>
-          <td class="portfolio-holdings__price">$3,421.12</td>
-          <td><span class="portfolio-pill portfolio-pill--up">+54.79%</span></td>
-          <td>
-            <div class="portfolio-row-actions">
-              <button type="button">Buy</button>
-              <button type="button">Sell</button>
-            </div>
-          </td>
-        </tr>
-
-        <tr>
-          <td>
-            <div class="portfolio-asset">
-              <span class="portfolio-asset__icon portfolio-asset__icon--sol">S</span>
-              <div>
-                <p>Solana</p>
-                <span>SOL</span>
-              </div>
-            </div>
-          </td>
-          <td>1,240.00000</td>
-          <td>$154.20</td>
-          <td class="portfolio-holdings__price">$142.10</td>
-          <td><span class="portfolio-pill portfolio-pill--down">-7.84%</span></td>
-          <td>
-            <div class="portfolio-row-actions">
-              <button type="button">Buy</button>
-              <button type="button">Sell</button>
-            </div>
-          </td>
-        </tr>
-
-        <tr>
-          <td>
-            <div class="portfolio-asset">
-              <span class="portfolio-asset__icon portfolio-asset__icon--dot">D</span>
-              <div>
-                <p>Polkadot</p>
-                <span>DOT</span>
-              </div>
-            </div>
-          </td>
-          <td>5,000.00000</td>
-          <td>$8.40</td>
-          <td class="portfolio-holdings__price">$7.12</td>
-          <td><span class="portfolio-pill portfolio-pill--down">-15.23%</span></td>
-          <td>
-            <div class="portfolio-row-actions">
-              <button type="button">Buy</button>
-              <button type="button">Sell</button>
-            </div>
+            <span class="portfolio-pill" [class.portfolio-pill--up]="row.profitPercentage >= 0" [class.portfolio-pill--down]="row.profitPercentage < 0">
+              {{ formatProfitPercentage(row.profitPercentage) }}
+            </span>
           </td>
         </tr>
       </tbody>

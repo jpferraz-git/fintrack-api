@@ -1,16 +1,16 @@
 <app-auth-layout>
   <section class="brand" aria-label="Brand" layout-brand>
     <h1 class="brand__logo">FINTRACK</h1>
+    <p class="brand__tagline">Manage your crypto finances</p>
   </section>
 
   <app-auth-card
     layout-card
-    title="Create Account"
-    subtitle=""
+    title="Sign Up"
   >
     <form class="auth-form" novalidate card-body (submit)="onSignupSubmit($event)">
       <app-form-input
-        label="Full Name"
+        label="Name"
         id="full-name"
         type="text"
         name="fullName"
@@ -24,7 +24,7 @@
       </app-form-input>
 
       <app-form-input
-        label="Email Address"
+        label="Email"
         id="email"
         type="email"
         name="email"
@@ -38,44 +38,62 @@
       </app-form-input>
 
       <div class="form-field-grid">
-        <app-form-input
-          label="Password"
-          id="password"
-          type="password"
-          name="password"
-          [(value)]="password"
-          placeholder="********"
-          autocomplete="new-password"
-          [required]="true"
-        >
-          <svg form-icon width="12" height="16" viewBox="0 0 12 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M1.5 15.75C1.0875 15.75 0.734375 15.6031 0.440625 15.3094C0.146875 15.0156 0 14.6625 0 14.25V6.75C0 6.3375 0.146875 5.98438 0.440625 5.69063C0.734375 5.39688 1.0875 5.25 1.5 5.25H2.25V3.75C2.25 2.7125 2.61562 1.82812 3.34687 1.09687C4.07812 0.365625 4.9625 0 6 0C7.0375 0 7.92188 0.365625 8.65312 1.09687C9.38437 1.82812 9.75 2.7125 9.75 3.75V5.25H10.5C10.9125 5.25 11.2656 5.39688 11.5594 5.69063C11.8531 5.98438 12 6.3375 12 6.75V14.25C12 14.6625 11.8531 15.0156 11.5594 15.3094C11.2656 15.6031 10.9125 15.75 10.5 15.75H1.5ZM1.5 14.25H10.5V6.75H1.5V14.25ZM6 12C6.4125 12 6.76562 11.8531 7.05937 11.5594C7.35312 11.2656 7.5 10.9125 7.5 10.5C7.5 10.0875 7.35312 9.73438 7.05937 9.44063C6.76562 9.14688 6.4125 9 6 9C5.5875 9 5.23438 9.14688 4.94063 9.44063C4.64688 9.73438 4.5 10.0875 4.5 10.5C4.5 10.9125 4.64688 11.2656 4.94063 11.5594C5.23438 11.8531 5.5875 12 6 12ZM3.75 5.25H8.25V3.75C8.25 3.125 8.03125 2.59375 7.59375 2.15625C7.15625 1.71875 6.625 1.5 6 1.5C5.375 1.5 4.84375 1.71875 4.40625 2.15625C3.96875 2.59375 3.75 3.125 3.75 3.75V5.25Z" fill="#86948A"/>
-          </svg>
-        </app-form-input>
+        <div class="password-field-group">
+          <app-form-input
+            label="Password"
+            id="password"
+            [type]="showPassword ? 'text' : 'password'"
+            name="password"
+            [(value)]="password"
+            placeholder="********"
+            autocomplete="new-password"
+            [required]="true"
+          >
+            <svg form-icon width="12" height="16" viewBox="0 0 12 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M1.5 15.75C1.0875 15.75 0.734375 15.6031 0.440625 15.3094C0.146875 15.0156 0 14.6625 0 14.25V6.75C0 6.3375 0.146875 5.98438 0.440625 5.69063C0.734375 5.39688 1.0875 5.25 1.5 5.25H2.25V3.75C2.25 2.7125 2.61562 1.82812 3.34687 1.09687C4.07812 0.365625 4.9625 0 6 0C7.0375 0 7.92188 0.365625 8.65312 1.09687C9.38437 1.82812 9.75 2.7125 9.75 3.75V5.25H10.5C10.9125 5.25 11.2656 5.39688 11.5594 5.69063C11.8531 5.98438 12 6.3375 12 6.75V14.25C12 14.6625 11.8531 15.0156 11.5594 15.3094C11.2656 15.6031 10.9125 15.75 10.5 15.75H1.5ZM1.5 14.25H10.5V6.75H1.5V14.25ZM6 12C6.4125 12 6.76562 11.8531 7.05937 11.5594C7.35312 11.2656 7.5 10.9125 7.5 10.5C7.5 10.0875 7.35312 9.73438 7.05937 9.44063C6.76562 9.14688 6.4125 9 6 9C5.5875 9 5.23438 9.14688 4.94063 9.44063C4.64688 9.73438 4.5 10.0875 4.5 10.5C4.5 10.9125 4.64688 11.2656 4.94063 11.5594C5.23438 11.8531 5.5875 12 6 12ZM3.75 5.25H8.25V3.75C8.25 3.125 8.03125 2.59375 7.59375 2.15625C7.15625 1.71875 6.625 1.5 6 1.5C5.375 1.5 4.84375 1.71875 4.40625 2.15625C3.96875 2.59375 3.75 3.125 3.75 3.75V5.25Z" fill="#86948A"/>
+            </svg>
+          </app-form-input>
 
-        <app-form-input
-          label="Confirm"
-          id="confirm-password"
-          type="password"
-          name="confirmPassword"
-          [(value)]="confirmPassword"
-          placeholder="********"
-          autocomplete="new-password"
-          [required]="true"
-        >
-          <svg form-icon width="12" height="15" viewBox="0 0 12 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M6 15C4.2625 14.5625 2.82812 13.5656 1.69687 12.0094C0.565625 10.4531 0 8.725 0 6.825V2.25L6 0L12 2.25V6.825C12 8.725 11.4344 10.4531 10.3031 12.0094C9.17188 13.5656 7.7375 14.5625 6 15ZM6 13.425C7.3 13.0125 8.375 12.1875 9.225 10.95C10.075 9.7125 10.5 8.3375 10.5 6.825V3.28125L6 1.59375L1.5 3.28125V6.825C1.5 8.3375 1.925 9.7125 2.775 10.95C3.625 12.1875 4.7 13.0125 6 13.425Z" fill="#86948A"/>
-          </svg>
-        </app-form-input>
+          <button type="button" class="password-toggle" (click)="togglePasswordVisibility()">
+            {{ showPassword ? 'Hide password' : 'Show password' }}
+          </button>
+        </div>
+
+        <div class="password-field-group">
+          <app-form-input
+            label="Confirm"
+            id="confirm-password"
+            [type]="showConfirmPassword ? 'text' : 'password'"
+            name="confirmPassword"
+            [(value)]="confirmPassword"
+            placeholder="********"
+            autocomplete="new-password"
+            [required]="true"
+          >
+            <svg form-icon width="12" height="15" viewBox="0 0 12 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M6 15C4.2625 14.5625 2.82812 13.5656 1.69687 12.0094C0.565625 10.4531 0 8.725 0 6.825V2.25L6 0L12 2.25V6.825C12 8.725 11.4344 10.4531 10.3031 12.0094C9.17188 13.5656 7.7375 14.5625 6 15ZM6 13.425C7.3 13.0125 8.375 12.1875 9.225 10.95C10.075 9.7125 10.5 8.3375 10.5 6.825V3.28125L6 1.59375L1.5 3.28125V6.825C1.5 8.3375 1.925 9.7125 2.775 10.95C3.625 12.1875 4.7 13.0125 6 13.425Z" fill="#86948A"/>
+            </svg>
+          </app-form-input>
+
+          <button type="button" class="password-toggle" (click)="toggleConfirmPasswordVisibility()">
+            {{ showConfirmPassword ? 'Hide password' : 'Show password' }}
+          </button>
+        </div>
       </div>
 
-      <div class="form-field form-field--checkbox">
+      <p class="password-hint">Password must contain uppercase, lowercase, number and special character.</p>
+
+      <!-- <div class="form-field form-field--checkbox">
         <input class="form-field__checkbox" type="checkbox" id="terms" name="terms" />
         <label class="form-field__checkbox-label" for="terms">
           I agree to the <a class="form-field__link" href="#">Terms of Service</a> and
           <a class="form-field__link" href="#">Privacy Policy</a>.
         </label>
-      </div>
+      </div> -->
+
+      <p class="form-warning" *ngIf="passwordValidationError">
+        {{ passwordValidationError }}
+      </p>
 
       <p class="form-warning" *ngIf="showPasswordMismatchWarning">
         Passwords do not match.

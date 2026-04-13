@@ -1,0 +1,73 @@
+<div *ngIf="open" class="terminal-modal-backdrop" (click)="onBackdropClick($event)">
+  <section class="terminal-modal terminal-modal--asset" role="dialog" aria-modal="true" aria-labelledby="sell-asset-title">
+    <header class="terminal-modal__header">
+      <h2 id="sell-asset-title">Sell Asset</h2>
+      <button type="button" class="terminal-modal__close" aria-label="Close sell asset modal" (click)="close()">x</button>
+    </header>
+
+    <form #sellForm="ngForm" class="terminal-modal__body" (ngSubmit)="sellFromPortfolio(sellForm)">
+      <label class="terminal-modal__label" for="sellAssetSymbol">Select Asset</label>
+      <div class="terminal-modal__search-row">
+        <select
+          id="sellAssetSymbol"
+          class="terminal-modal__field"
+          name="symbol"
+          [(ngModel)]="selectedSymbol"
+          (ngModelChange)="onSymbolChange($event)"
+          [disabled]="isLoadingAssets || !hasSellableAssets"
+          required
+        >
+          <option *ngFor="let option of sellOptions" [ngValue]="option.symbol">
+            {{ option.label }} - Available: {{ formatQuantity(option.availableQuantity) }}
+          </option>
+        </select>
+      </div>
+
+      <p class="terminal-modal__state" *ngIf="isLoadingAssets">Loading your assets...</p>
+      <p class="terminal-modal__state" *ngIf="!isLoadingAssets && !hasSellableAssets && !submitError">
+        You do not have assets available to sell.
+      </p>
+
+      <label class="terminal-modal__label" for="sellAssetQuantity">Quantity to Sell</label>
+      <input
+        id="sellAssetQuantity"
+        class="terminal-modal__field"
+        type="number"
+        name="sellQuantity"
+        [(ngModel)]="sellQuantity"
+        min="0.00000001"
+        step="0.00000001"
+        [max]="availableQuantity"
+        [disabled]="!hasSellableAssets"
+        required
+      />
+
+      <div class="terminal-modal__summary">
+        <article>
+          <span>Current {{ assetCode || '--' }} Price</span>
+          <strong>{{ isLoadingPrice ? 'Loading...' : formattedCurrentPrice }}</strong>
+        </article>
+        <article>
+          <span>Estimated Total</span>
+          <strong class="text-red">{{ isLoadingPrice ? 'Loading...' : formattedEstimatedTotal }}</strong>
+        </article>
+      </div>
+
+      <p class="terminal-modal__hint" *ngIf="hasSellableAssets">
+        Available to sell: {{ formattedAvailableQuantity }}
+      </p>
+
+      <p class="terminal-modal__error" *ngIf="submitError">{{ submitError }}</p>
+
+      <footer class="terminal-modal__footer terminal-modal__footer--stack">
+        <button
+          type="submit"
+          class="terminal-button terminal-button--danger"
+          [disabled]="sellForm.invalid || isSubmitting || isLoadingAssets || isLoadingPrice || !currentPrice || !hasSellableAssets"
+        >
+          {{ isSubmitting ? 'Saving...' : 'Sell from Portfolio' }}
+        </button>
+      </footer>
+    </form>
+  </section>
+</div>

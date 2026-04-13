@@ -45,15 +45,15 @@ public class UserGateway implements UserRepository {
         if (existingUser == null) {
             throw new UserNotFoundException(email);
         }
-        if (user.getUserId() == null) {
-            user.setUserId(existingUser.getUserId());
+        if (user.getId() == null) {
+            user.setId(existingUser.getId());
         }
         return updateUser(user);
     }
 
     @Override
     public UserEntity updateUser(UserEntity user) {
-        if (user.getUserId() == null || !jpaRepository.existsById(user.getUserId())) {
+        if (user.getId() == null || !jpaRepository.existsById(user.getId())) {
             throw new UserNotFoundException(user.getEmail());
         }
 

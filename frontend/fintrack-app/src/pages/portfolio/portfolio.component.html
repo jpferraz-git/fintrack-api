@@ -2,23 +2,31 @@
   <app-sidebar></app-sidebar>
 
   <main class="portfolio-main">
-    <app-portfolio-topbar></app-portfolio-topbar>
-
+  
     <section class="portfolio-overview-grid">
-      <app-portfolio-value-card></app-portfolio-value-card>
+      <app-portfolio-value-card [refreshTrigger]="refreshTrigger"></app-portfolio-value-card>
 
       <div class="portfolio-overview-grid__right">
-        <app-portfolio-action-card (openModal)="openAddAssetModal()"></app-portfolio-action-card>
-        <app-portfolio-risk-card></app-portfolio-risk-card>
+          <app-portfolio-action-card
+            (openAddModal)="openAddAssetModal()"
+            (openSellModal)="openSellAssetModal()"
+          ></app-portfolio-action-card>
       </div>
     </section>
 
-    <app-portfolio-holdings-table></app-portfolio-holdings-table>
-    <app-portfolio-statusbar></app-portfolio-statusbar>
+    <app-portfolio-holdings-table [refreshTrigger]="refreshTrigger"></app-portfolio-holdings-table>
+    <app-portfolio-transactions-table [refreshTrigger]="refreshTrigger"></app-portfolio-transactions-table>
   </main>
 
   <app-add-asset-modal
     [open]="isAddAssetModalOpen"
     (closed)="closeAddAssetModal()"
+    (assetCreated)="handleAssetCreated(); closeAddAssetModal()"
   ></app-add-asset-modal>
+
+    <app-sell-asset-modal
+      [open]="isSellAssetModalOpen"
+      (closed)="closeSellAssetModal()"
+      (assetSold)="handleAssetSold(); closeSellAssetModal()"
+    ></app-sell-asset-modal>
 </div>

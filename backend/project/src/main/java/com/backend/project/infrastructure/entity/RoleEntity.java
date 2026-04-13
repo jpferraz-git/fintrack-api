@@ -19,7 +19,8 @@ public class RoleEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID roleId;
+    @Column(name = "id", updatable = false, nullable = false)
+    private UUID id;
 
     @Enumerated(EnumType.STRING)
     @Column(unique = true)

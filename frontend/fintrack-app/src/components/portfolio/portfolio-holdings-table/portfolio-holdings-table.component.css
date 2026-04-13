@@ -1,7 +1,7 @@
 .portfolio-card {
   border: 1px solid var(--color-border-subtle);
   border-radius: 12px;
-  background: var(--gradient-panel);
+  background: var(--color-bg-component);
 }
 
 .portfolio-holdings {
@@ -31,15 +31,19 @@
   gap: 10px;
 }
 
-.portfolio-holdings__actions button {
-  color: var(--color-text-muted);
-  text-transform: uppercase;
-  letter-spacing: 0.9px;
-  font-size: 10px;
-}
 
 .portfolio-holdings__table-wrap {
   overflow-x: auto;
+}
+
+.portfolio-holdings__state {
+  padding: 20px;
+  color: var(--color-text-muted);
+  font-size: 13px;
+}
+
+.portfolio-holdings__state--error {
+  color: #ff95ab;
 }
 
 .portfolio-holdings__table {
@@ -48,59 +52,57 @@
 }
 
 .portfolio-holdings__table th {
-  text-align: left;
-  color: var(--color-text-muted);
-  font-size: 10px;
+  text-align: center;
+  font-size: 12px;
   text-transform: uppercase;
-  letter-spacing: 1.2px;
+  letter-spacing: 0.5px;
   padding: 12px 20px;
+  background-color: var(--color-ui-track);
+  border-top: 1px solid #565b5f;
+  border-bottom: 1px solid #565b5f;
 }
 
 .portfolio-holdings__table td {
   padding: 16px 20px;
   border-top: 1px solid var(--color-border-subtle);
+  text-align: center;
   color: #d5dff0;
   font-size: 14px;
   white-space: nowrap;
+  font-weight: 600;
 }
 
-.portfolio-holdings__price {
-  color: #f3fbff;
-  font-weight: 700;
+.portfolio-holdings__table .portfolio-holdings__asset-col {
+  text-align: center;
 }
 
 .portfolio-asset {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 12px;
 }
 
-.portfolio-asset__icon {
+.portfolio-asset .dash-coin-icon {
   width: 28px;
   height: 28px;
-  border-radius: 50%;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 12px;
-  font-weight: 700;
+  min-width: 28px;
 }
 
-.portfolio-asset p {
+.portfolio-asset-meta {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.portfolio-asset-name {
   color: #f5fbff;
   font-weight: 600;
 }
 
-.portfolio-asset span {
+.portfolio-asset-ticker {
   color: var(--color-text-muted);
-  font-size: 10px;
-  text-transform: uppercase;
+  font-size: 12px;
 }
-
-.portfolio-asset__icon--btc { background: rgba(247, 147, 26, 0.2); color: #f3b461; }
-.portfolio-asset__icon--eth { background: rgba(98, 126, 234, 0.2); color: #a2b3ff; }
-.portfolio-asset__icon--sol { background: rgba(78, 222, 163, 0.14); color: #78ffe2; }
-.portfolio-asset__icon--dot { background: rgba(251, 113, 133, 0.16); color: #ffa6b9; }
 
 .portfolio-pill {
   border-radius: 6px;
@@ -122,15 +124,4 @@
 .portfolio-row-actions {
   display: flex;
   gap: 8px;
-}
-
-.portfolio-row-actions button {
-  border-radius: 6px;
-  border: 1px solid rgba(78, 222, 163, 0.28);
-  color: var(--color-green-light);
-  font-size: 10px;
-  text-transform: uppercase;
-  letter-spacing: 0.8px;
-  padding: 5px 8px;
-  background: rgba(78, 222, 163, 0.08);
 }

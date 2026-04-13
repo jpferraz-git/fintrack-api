@@ -4,8 +4,8 @@ import java.util.UUID;
 
 public class AssetNotFoundException extends RuntimeException {
 
-    public AssetNotFoundException(String ticker) {
-        super("Asset with ticker '" + ticker + "' does not exist.");
+    public AssetNotFoundException(String symbol) {
+        super("Asset with symbol '" + symbol + "' does not exist.");
     }
 
     public AssetNotFoundException(UUID assetId) {

@@ -1,70 +1,66 @@
 <article class="settings-card">
   <div>
-    <h2 class="settings-card__title">Security Protocol</h2>
-    <p class="settings-card__description">Manage credential rotation and authentication.</p>
+    <h2 class="settings-card__title">Change your password</h2>
+    <p class="settings-card__description">Use a strong password with at least 8 characters.</p>
   </div>
 
   <form class="settings-form" (ngSubmit)="updatePassword()">
-    <div class="settings-form__grid settings-form__grid--two-columns">
-      <label class="settings-field" for="settings-current-password">
-        <span class="settings-field__label">Current Password</span>
-        <input
-          id="settings-current-password"
-          class="settings-field__input"
-          type="password"
-          name="currentPassword"
-          [(ngModel)]="currentPassword"
-          placeholder="Enter current password"
-          autocomplete="current-password"
-          required
-        />
-      </label>
-
+    <div class="settings-form__grid">
       <label class="settings-field" for="settings-new-password">
         <span class="settings-field__label">New Password</span>
-        <input
-          id="settings-new-password"
-          class="settings-field__input"
-          type="password"
-          name="newPassword"
-          [(ngModel)]="newPassword"
-          placeholder="Min. 12 characters"
-          autocomplete="new-password"
-          required
-        />
+        <div class="settings-field__input-wrap">
+          <input
+            id="settings-new-password"
+            class="settings-field__input"
+            [type]="showNewPassword ? 'text' : 'password'"
+            name="newPassword"
+            [(ngModel)]="newPassword"
+            placeholder="Min. 8 chars, Aa1@"
+            autocomplete="new-password"
+            required
+          />
+          <button
+            type="button"
+            class="settings-field__toggle"
+            (click)="toggleNewPasswordVisibility()"
+          >
+            {{ showNewPassword ? 'Hide' : 'Show' }}
+          </button>
+        </div>
+        <span class="settings-password-hint">
+          Must contain uppercase, lowercase, number and special character.
+        </span>
       </label>
     </div>
 
     <div class="settings-form__grid">
       <label class="settings-field" for="settings-confirm-password">
         <span class="settings-field__label">Confirm Password</span>
-        <input
-          id="settings-confirm-password"
-          class="settings-field__input"
-          type="password"
-          name="confirmPassword"
-          [(ngModel)]="confirmPassword"
-          placeholder="Repeat new password"
-          autocomplete="new-password"
-          required
-        />
-      </label>
-    </div>
-
-    <div class="settings-auth-chip" role="status" aria-label="Two-factor authentication status">
-      <div class="settings-auth-chip__content">
-        <span class="settings-auth-chip__icon" aria-hidden="true">&#128737;</span>
-        <div>
-          <p class="settings-auth-chip__title">Two-Factor Authentication</p>
-          <p class="settings-auth-chip__text">Authentication app is currently active.</p>
+        <div class="settings-field__input-wrap">
+          <input
+            id="settings-confirm-password"
+            class="settings-field__input"
+            [type]="showConfirmPassword ? 'text' : 'password'"
+            name="confirmPassword"
+            [(ngModel)]="confirmPassword"
+            placeholder="Repeat new password"
+            autocomplete="new-password"
+            required
+          />
+          <button
+            type="button"
+            class="settings-field__toggle"
+            (click)="toggleConfirmPasswordVisibility()"
+          >
+            {{ showConfirmPassword ? 'Hide' : 'Show' }}
+          </button>
         </div>
-      </div>
-      <button class="settings-auth-chip__action" type="button">Revoke</button>
+      </label>
     </div>
 
     <div class="settings-actions">
       <button class="settings-btn settings-btn--primary" type="submit" [disabled]="isSubmitting"
-      (click)="updatePassword()">
+      >
         {{ isSubmitting ? 'Updating...' : 'Update password' }}
       </button>
 
@@ -77,4 +73,55 @@
       }
     </div>
   </form>
+
+  <section class="settings-danger-zone" aria-label="Account danger zone">
+    <button
+      type="button"
+      class="settings-btn settings-btn--danger"
+      (click)="openDeleteAccountModal()"
+      [disabled]="isDeletingAccount"
+    >
+      Delete account
+    </button>
+  </section>
 </article>
+
+@if (isDeleteModalOpen) {
+  <div class="settings-confirm-backdrop" (click)="onDeleteModalBackdropClick($event)">
+    <section
+      class="settings-confirm-modal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="delete-account-title"
+      aria-describedby="delete-account-description"
+    >
+      <h3 id="delete-account-title" class="settings-confirm-modal__title">Confirm account deletion</h3>
+      <p id="delete-account-description" class="settings-confirm-modal__description">
+        Do you really want to continue? Your account will be permanently deleted.
+      </p>
+
+      @if (deleteAccountError) {
+        <p class="settings-feedback settings-feedback--error">{{ deleteAccountError }}</p>
+      }
+
+      <div class="settings-confirm-modal__actions">
+        <button
+          type="button"
+          class="settings-btn settings-btn--ghost"
+          (click)="closeDeleteAccountModal()"
+          [disabled]="isDeletingAccount"
+        >
+          Cancel
+        </button>
+        <button
+          type="button"
+          class="settings-btn settings-btn--danger"
+          (click)="confirmDeleteAccount()"
+          [disabled]="isDeletingAccount"
+        >
+          {{ isDeletingAccount ? 'Deleting...' : 'Yes, delete account' }}
+        </button>
+      </div>
+    </section>
+  </div>
+}

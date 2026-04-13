@@ -1,0 +1,37 @@
+<section class="dash-portfolio" aria-label="User portfolio overview">
+  <header class="dash-portfolio__header">
+    <h3 class="dash-panel-title">My Portfolio</h3>
+  </header>
+
+  <div class="dash-portfolio__state" *ngIf="isLoading">Loading portfolio...</div>
+  <div class="dash-portfolio__state dash-portfolio__state--error" *ngIf="!isLoading && hasError">
+    Could not load portfolio overview.
+  </div>
+  <div class="dash-portfolio__state" *ngIf="!isLoading && !hasError && rows.length === 0">
+    No assets in portfolio yet.
+  </div>
+
+  <ng-container *ngIf="!isLoading && !hasError && rows.length > 0">
+    <div class="dash-portfolio__summary">
+      <div>
+        <span class="dash-field-label">Total Value</span>
+        <p>{{ formatCurrency(totalValue) }}</p>
+      </div>
+    </div>
+
+    <div class="dash-portfolio__list">
+      <article class="dash-portfolio__item" *ngFor="let row of visibleRows; trackBy: trackBySymbol">
+        <div class="dash-coin-cell">
+          <span class="dash-coin-icon dash-coin-icon--{{ row.icon }}" aria-hidden="true">{{ row.code }}</span>
+          <div>
+            <p>{{ row.code }}</p>
+          </div>
+        </div>
+
+        <p class="dash-portfolio__value">{{ formatCurrency(row.value) }}</p>
+      </article>
+    </div>
+  </ng-container>
+
+  <a class="dash-portfolio__manage-button" routerLink="/portfolio">Manage your assets</a>
+</section>

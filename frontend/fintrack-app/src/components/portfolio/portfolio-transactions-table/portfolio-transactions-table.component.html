@@ -1,0 +1,72 @@
+<section class="portfolio-card portfolio-transactions" aria-label="Transaction history">
+  <header class="portfolio-transactions__header">
+    <h3>Transaction History</h3>
+    <!-- <div class="portfolio-transactions__actions">
+      <button type="button" class="portfolio-transactions__action">Exportar CSV</button>
+      <button type="button" class="portfolio-transactions__action">Filtrar</button>
+    </div> -->
+  </header>
+
+  <div class="portfolio-transactions__state" *ngIf="isTransactionsLoading">Loading transactions...</div>
+  <div
+    class="portfolio-transactions__state portfolio-transactions__state--error"
+    *ngIf="!isTransactionsLoading && hasTransactionsError"
+  >
+    Could not load transaction history.
+  </div>
+
+  <div
+    class="portfolio-transactions__scroll"
+    *ngIf="!isTransactionsLoading && !hasTransactionsError"
+  >
+    <table>
+      <thead>
+        <tr>
+          <th>Asset</th>
+          <th>Type</th>
+          <th>Quantity</th>
+          <th>Total Value</th>
+          <th>Price</th>
+          <th>Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let transaction of transactions; trackBy: trackByTransactionId">
+      
+          <td>
+            <div class="portfolio-asset-cell">
+              <span class="dash-coin-icon dash-coin-icon--{{ getAssetIcon(transaction.symbol) }}" aria-hidden="true">
+                {{ getAssetTicker(transaction.symbol).toUpperCase() }}
+              </span>
+              <div class="portfolio-asset-meta">
+                <span class="portfolio-asset-name">{{ getAssetName(transaction.symbol) }}</span>
+                <span class="portfolio-asset-ticker">({{ getAssetTicker(transaction.symbol) }})</span>
+              </div>
+            </div>
+          </td>
+          <td>
+            <span
+              class="portfolio-transaction-badge"
+              [class.portfolio-transaction-badge--buy]="transaction.type === 'BUY'"
+              [class.portfolio-transaction-badge--sell]="transaction.type === 'SELL'"
+            >
+              {{ formatTransactionType(transaction.type) }}
+            </span>
+          </td>
+         
+          <td>{{ formatQuantityWithTicker(transaction) }}</td>
+          <td class="portfolio-transactions__total">{{ formatTotal(transaction) }}</td>
+          <td>{{ formatUsd(transaction.price) }}</td>  
+          <td>
+            <span class="portfolio-transactions__date">{{ formatDatePart(transaction.createdAt) }}</span>
+            <span class="portfolio-transactions__time">{{ formatTimePart(transaction.createdAt) }}</span>
+          </td>
+        </tr>
+
+        <tr *ngIf="transactions.length === 0">
+          <td colspan="7" class="portfolio-transactions__empty">No transactions registered yet.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>

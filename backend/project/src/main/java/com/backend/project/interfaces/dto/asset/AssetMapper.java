@@ -10,9 +10,11 @@ public class AssetMapper {
     public AssetEntity toEntity(AssetModel model){
         return new AssetEntity(
                 null,
-                model.getTicker(),
-                model.getAssetType(),
-                model.getCompanyName(),
+                null,
+                model.getSymbol(),
+                model.getType(),
+                model.getQuantity(),
+                model.getAvgPrice(),
                 null,
                 null
         );
@@ -20,9 +22,11 @@ public class AssetMapper {
     public AssetModel toModel(AssetRequestDTO dto) {
         return new AssetModel(
                 null,
-                dto.ticker(),
-                dto.assetType(),
-                dto.companyName(),
+                dto.fkUser(),
+                dto.symbol(),
+                dto.type(),
+                dto.quantity(),
+                dto.avgPrice(),
                 null,
                 null
         );
@@ -30,10 +34,12 @@ public class AssetMapper {
 
     public AssetResponseDTO toResponse(AssetEntity dto){
         return new AssetResponseDTO(
-                dto.getAssetId(),
-                dto.getAssetType(),
-                dto.getAssetType(),
-                dto.getCompanyName(),
+                dto.getId(),
+                dto.getUserId() != null ? dto.getUserId().getId() : null,
+                dto.getSymbol(),
+                dto.getType(),
+                dto.getQuantity(),
+                dto.getAvgPrice(),
                 dto.getCreatedAt(),
                 dto.getUpdatedAt()
         );

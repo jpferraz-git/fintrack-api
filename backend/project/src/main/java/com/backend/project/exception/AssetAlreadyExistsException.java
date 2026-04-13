@@ -2,8 +2,8 @@ package com.backend.project.exception;
 
 public class AssetAlreadyExistsException extends RuntimeException {
 
-    public AssetAlreadyExistsException(String ticker) {
-        super("Asset with ticker '" + ticker + "' already exists.");
+    public AssetAlreadyExistsException(String symbol) {
+        super("Asset with symbol '" + symbol + "' already exists.");
     }
 }
 

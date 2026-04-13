@@ -9,6 +9,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.UUID;
 
 @Component
 public class TransactionGateway implements TransactionRepository {
@@ -29,7 +30,7 @@ public class TransactionGateway implements TransactionRepository {
     }
 
     @Override
-    public List<TransactionEntity> findAll() {
-        return jpaRepository.findAll();
+    public List<TransactionEntity> findAllByUserId(UUID userId) {
+        return jpaRepository.findAllByUserId(userId);
     }
 }

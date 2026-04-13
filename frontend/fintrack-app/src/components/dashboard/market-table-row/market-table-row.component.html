@@ -1,0 +1,23 @@
+<td>
+  <div class="dash-coin-cell">
+    <span class="dash-coin-icon dash-coin-icon--{{ coinIcon }}" aria-hidden="true">
+      {{ coinIcon.toUpperCase() }}
+    </span>
+    <div>
+      <p>{{ coinName }}</p>
+      <span>{{ coinPairLabel }}</span>
+    </div>
+  </div>
+</td>
+<td>{{ loading ? 'Loading...' : price }}</td>
+<td
+  class="dash-change"
+  [class.dash-change--up]="hasChangeData && isPositive"
+  [class.dash-change--down]="hasChangeData && !isPositive"
+  [class.dash-change--neutral]="!hasChangeData"
+>
+  <span class="dash-change__arrow" [class.dash-change__arrow--hidden]="!hasChangeData" aria-hidden="true"></span>
+  <span>{{ loading ? 'Loading...' : changePercent }}</span>
+</td>
+<td>{{ loading ? 'Loading...' : volume24h }}</td>
+<td>{{ marketCapDisplay }}</td>

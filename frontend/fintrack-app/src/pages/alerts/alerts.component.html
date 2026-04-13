@@ -2,25 +2,22 @@
   <app-sidebar></app-sidebar>
 
   <main class="alerts-main">
-    <app-alerts-topbar></app-alerts-topbar>
+
 
     <section class="alerts-main-grid">
       <div class="alerts-main-grid__left">
         <app-alerts-table></app-alerts-table>
-        <app-alerts-volatility></app-alerts-volatility>
+    
       </div>
 
       <div class="alerts-main-grid__right">
-        <app-alerts-create-panel (openModal)="openCreateAlertModal()"></app-alerts-create-panel>
-        <app-alerts-system-metrics></app-alerts-system-metrics>
+        <app-alerts-create-panel></app-alerts-create-panel>
       </div>
     </section>
-
-    <app-alerts-statusbar></app-alerts-statusbar>
   </main>
 
-  <app-create-alert-modal
+  <!-- <app-create-alert-modal
     [open]="isCreateAlertModalOpen"
     (closed)="closeCreateAlertModal()"
-  ></app-create-alert-modal>
+  ></app-create-alert-modal> -->
 </div>

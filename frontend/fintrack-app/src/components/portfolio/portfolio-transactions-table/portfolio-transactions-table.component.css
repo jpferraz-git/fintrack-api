@@ -1,0 +1,227 @@
+.portfolio-card {
+  border: 1px solid var(--color-border-subtle);
+  border-radius: 12px;
+  background: var(--color-bg-component);
+}
+
+.portfolio-transactions {
+  margin-top: 16px;
+  padding: 0;
+  overflow: hidden;
+}
+
+.portfolio-transactions__header {
+  min-height: 56px;
+  border-bottom: 1px solid var(--color-border-subtle);
+  padding: 0 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.portfolio-transactions__header h3 {
+  color: #e7efff;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-size: 20px;
+  font-family: var(--font-display);
+}
+
+.portfolio-transactions__actions {
+  display: inline-flex;
+  gap: 14px;
+}
+
+.portfolio-transactions__action {
+  border: 0;
+  background: transparent;
+  color: #9cb3d9;
+  text-transform: uppercase;
+  letter-spacing: 1.1px;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0;
+}
+
+.portfolio-transactions__action:hover {
+  color: #d7e7ff;
+}
+
+.portfolio-transactions__state {
+  padding: 20px;
+  color: var(--color-text-muted);
+  font-size: 13px;
+}
+
+.portfolio-transactions__state--error {
+  color: #ff95ab;
+}
+
+.portfolio-transactions__scroll {
+  max-height: 340px;
+  overflow-x: auto;
+  overflow-y: auto;
+}
+
+.portfolio-transactions table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.portfolio-transactions th {
+  text-align: center;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 12px 20px;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: var(--color-ui-track);
+  border-top: 1px solid #565b5f;
+  border-bottom: 1px solid #565b5f;
+}
+
+.portfolio-transactions td {
+  padding: 16px 20px;
+  border-top: 1px solid var(--color-border-subtle);
+  text-align: center;
+  color: #d5dff0;
+  font-size: 14px;
+  white-space: nowrap;
+  font-weight: 600;
+  vertical-align: middle;
+}
+
+.portfolio-transactions tbody tr {
+  transition: background-color 120ms ease;
+}
+
+.portfolio-transactions tbody tr:hover {
+  background-color: rgba(31, 52, 87, 0.35);
+}
+
+.portfolio-transactions__empty {
+  text-align: center;
+  color: var(--color-text-muted);
+  padding: 24px 20px;
+  font-size: 13px;
+}
+
+.portfolio-transactions__date {
+  display: block;
+  color: #f5fbff;
+  font-weight: 600;
+}
+
+.portfolio-transactions__time {
+  display: block;
+  color: var(--color-text-muted);
+  font-size: 12px;
+  margin-top: 2px;
+}
+
+.portfolio-asset-cell {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.portfolio-asset-cell .dash-coin-icon {
+  width: 28px;
+  height: 28px;
+  min-width: 28px;
+}
+
+.portfolio-asset-meta {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.portfolio-asset-name {
+  color: #f5fbff;
+  font-weight: 600;
+}
+
+.portfolio-asset-ticker {
+  color: var(--color-text-muted);
+  font-size: 12px;
+}
+
+.portfolio-transaction-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 52px;
+  border-radius: 4px;
+  font-size: 10px;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  padding: 2px 8px;
+  font-weight: 700;
+}
+
+.portfolio-transaction-badge--buy {
+  color: #42f7be;
+  background: rgba(42, 204, 145, 0.14);
+}
+
+.portfolio-transaction-badge--sell {
+  color: #ff8891;
+  background: rgba(255, 94, 114, 0.16);
+}
+
+.portfolio-transactions__total {
+  color: #f6fbff;
+  font-weight: 700;
+}
+
+.portfolio-status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+}
+
+.portfolio-status-badge::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.portfolio-status-badge--completed {
+  color: #42f7be;
+}
+
+.portfolio-status-badge--pending {
+  color: #ff6f7a;
+}
+
+@media (max-width: 900px) {
+  .portfolio-transactions__header {
+    padding: 16px;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .portfolio-transactions__actions {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .portfolio-transactions table {
+    min-width: 980px;
+  }
+
+  .portfolio-transactions th,
+  .portfolio-transactions td {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+}

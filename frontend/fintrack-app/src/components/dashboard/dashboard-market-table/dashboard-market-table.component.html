@@ -2,55 +2,43 @@
   <header class="dash-table__header">
     <h3>Market Overview</h3>
     <div class="dash-table__actions">
-      <a href="#">Filter</a>
-      <a href="#">Export</a>
+      <div class="dash-table__search-wrap">
+        <input
+          type="search"
+          class="dash-table__search"
+          placeholder="Search coin or symbol..."
+          [(ngModel)]="searchTerm"
+          aria-label="Search cryptocurrency"
+        />
+      </div>
     </div>
   </header>
 
-  <table>
-    <thead>
-      <tr>
-        <th>Coin</th>
-        <th>Price</th>
-        <th>24h Change</th>
-        <th>24h Volume</th>
-        <th>Market Cap</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>Solana</td>
-        <td>$145.28</td>
-        <td class="dash-change dash-change--up">+12.40%</td>
-        <td>$2.4B</td>
-        <td>$64.5B</td>
-        <td><button type="button">Watch</button></td>
-      </tr>
-      <tr>
-        <td>Cardano</td>
-        <td>$0.452</td>
-        <td class="dash-change dash-change--down">-4.15%</td>
-        <td>$482M</td>
-        <td>$16.1B</td>
-        <td><button type="button">Watch</button></td>
-      </tr>
-      <tr>
-        <td>Polkadot</td>
-        <td>$7.12</td>
-        <td class="dash-change dash-change--up">+2.18%</td>
-        <td>$156M</td>
-        <td>$10.2B</td>
-        <td><button type="button" class="is-following">Following</button></td>
-      </tr>
-      <tr>
-        <td>Ripple</td>
-        <td>$0.612</td>
-        <td class="dash-change dash-change--down">-0.82%</td>
-        <td>$1.2B</td>
-        <td>$33.8B</td>
-        <td><button type="button">Watch</button></td>
-      </tr>
-    </tbody>
-  </table>
+  <div class="dash-table__scroll">
+    <table>
+      <thead>
+        <tr>
+          <th>Coin</th>
+          <th>Price</th>
+          <th>24h Change</th>
+          <th>24h Volume</th>
+          <th>Market Cap</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          app-market-table-row
+          *ngFor="let row of filteredRows; trackBy: trackBySymbol"
+          [symbol]="row.symbol"
+          [coinName]="row.coinName"
+          [coinIcon]="row.coinIcon"
+          [marketCap]="row.marketCap"
+        ></tr>
+
+        <tr *ngIf="filteredRows.length === 0">
+          <td colspan="6" class="dash-table__empty">No assets found for this search.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </section>

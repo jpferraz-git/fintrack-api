@@ -8,6 +8,7 @@
   --color-bg-input:      #2D3449;
   --color-bg-hover:      #171F33;
   --color-bg-deep:       #060E20;
+  --color-bg-component:   rgba(19, 27, 46, 0.95);;
 
   /* Border */
   --color-border:        rgba(60, 74, 66, 0.20);
@@ -82,4 +83,51 @@
   --shadow-card:   0 25px 50px -12px rgba(0, 0, 0, 0.25);
   --shadow-btn:    0 10px 15px -3px rgba(0, 0, 0, 0.10), 0 4px 6px -4px rgba(0, 0, 0, 0.10);
   --shadow-fab:    0 25px 50px -12px rgba(0, 0, 0, 0.25);
+
+  /* Crypto icon gradients */
+  --coin-icon-btc-bg: radial-gradient(circle at 30% 30%, #ffbd70 0%, #f7931a 70%);
+  --coin-icon-eth-bg: radial-gradient(circle at 30% 30%, #9cb0ff 0%, #627eea 70%);
+  --coin-icon-bnb-bg: radial-gradient(circle at 30% 30%, #ffe08d 0%, #f3ba2f 70%);
+  --coin-icon-sol-bg: radial-gradient(circle at 30% 30%, #78ffe2 0%, #4edea3 70%);
+  --coin-icon-xrp-bg: radial-gradient(circle at 30% 30%, #e2e8f3 0%, #a0aec0 70%);
+  --coin-icon-ada-bg: radial-gradient(circle at 30% 30%, #79c4ff 0%, #3579f6 70%);
+  --coin-icon-doge-bg: radial-gradient(circle at 30% 30%, #ffe08d 0%, #c2a633 70%);
+  --coin-icon-avax-bg: radial-gradient(circle at 30% 30%, #ff9baa 0%, #e84161 70%);
+  --coin-icon-dot-bg: radial-gradient(circle at 30% 30%, #ff9fce 0%, #e74296 70%);
+  --coin-icon-link-bg: radial-gradient(circle at 30% 30%, #b7c8ff 0%, #4678ff 70%);
+  --coin-icon-ltc-bg: radial-gradient(circle at 30% 30%, #ecf0f3 0%, #bcc6d0 70%);
+  --coin-icon-trx-bg: radial-gradient(circle at 30% 30%, #ff9a9a 0%, #e53935 70%);
+
+  --coin-icon-default-fg: #f6f7fb;
+  --coin-icon-dark-fg: #2f2a10;
+  --coin-icon-xrp-fg: #1f2937;
+  --coin-icon-sol-fg: #08362b;
+  --coin-icon-ltc-fg: #263238;
 }
+
+.dash-coin-icon {
+  height: 30px;
+  min-width: 30px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 7px;
+  font-weight: 800;
+  letter-spacing: 0.2px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: var(--coin-icon-default-fg);
+}
+
+.dash-coin-icon--btc { background: var(--coin-icon-btc-bg); }
+.dash-coin-icon--eth { background: var(--coin-icon-eth-bg); }
+.dash-coin-icon--bnb { background: var(--coin-icon-bnb-bg); color: var(--coin-icon-dark-fg); }
+.dash-coin-icon--sol { background: var(--coin-icon-sol-bg); color: var(--coin-icon-sol-fg); }
+.dash-coin-icon--xrp { background: var(--coin-icon-xrp-bg); color: var(--coin-icon-xrp-fg); }
+.dash-coin-icon--ada { background: var(--coin-icon-ada-bg); }
+.dash-coin-icon--doge { background: var(--coin-icon-doge-bg); color: var(--coin-icon-dark-fg); }
+.dash-coin-icon--avax { background: var(--coin-icon-avax-bg); }
+.dash-coin-icon--dot { background: var(--coin-icon-dot-bg); }
+.dash-coin-icon--link { background: var(--coin-icon-link-bg); }
+.dash-coin-icon--ltc { background: var(--coin-icon-ltc-bg); color: var(--coin-icon-ltc-fg); }
+.dash-coin-icon--trx { background: var(--coin-icon-trx-bg); }

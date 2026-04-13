@@ -1,31 +1,27 @@
 package com.backend.project.domain.model;
 
+import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.UUID;
-import java.util.Date;
 
 public class TransactionModel {
 
     private UUID id;
     private UUID userId;
-    private UUID assetId;
-    private UUID batchId;
-    private String operationType;
-    private int quantity;
-    private double unitPrice;
-    private Date operationDate;
+    private String symbol;
+    private String type;
+    private BigDecimal quantity;
+    private BigDecimal price;
     private Instant createdAt;
     private Instant updatedAt;
 
-    public TransactionModel(UUID id, UUID userId, UUID assetId, UUID batchId, String operationType, int quantity, double unitPrice, Date operationDate, Instant createdAt, Instant updatedAt) {
+    public TransactionModel(UUID id, UUID userId, String symbol, String type, BigDecimal quantity, BigDecimal price, Instant createdAt, Instant updatedAt) {
         this.id = id;
         this.userId = userId;
-        this.assetId = assetId;
-        this.batchId = batchId;
-        this.operationType = operationType;
+        this.symbol = symbol;
+        this.type = type;
         this.quantity = quantity;
-        this.unitPrice = unitPrice;
-        this.operationDate = operationDate;
+        this.price = price;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
@@ -46,52 +42,36 @@ public class TransactionModel {
         this.userId = userId;
     }
 
-    public UUID getAssetId() {
-        return assetId;
+    public String getSymbol() {
+        return symbol;
     }
 
-    public void setAssetId(UUID assetId) {
-        this.assetId = assetId;
+    public void setSymbol(String symbol) {
+        this.symbol = symbol;
     }
 
-    public UUID getBatchId() {
-        return batchId;
+    public String getType() {
+        return type;
     }
 
-    public void setBatchId(UUID batchId) {
-        this.batchId = batchId;
+    public void setType(String type) {
+        this.type = type;
     }
 
-    public String getOperationType() {
-        return operationType;
-    }
-
-    public void setOperationType(String operationType) {
-        this.operationType = operationType;
-    }
-
-    public int getQuantity() {
+    public BigDecimal getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(int quantity) {
+    public void setQuantity(BigDecimal quantity) {
         this.quantity = quantity;
     }
 
-    public double getUnitPrice() {
-        return unitPrice;
+    public BigDecimal getPrice() {
+        return price;
     }
 
-    public void setUnitPrice(double unitPrice) {
-        this.unitPrice = unitPrice;
-    }
-
-    public Date getOperationDate() {
-        return operationDate;
-    }
-
-    public void setOperationDate(Date operationDate) {
-        this.operationDate = operationDate;
+    public void setPrice(BigDecimal price) {
+        this.price = price;
     }
 
     public Instant getCreatedAt() {

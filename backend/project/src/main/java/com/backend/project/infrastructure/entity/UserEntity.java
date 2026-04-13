@@ -28,8 +28,8 @@ public class UserEntity implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(name="user_id", updatable = false, nullable = false)
-    private UUID userId;
+    @Column(name = "id", updatable = false, nullable = false)
+    private UUID id;
     private String name;
 
     @Email

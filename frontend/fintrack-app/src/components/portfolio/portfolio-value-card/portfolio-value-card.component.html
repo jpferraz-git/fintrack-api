@@ -1,39 +1,60 @@
 <section class="portfolio-card portfolio-value" aria-label="Total portfolio value">
   <header class="portfolio-value__header">
-    <div>
-      <p class="portfolio-value__eyebrow">Total Portfolio Value</p>
-      <h2>$1,429,842.12 <span>+12.4% (24h)</span></h2>
-    </div>
+    <ng-container *ngIf="metricsState$ | async as vm">
+      <div>
+        <p class="portfolio-value__eyebrow">Current Portfolio Value</p>
+
+        <h2>
+          {{ vm.formattedCurrentPortfolioValue }}
+        </h2>
+
+        <p class="portfolio-value__current">
+          <span>Portfolio Variation</span>
+          <strong>{{ vm.formattedTotalPortfolioValue }}</strong>
+          <em [class.is-negative]="vm.totalPortfolioPercentage < 0">{{ vm.formattedTotalPortfolioPercentage }}</em>
+        </p>
+      </div>
+    </ng-container>
 
     <div class="portfolio-value__range" role="tablist" aria-label="Chart range">
-      <button type="button">1D</button>
-      <button type="button" class="is-active">1W</button>
-      <button type="button">1M</button>
-      <button type="button">All</button>
+      <button
+        type="button"
+        *ngFor="let option of rangeOptions"
+        (click)="onRangeSelected(option.value)"
+        [class.is-active]="isRangeActive(option.value)"
+      >{{ option.label }}</button>
     </div>
   </header>
 
   <div class="portfolio-value__chart" aria-hidden="true">
-    <svg viewBox="0 0 780 260" preserveAspectRatio="none">
-      <defs>
-        <linearGradient id="portfolioArea" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stop-color="#2effcb" stop-opacity="0.45" />
-          <stop offset="100%" stop-color="#2effcb" stop-opacity="0" />
-        </linearGradient>
-      </defs>
+    <!-- <ng-container *ngIf="chartState$ | async as chart"> -->
+      <ng-container *ngIf="chartState$ | async as chart">
+      <p class="portfolio-value__chart-status" *ngIf="chart.isLoading">Loading historical chart...</p>
+      <p class="portfolio-value__chart-status portfolio-value__chart-status--error" *ngIf="!chart.isLoading && chart.hasError">
+        Could not load chart history.
+      </p>
+      <p class="portfolio-value__chart-status" *ngIf="!chart.isLoading && !chart.hasError && !chart.hasData">
+        Not enough data to render portfolio history.
+      </p>
 
-      <path
-        d="M0,240 C48,210 78,248 116,220 C154,190 188,170 222,230 C254,280 300,80 344,188 C380,274 424,64 458,144 C490,220 528,268 570,58 C596,2 638,14 662,120 C686,228 720,290 780,72 L780,260 L0,260 Z"
-        fill="url(#portfolioArea)"
-      ></path>
+      <svg *ngIf="!chart.isLoading && !chart.hasError && chart.hasData" viewBox="0 0 780 260" preserveAspectRatio="none">
+        <defs>
+          <linearGradient [attr.id]="chartGradientId" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#2effcb" stop-opacity="0.45" />
+            <stop offset="100%" stop-color="#2effcb" stop-opacity="0" />
+          </linearGradient>
+        </defs>
 
-      <path
-        d="M0,240 C48,210 78,248 116,220 C154,190 188,170 222,230 C254,280 300,80 344,188 C380,274 424,64 458,144 C490,220 528,268 570,58 C596,2 638,14 662,120 C686,228 720,290 780,72"
-        fill="none"
-        stroke="#33ffd0"
-        stroke-width="3"
-        stroke-linecap="round"
-      ></path>
-    </svg>
+        <path [attr.d]="chart.areaPath" [attr.fill]="'url(#' + chartGradientId + ')'" ></path>
+
+        <path
+          [attr.d]="chart.linePath"
+          fill="none"
+          stroke="#33ffd0"
+          stroke-width="3"
+          stroke-linecap="round"
+        ></path>
+      </svg>
+    </ng-container>
   </div>
 </section>

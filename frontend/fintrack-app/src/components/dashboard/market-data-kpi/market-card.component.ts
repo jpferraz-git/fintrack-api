@@ -2,7 +2,7 @@ import { Component, Input, OnDestroy, OnInit, ChangeDetectorRef } from '@angular
 import { UpperCasePipe } from '@angular/common';
 import { Subject, catchError, exhaustMap, forkJoin, of, takeUntil, timer } from 'rxjs';
 import { MarketDataService } from '../../../app/services/market-data.service';
-import { formatUsd } from '../../../app/shared/utils/sanitizer';
+import { UtilsService } from '../../../app/services/utils.service';
 
 @Component({
   selector: 'app-market-card',
@@ -27,7 +27,8 @@ export class MarketCardComponent implements OnInit, OnDestroy {
 
   constructor(
     private marketDataService: MarketDataService,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    private utilsService: UtilsService
   ) {}
 
   ngOnInit(): void {
@@ -60,9 +61,12 @@ export class MarketCardComponent implements OnInit, OnDestroy {
           return;
         }
 
-        const latestKline = Array.isArray(ticker.klines)
-          ? ticker.klines.at(-1)
-          : ticker.klines;
+        const klineRows = Array.isArray(ticker.klines)
+          ? ticker.klines
+          : [ticker.klines];
+
+        const latestKline = klineRows.at(-1);
+        const previousKline = klineRows.length > 1 ? klineRows.at(-2) : undefined;
 
         if (!latestKline) {
           this.isOffline = true;
@@ -72,18 +76,44 @@ export class MarketCardComponent implements OnInit, OnDestroy {
           return;
         }
 
-        const high = Number(latestKline.high);
-        const low = Number(latestKline.low);
-
-        this.trendUp = Number.isFinite(high) && Number.isFinite(low)
-          ? high >= low
-          : true;
+        this.trendUp = this.resolveTrendDirection(
+          latestKline,
+          previousKline,
+          ticker.price.price,
+          this.trendUp
+        );
 
         this.isOffline = false;
-        this.price = formatUsd(ticker.price.price);
+        this.price = this.utilsService.formatUsd(ticker.price.price);
         this.volume = `Pair: ${ticker.price.symbol}`;
         this.cd.markForCheck();
       });
+  }
+
+  private resolveTrendDirection(
+    latestKline: { open: number | string; close: number | string },
+    previousKline: { close: number | string } | undefined,
+    currentPrice: number | string,
+    fallback: boolean
+  ): boolean {
+    const open = Number(latestKline.open);
+    const close = Number(latestKline.close);
+
+    if (Number.isFinite(open) && Number.isFinite(close) && close !== open) {
+      return close > open;
+    }
+
+    const previousClose = Number(previousKline?.close);
+    if (Number.isFinite(previousClose) && Number.isFinite(close) && close !== previousClose) {
+      return close > previousClose;
+    }
+
+    const livePrice = Number(currentPrice);
+    if (Number.isFinite(livePrice) && Number.isFinite(close) && livePrice !== close) {
+      return livePrice > close;
+    }
+
+    return fallback;
   }
 
 }

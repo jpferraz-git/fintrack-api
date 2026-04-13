@@ -13,13 +13,13 @@
   width: min(100%, 560px);
   border-radius: 14px;
   border: 1px solid rgba(78, 222, 163, 0.45);
-  background: var(--gradient-modal);
+  background: var(--color-bg-component);
   box-shadow: 0 36px 80px rgba(0, 0, 0, 0.45);
   padding: 22px;
 }
 
 .terminal-modal--asset {
-  width: min(100%, 500px);
+  width: min(100%, 600px);
 }
 
 .terminal-modal__header {
@@ -32,10 +32,10 @@
 .terminal-modal__header h2 {
   color: #f2f8ff;
   font-family: var(--font-display);
-  font-size: 36px;
+  font-size: 25px;
   line-height: 1;
   text-transform: uppercase;
-  letter-spacing: 1.4px;
+  letter-spacing: 0.5px;
 }
 
 .terminal-modal__close {
@@ -49,14 +49,6 @@
   line-height: 1;
 }
 
-.terminal-modal__subtitle {
-  margin-top: 5px;
-  color: var(--color-text-muted);
-  font-size: 10px;
-  text-transform: uppercase;
-  letter-spacing: 1.4px;
-}
-
 .terminal-modal__body {
   margin-top: 18px;
 }
@@ -66,8 +58,9 @@
   margin-top: 12px;
   color: var(--color-text-muted);
   font-size: 10px;
-  letter-spacing: 1.4px;
+  letter-spacing: 0.3px;
   text-transform: uppercase;
+  font-weight: 500;
 }
 
 .terminal-modal__field {
@@ -95,21 +88,11 @@
 
 .terminal-modal__search-row {
   margin-top: 6px;
-  display: grid;
-  grid-template-columns: 1fr auto;
-  gap: 10px;
-  align-items: center;
+  display: block;
 }
 
 .terminal-modal__search-row .terminal-modal__field {
   margin-top: 0;
-}
-
-.terminal-modal__search-row span {
-  color: var(--color-text-muted);
-  text-transform: uppercase;
-  font-size: 9px;
-  letter-spacing: 1px;
 }
 
 .terminal-modal__summary {
@@ -128,7 +111,7 @@
   color: var(--color-text-muted);
   text-transform: uppercase;
   letter-spacing: 1px;
-  font-size: 9px;
+  font-size: 15px;
 }
 
 .terminal-modal__summary strong {
@@ -137,6 +120,17 @@
   color: #eff7ff;
   font-family: var(--font-display);
   font-size: 26px;
+}
+
+.text-green {
+  color: var(--color-green-light);
+}
+
+.terminal-modal__error {
+  margin-top: 10px;
+  margin-bottom: 0;
+  color: #ff8ea2;
+  font-size: 12px;
 }
 
 .terminal-modal__footer {
@@ -174,6 +168,11 @@
   color: var(--color-green-deeper);
 }
 
+.terminal-button--primary:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
 @media (max-width: 680px) {
   .terminal-modal {
     padding: 16px;
@@ -186,10 +185,6 @@
   .terminal-modal__split,
   .terminal-modal__summary,
   .terminal-modal__footer {
-    grid-template-columns: 1fr;
-  }
-
-  .terminal-modal__search-row {
     grid-template-columns: 1fr;
   }
 }
