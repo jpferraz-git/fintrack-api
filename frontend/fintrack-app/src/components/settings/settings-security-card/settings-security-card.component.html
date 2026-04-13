@@ -73,4 +73,59 @@
       }
     </div>
   </form>
+
+  <section class="settings-danger-zone" aria-label="Account danger zone">
+    <h3 class="settings-danger-zone__title">Delete account</h3>
+    <p class="settings-danger-zone__description">
+      This action is permanent and removes your account access.
+    </p>
+    <button
+      type="button"
+      class="settings-btn settings-btn--danger"
+      (click)="openDeleteAccountModal()"
+      [disabled]="isDeletingAccount"
+    >
+      Delete account
+    </button>
+  </section>
 </article>
+
+@if (isDeleteModalOpen) {
+  <div class="settings-confirm-backdrop" (click)="onDeleteModalBackdropClick($event)">
+    <section
+      class="settings-confirm-modal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="delete-account-title"
+      aria-describedby="delete-account-description"
+    >
+      <h3 id="delete-account-title" class="settings-confirm-modal__title">Confirm account deletion</h3>
+      <p id="delete-account-description" class="settings-confirm-modal__description">
+        Do you really want to continue? Your account will be permanently deleted.
+      </p>
+
+      @if (deleteAccountError) {
+        <p class="settings-feedback settings-feedback--error">{{ deleteAccountError }}</p>
+      }
+
+      <div class="settings-confirm-modal__actions">
+        <button
+          type="button"
+          class="settings-btn settings-btn--ghost"
+          (click)="closeDeleteAccountModal()"
+          [disabled]="isDeletingAccount"
+        >
+          Cancel
+        </button>
+        <button
+          type="button"
+          class="settings-btn settings-btn--danger"
+          (click)="confirmDeleteAccount()"
+          [disabled]="isDeletingAccount"
+        >
+          {{ isDeletingAccount ? 'Deleting...' : 'Yes, delete account' }}
+        </button>
+      </div>
+    </section>
+  </div>
+}

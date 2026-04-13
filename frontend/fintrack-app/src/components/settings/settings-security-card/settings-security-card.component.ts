@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
+import { AuthService } from '../../../app/services/auth.service';
 import { UserService } from '../../../app/services/user.service';
 
 @Component({
@@ -14,11 +16,19 @@ export class SettingsSecurityCard {
   showNewPassword = false;
   showConfirmPassword = false;
 
+  isDeleteModalOpen = false;
+  isDeletingAccount = false;
+  deleteAccountError = '';
+
   passwordUpdated = false;
   passwordError = '';
   isSubmitting = false;
 
-  constructor(private userService: UserService) {}
+  constructor(
+    private userService: UserService,
+    private authService: AuthService,
+    private router: Router
+  ) {}
 
   updatePassword(): void {
     this.passwordError = '';
@@ -95,6 +105,70 @@ export class SettingsSecurityCard {
 
   toggleConfirmPasswordVisibility(): void {
     this.showConfirmPassword = !this.showConfirmPassword;
+  }
+
+  openDeleteAccountModal(): void {
+    this.deleteAccountError = '';
+    this.isDeleteModalOpen = true;
+  }
+
+  closeDeleteAccountModal(): void {
+    if (this.isDeletingAccount) {
+      return;
+    }
+
+    this.deleteAccountError = '';
+    this.isDeleteModalOpen = false;
+  }
+
+  onDeleteModalBackdropClick(event: MouseEvent): void {
+    if (event.target === event.currentTarget) {
+      this.closeDeleteAccountModal();
+    }
+  }
+
+  confirmDeleteAccount(): void {
+    if (this.isDeletingAccount) {
+      return;
+    }
+
+    this.deleteAccountError = '';
+
+    const storedUser = localStorage.getItem('user');
+    if (!storedUser) {
+      this.deleteAccountError = 'Unable to identify logged user.';
+      return;
+    }
+
+    let currentUserEmail = '';
+
+    try {
+      const parsedUser = JSON.parse(storedUser);
+      currentUserEmail = parsedUser?.email ?? '';
+    } catch {
+      this.deleteAccountError = 'Unable to read logged user data.';
+      return;
+    }
+
+    if (!currentUserEmail) {
+      this.deleteAccountError = 'User email not found for account deletion.';
+      return;
+    }
+
+    this.isDeletingAccount = true;
+
+    this.userService.deleteUserByEmail(currentUserEmail).subscribe({
+      next: () => {
+        this.isDeletingAccount = false;
+        this.authService.logout();
+        this.isDeleteModalOpen = false;
+        this.router.navigate(['/login']);
+      },
+      error: (error) => {
+        this.isDeletingAccount = false;
+        this.deleteAccountError = error?.error?.message || 'Unable to delete account. Please try again.';
+      }
+    });
   }
 
   private getPasswordValidationError(password: string): string {

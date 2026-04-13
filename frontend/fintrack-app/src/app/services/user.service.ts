@@ -34,4 +34,8 @@ export class UserService {
         return this.updateUserByEmail(email, { password: newPassword })
     }
 
+    deleteUserByEmail(email: string): Observable<void> {
+        return this.http.delete<void>(`${environment.apiUrl}/users?email=${encodeURIComponent(email)}`)
+    }
+
 }

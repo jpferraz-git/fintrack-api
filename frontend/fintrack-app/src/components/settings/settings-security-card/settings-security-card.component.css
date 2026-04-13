@@ -142,6 +142,89 @@
   color: #032114;
 }
 
+.settings-btn--ghost {
+  background: transparent;
+  border-color: rgba(99, 122, 148, 0.45);
+  color: var(--color-text-secondary);
+}
+
+.settings-btn--danger {
+  background: rgba(255, 85, 113, 0.12);
+  border-color: rgba(255, 85, 113, 0.45);
+  color: var(--color-red-light);
+}
+
+.settings-btn:disabled {
+  opacity: 0.64;
+  cursor: not-allowed;
+}
+
+.settings-danger-zone {
+  border-top: 1px solid rgba(116, 151, 179, 0.16);
+  padding-top: 16px;
+  display: grid;
+  gap: 10px;
+}
+
+.settings-danger-zone__title {
+  margin: 0;
+  font-family: var(--font-body);
+  text-transform: uppercase;
+  letter-spacing: 0.11em;
+  font-size: 13px;
+  color: var(--color-red-light);
+}
+
+.settings-danger-zone__description {
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-size: 13px;
+}
+
+.settings-confirm-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(1, 8, 18, 0.74);
+  backdrop-filter: blur(6px);
+  display: grid;
+  place-items: center;
+  padding: 16px;
+  z-index: 95;
+}
+
+.settings-confirm-modal {
+  width: min(100%, 460px);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 85, 113, 0.34);
+  background: var(--color-bg-component);
+  box-shadow: 0 28px 64px rgba(0, 0, 0, 0.48);
+  padding: 18px;
+  display: grid;
+  gap: 12px;
+}
+
+.settings-confirm-modal__title {
+  margin: 0;
+  color: var(--color-text-primary);
+  font-family: var(--font-body);
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  font-size: 14px;
+}
+
+.settings-confirm-modal__description {
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-size: 13px;
+}
+
+.settings-confirm-modal__actions {
+  display: flex;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
 .settings-feedback {
   margin: 0;
   color: var(--color-green-light);
@@ -156,5 +239,13 @@
 @media (max-width: 960px) {
   .settings-form__grid--two-columns {
     grid-template-columns: 1fr;
+  }
+
+  .settings-confirm-modal__actions {
+    justify-content: stretch;
+  }
+
+  .settings-confirm-modal__actions .settings-btn {
+    flex: 1 1 100%;
   }
 }
