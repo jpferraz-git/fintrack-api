@@ -2,7 +2,7 @@ import { Component, Input, OnDestroy, OnInit, ChangeDetectorRef } from '@angular
 import { UpperCasePipe } from '@angular/common';
 import { Subject, catchError, exhaustMap, forkJoin, of, takeUntil, timer } from 'rxjs';
 import { MarketDataService } from '../../../app/services/market-data.service';
-import { formatUsd } from '../../../app/shared/utils/sanitizer';
+import { UtilsService } from '../../../app/services/utils.service';
 
 @Component({
   selector: 'app-market-card',
@@ -27,7 +27,8 @@ export class MarketCardComponent implements OnInit, OnDestroy {
 
   constructor(
     private marketDataService: MarketDataService,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    private utilsService: UtilsService
   ) {}
 
   ngOnInit(): void {
@@ -83,7 +84,7 @@ export class MarketCardComponent implements OnInit, OnDestroy {
         );
 
         this.isOffline = false;
-        this.price = formatUsd(ticker.price.price);
+        this.price = this.utilsService.formatUsd(ticker.price.price);
         this.volume = `Pair: ${ticker.price.symbol}`;
         this.cd.markForCheck();
       });

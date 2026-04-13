@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { Subject, catchError, map, merge, of, switchMap, takeUntil, timer } from 'rxjs';
 import { PortfolioService, PortfolioTransactionResponse } from '../../../app/services/portfolio.service';
+import { UtilsService } from '../../../app/services/utils.service';
 
 @Component({
   selector: 'app-portfolio-transactions-table',
@@ -49,7 +50,10 @@ export class PortfolioTransactionsTable implements OnInit, OnChanges, OnDestroy 
   private readonly destroy$ = new Subject<void>();
   private readonly manualRefresh$ = new Subject<void>();
 
-  constructor(private portfolioService: PortfolioService) {}
+  constructor(
+    private portfolioService: PortfolioService,
+    private utilsService: UtilsService
+  ) {}
 
   ngOnInit(): void {
     this.startPolling();
@@ -91,21 +95,13 @@ export class PortfolioTransactionsTable implements OnInit, OnChanges, OnDestroy 
   }
 
   formatQuantity(value: number | string): string {
-    const quantity = this.parseNumeric(value);
-    return quantity.toLocaleString('en-US', {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 8
+    return this.utilsService.formatQuantity(value, {
+      minimumFractionDigits: 2
     });
   }
 
   formatUsd(value: number | string): string {
-    const parsedValue = this.parseNumeric(value);
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2
-    }).format(parsedValue);
+    return this.utilsService.formatUsd(value);
   }
 
   formatDate(dateValue: string): string {
@@ -167,8 +163,8 @@ export class PortfolioTransactionsTable implements OnInit, OnChanges, OnDestroy 
   }
 
   formatTotal(transaction: PortfolioTransactionResponse): string {
-    const quantity = this.parseNumeric(transaction.quantity);
-    const price = this.parseNumeric(transaction.price);
+    const quantity = this.utilsService.parseNumeric(transaction.quantity);
+    const price = this.utilsService.parseNumeric(transaction.price);
     return this.formatUsd(quantity * price);
   }
 
@@ -201,10 +197,5 @@ export class PortfolioTransactionsTable implements OnInit, OnChanges, OnDestroy 
         this.transactions = transactions;
         this.hasTransactionsError = false;
       });
-  }
-
-  private parseNumeric(value: number | string): number {
-    const parsed = typeof value === 'number' ? value : Number(value);
-    return Number.isFinite(parsed) ? parsed : 0;
   }
 }

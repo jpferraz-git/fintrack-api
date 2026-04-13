@@ -5,6 +5,7 @@ import { FormInput } from '../../components/form-input/form-input.component';
 import { CtaButton } from '../../components/cta-button/cta-button.component';
 import { SignupService } from '../../app/services/signup.service';
 import { Router, RouterLink } from '@angular/router';
+import { UtilsService } from '../../app/services/utils.service';
 
 
 @Component({
@@ -28,6 +29,7 @@ export class SignupPage {
   constructor(
     private router: Router,
     private singupService: SignupService,
+    private utilsService: UtilsService
   ) {}
 
   onSignupSubmit(event: Event): void {
@@ -35,7 +37,7 @@ export class SignupPage {
     this.passwordValidationError = '';
     this.showPasswordMismatchWarning = false;
 
-    const passwordValidationError = this.getPasswordValidationError(this.password);
+    const passwordValidationError = this.utilsService.validatePassword(this.password);
     if (passwordValidationError) {
       this.passwordValidationError = passwordValidationError;
       return;
@@ -60,35 +62,11 @@ export class SignupPage {
   }
 
   togglePasswordVisibility(): void {
-    this.showPassword = !this.showPassword;
+    this.showPassword = this.utilsService.toggleBoolean(this.showPassword);
   }
 
   toggleConfirmPasswordVisibility(): void {
-    this.showConfirmPassword = !this.showConfirmPassword;
-  }
-
-  private getPasswordValidationError(password: string): string {
-    if (password.length < 8) {
-      return 'Password must be at least 8 characters long.';
-    }
-
-    if (!/[A-Z]/.test(password)) {
-      return 'Password must include at least one uppercase letter.';
-    }
-
-    if (!/[a-z]/.test(password)) {
-      return 'Password must include at least one lowercase letter.';
-    }
-
-    if (!/\d/.test(password)) {
-      return 'Password must include at least one number.';
-    }
-
-    if (!/[^A-Za-z0-9]/.test(password)) {
-      return 'Password must include at least one special character.';
-    }
-
-    return '';
+    this.showConfirmPassword = this.utilsService.toggleBoolean(this.showConfirmPassword);
   }
 
 }

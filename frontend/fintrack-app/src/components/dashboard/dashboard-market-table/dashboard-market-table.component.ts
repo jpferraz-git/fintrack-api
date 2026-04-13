@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { MarketTableRowComponent } from './market-table-row.component';
+import { MarketTableRowComponent } from '../market-table-row/market-table-row.component';
 
 interface MarketRow {
   symbol: string

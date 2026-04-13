@@ -3,6 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../app/services/auth.service';
 import { UserService } from '../../../app/services/user.service';
+import { UtilsService } from '../../../app/services/utils.service';
 
 @Component({
   selector: 'app-settings-security-card',
@@ -27,7 +28,8 @@ export class SettingsSecurityCard {
   constructor(
     private userService: UserService,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private utilsService: UtilsService
   ) {}
 
   updatePassword(): void {
@@ -39,7 +41,7 @@ export class SettingsSecurityCard {
       return;
     }
 
-    const passwordValidationError = this.getPasswordValidationError(this.newPassword);
+    const passwordValidationError = this.utilsService.validatePassword(this.newPassword);
     if (passwordValidationError) {
       this.passwordError = passwordValidationError;
       return;
@@ -50,24 +52,9 @@ export class SettingsSecurityCard {
       return;
     }
 
-    const storedUser = localStorage.getItem('user');
-    if (!storedUser) {
-      this.passwordError = 'Unable to identify logged user.';
-      return;
-    }
-
-    let currentUserEmail = '';
-
-    try {
-      const parsedUser = JSON.parse(storedUser);
-      currentUserEmail = parsedUser?.email ?? '';
-    } catch {
-      this.passwordError = 'Unable to read logged user data.';
-      return;
-    }
-
+    const currentUserEmail = this.utilsService.getStoredUserEmail();
     if (!currentUserEmail) {
-      this.passwordError = 'User email not found for password update.';
+      this.passwordError = 'Unable to identify logged user.';
       return;
     }
 
@@ -100,11 +87,11 @@ export class SettingsSecurityCard {
   }
 
   toggleNewPasswordVisibility(): void {
-    this.showNewPassword = !this.showNewPassword;
+    this.showNewPassword = this.utilsService.toggleBoolean(this.showNewPassword);
   }
 
   toggleConfirmPasswordVisibility(): void {
-    this.showConfirmPassword = !this.showConfirmPassword;
+    this.showConfirmPassword = this.utilsService.toggleBoolean(this.showConfirmPassword);
   }
 
   openDeleteAccountModal(): void {
@@ -134,24 +121,9 @@ export class SettingsSecurityCard {
 
     this.deleteAccountError = '';
 
-    const storedUser = localStorage.getItem('user');
-    if (!storedUser) {
-      this.deleteAccountError = 'Unable to identify logged user.';
-      return;
-    }
-
-    let currentUserEmail = '';
-
-    try {
-      const parsedUser = JSON.parse(storedUser);
-      currentUserEmail = parsedUser?.email ?? '';
-    } catch {
-      this.deleteAccountError = 'Unable to read logged user data.';
-      return;
-    }
-
+    const currentUserEmail = this.utilsService.getStoredUserEmail();
     if (!currentUserEmail) {
-      this.deleteAccountError = 'User email not found for account deletion.';
+      this.deleteAccountError = 'Unable to identify logged user.';
       return;
     }
 
@@ -171,49 +143,21 @@ export class SettingsSecurityCard {
     });
   }
 
-  private getPasswordValidationError(password: string): string {
-    if (password.length < 8) {
-      return 'Password must be at least 8 characters long.';
-    }
-
-    if (!/[A-Z]/.test(password)) {
-      return 'Password must include at least one uppercase letter.';
-    }
-
-    if (!/[a-z]/.test(password)) {
-      return 'Password must include at least one lowercase letter.';
-    }
-
-    if (!/\d/.test(password)) {
-      return 'Password must include at least one number.';
-    }
-
-    if (!/[^A-Za-z0-9]/.test(password)) {
-      return 'Password must include at least one special character.';
-    }
-
-    return '';
-  }
-
   private syncSessionUser(email: string): void {
     if (typeof window === 'undefined' || typeof sessionStorage === 'undefined') {
       return;
     }
 
-    const localUserRaw = localStorage.getItem('user');
     let user = {
       email
     };
 
-    if (localUserRaw) {
-      try {
-        user = {
-          ...JSON.parse(localUserRaw),
-          email
-        };
-      } catch {
-        user = { email };
-      }
+    const storedUser = this.utilsService.getStoredUser<Record<string, unknown>>();
+    if (storedUser) {
+      user = {
+        ...storedUser,
+        email
+      };
     }
 
     sessionStorage.setItem('user', JSON.stringify(user));

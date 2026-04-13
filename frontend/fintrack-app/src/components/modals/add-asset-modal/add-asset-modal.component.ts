@@ -4,6 +4,7 @@ import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from
 import { FormsModule, NgForm } from '@angular/forms';
 import { MarketDataService } from '../../../app/services/market-data.service';
 import { PortfolioService } from '../../../app/services/portfolio.service';
+import { UtilsService } from '../../../app/services/utils.service';
 
 interface CryptoOption {
   label: string
@@ -51,7 +52,8 @@ export class AddAssetModal implements OnChanges {
 
   constructor(
     private portfolioService: PortfolioService,
-    private marketDataService: MarketDataService
+    private marketDataService: MarketDataService,
+    private utilsService: UtilsService
   ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -139,10 +141,10 @@ export class AddAssetModal implements OnChanges {
       return '--'
     }
 
-    return `${this.equivalentQuantity.toLocaleString('en-US', {
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 8
-    })} ${this.assetCode}`
+    const formattedQuantity = this.utilsService.formatQuantity(this.equivalentQuantity, {
+      minimumFractionDigits: 0
+    })
+    return `${formattedQuantity} ${this.assetCode}`
   }
 
   get formattedCurrentPrice(): string {
@@ -150,12 +152,7 @@ export class AddAssetModal implements OnChanges {
       return '--'
     }
 
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2
-    }).format(this.currentPrice)
+    return this.utilsService.formatUsd(this.currentPrice)
   }
 
   get assetCode(): string {
@@ -168,7 +165,7 @@ export class AddAssetModal implements OnChanges {
 
     this.marketDataService.getPrice(this.selectedSymbol).subscribe({
       next: (priceResponse) => {
-        this.currentPrice = this.parseNumeric(priceResponse.price)
+        this.currentPrice = this.utilsService.parseNumeric(priceResponse.price)
         this.isLoadingPrice = false
       },
       error: () => {
@@ -176,11 +173,6 @@ export class AddAssetModal implements OnChanges {
         this.isLoadingPrice = false
       }
     })
-  }
-
-  private parseNumeric(value: number | string): number {
-    const parsed = typeof value === 'number' ? value : Number(value)
-    return Number.isFinite(parsed) ? parsed : 0
   }
 
   private resolveErrorMessage(error: HttpErrorResponse): string {

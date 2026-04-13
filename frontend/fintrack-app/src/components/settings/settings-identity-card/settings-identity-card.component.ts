@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { UserService } from '../../../app/services/user.service';
+import { UtilsService } from '../../../app/services/utils.service';
 
 
 @Component({
@@ -16,12 +17,14 @@ export class SettingsIdentityCard {
   profileSaved = false;
   user: any;
 
-  constructor(private userService: UserService) {}
+  constructor(
+    private userService: UserService,
+    private utilsService: UtilsService
+  ) {}
 
   ngOnInit() {
-    const storedUser = localStorage.getItem('user');
-    if (storedUser) {
-      this.user = JSON.parse(storedUser);
+    this.user = this.utilsService.getStoredUser<{ name?: string; email?: string }>();
+    if (this.user) {
       this.name = this.user.name;
       this.email = this.user.email;
     }

@@ -5,6 +5,7 @@ import { FormsModule, NgForm } from '@angular/forms';
 import { Subject, takeUntil } from 'rxjs';
 import { MarketDataService } from '../../../app/services/market-data.service';
 import { PortfolioAssetResponse, PortfolioService } from '../../../app/services/portfolio.service';
+import { UtilsService } from '../../../app/services/utils.service';
 
 interface SellOption {
   label: string
@@ -53,7 +54,8 @@ export class SellAssetModal implements OnChanges, OnDestroy {
 
   constructor(
     private portfolioService: PortfolioService,
-    private marketDataService: MarketDataService
+    private marketDataService: MarketDataService,
+    private utilsService: UtilsService
   ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -146,12 +148,7 @@ export class SellAssetModal implements OnChanges, OnDestroy {
       return '--';
     }
 
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2
-    }).format(this.currentPrice);
+    return this.utilsService.formatUsd(this.currentPrice);
   }
 
   get formattedEstimatedTotal(): string {
@@ -160,25 +157,19 @@ export class SellAssetModal implements OnChanges, OnDestroy {
     }
 
     const estimate = Number(this.sellQuantity) * this.currentPrice;
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2
-    }).format(estimate);
+    return this.utilsService.formatUsd(estimate);
   }
 
   get formattedAvailableQuantity(): string {
-    return `${this.availableQuantity.toLocaleString('en-US', {
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 8
-    })} ${this.assetCode}`;
+    const formattedQuantity = this.utilsService.formatQuantity(this.availableQuantity, {
+      minimumFractionDigits: 0
+    });
+    return `${formattedQuantity} ${this.assetCode}`;
   }
 
   formatQuantity(value: number): string {
-    return value.toLocaleString('en-US', {
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 8
+    return this.utilsService.formatQuantity(value, {
+      minimumFractionDigits: 0
     });
   }
 
@@ -193,7 +184,7 @@ export class SellAssetModal implements OnChanges, OnDestroy {
         next: (assets: PortfolioAssetResponse[]) => {
           this.sellOptions = assets
             .map((asset) => {
-              const availableQuantity = this.parseNumeric(asset.quantity);
+              const availableQuantity = this.utilsService.parseNumeric(asset.quantity);
               const assetCode = asset.symbol.replace('USDT', '');
               const assetName = this.assetNames[assetCode] ?? assetCode;
 
@@ -247,7 +238,7 @@ export class SellAssetModal implements OnChanges, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (priceResponse) => {
-          this.currentPrice = this.parseNumeric(priceResponse.price);
+          this.currentPrice = this.utilsService.parseNumeric(priceResponse.price);
           this.isLoadingPrice = false;
         },
         error: () => {
@@ -261,12 +252,6 @@ export class SellAssetModal implements OnChanges, OnDestroy {
     const option = this.sellOptions.find((candidate) => candidate.symbol === symbol);
     return option ? option.availableQuantity : 0;
   }
-
-  private parseNumeric(value: number | string): number {
-    const parsed = typeof value === 'number' ? value : Number(value);
-    return Number.isFinite(parsed) ? parsed : 0;
-  }
-
   private resolveErrorMessage(error: HttpErrorResponse): string {
     const rawError = error.error as { message?: string } | string | null;
     if (rawError && typeof rawError === 'object' && rawError.message) {

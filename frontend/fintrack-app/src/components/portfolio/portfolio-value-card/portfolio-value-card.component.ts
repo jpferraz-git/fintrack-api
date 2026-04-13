@@ -21,6 +21,7 @@ import {
   PortfolioService,
   PortfolioTransactionResponse
 } from '../../../app/services/portfolio.service';
+import { UtilsService } from '../../../app/services/utils.service';
 
 type PortfolioChartRange = '1D' | '1W' | '1M' | 'ALL'
 
@@ -98,9 +99,9 @@ export class PortfolioValueCard implements OnChanges, OnDestroy {
         currentValue: this.loadCurrentPortfolioValue()
       }).pipe(
         map(({ value, percentage, currentValue }) => {
-          const totalPortfolioValue = this.parseNumeric(value.value)
-          const totalPortfolioPercentage = this.parseNumeric(percentage.value)
-          const currentPortfolioValue = this.parseNumeric(currentValue)
+          const totalPortfolioValue = this.utilsService.parseNumeric(value.value)
+          const totalPortfolioPercentage = this.utilsService.parseNumeric(percentage.value)
+          const currentPortfolioValue = this.utilsService.parseNumeric(currentValue)
 
           return this.buildViewModel({
             isLoading: false,
@@ -126,7 +127,8 @@ export class PortfolioValueCard implements OnChanges, OnDestroy {
 
   constructor(
     private portfolioService: PortfolioService,
-    private marketDataService: MarketDataService
+    private marketDataService: MarketDataService,
+    private utilsService: UtilsService
   ) {}
 
   ngOnDestroy(): void {
@@ -211,7 +213,7 @@ export class PortfolioValueCard implements OnChanges, OnDestroy {
 
     assets.forEach((asset) => {
       const current = currentQuantityBySymbol.get(asset.symbol) ?? 0
-      currentQuantityBySymbol.set(asset.symbol, current + this.parseNumeric(asset.quantity))
+      currentQuantityBySymbol.set(asset.symbol, current + this.utilsService.parseNumeric(asset.quantity))
     })
 
     const priceSeriesMap = new Map<string, PricePoint[]>(
@@ -334,7 +336,7 @@ export class PortfolioValueCard implements OnChanges, OnDestroy {
 
     transactions.forEach((transaction) => {
       const timestamp = this.parseTimestamp(transaction.createdAt)
-      const quantity = this.parseNumeric(transaction.quantity)
+      const quantity = this.utilsService.parseNumeric(transaction.quantity)
 
       if (!Number.isFinite(timestamp) || timestamp <= 0 || quantity <= 0) {
         return
@@ -362,7 +364,7 @@ export class PortfolioValueCard implements OnChanges, OnDestroy {
     return rows
       .map((row) => ({
         timestamp: this.parseTimestamp(row.closeTime || row.openTime),
-        close: this.parseNumeric(row.close)
+        close: this.utilsService.parseNumeric(row.close)
       }))
       .filter((point) => Number.isFinite(point.timestamp) && point.timestamp > 0 && point.close > 0)
       .sort((first, second) => first.timestamp - second.timestamp)
@@ -394,8 +396,8 @@ export class PortfolioValueCard implements OnChanges, OnDestroy {
         const requests = assets.map((asset) =>
           this.marketDataService.getPrice(asset.symbol).pipe(
             map((marketPrice) => {
-              const quantity = this.parseNumeric(asset.quantity)
-              const price = this.parseNumeric(marketPrice.price)
+              const quantity = this.utilsService.parseNumeric(asset.quantity)
+              const price = this.utilsService.parseNumeric(marketPrice.price)
               return quantity * price
             }),
             catchError(() => of(0))
@@ -420,11 +422,6 @@ export class PortfolioValueCard implements OnChanges, OnDestroy {
     }
   }
 
-  private parseNumeric(value: number | string): number {
-    const parsed = typeof value === 'number' ? value : Number(value)
-    return Number.isFinite(parsed) ? parsed : 0
-  }
-
   private parseTimestamp(value: string | number): number {
     const numeric = typeof value === 'number' ? value : Number(value)
     if (Number.isFinite(numeric)) {
@@ -442,22 +439,12 @@ export class PortfolioValueCard implements OnChanges, OnDestroy {
     totalPortfolioPercentage: number
     currentPortfolioValue: number
   }): PortfolioMetricsViewModel {
-    const formattedTotalPortfolioValue = new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2
-    }).format(state.totalPortfolioValue)
-
-    const formattedCurrentPortfolioValue = new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2
-    }).format(state.currentPortfolioValue)
-
-    const sign = state.totalPortfolioPercentage > 0 ? '+' : ''
-    const formattedTotalPortfolioPercentage = `${sign}${state.totalPortfolioPercentage.toFixed(2)}%`
+    const formattedTotalPortfolioValue = this.utilsService.formatUsd(state.totalPortfolioValue)
+    const formattedCurrentPortfolioValue = this.utilsService.formatUsd(state.currentPortfolioValue)
+    const formattedTotalPortfolioPercentage = this.utilsService.formatPercentage(state.totalPortfolioPercentage, {
+      decimals: 2,
+      includeSign: true
+    })
 
     return {
       ...state,

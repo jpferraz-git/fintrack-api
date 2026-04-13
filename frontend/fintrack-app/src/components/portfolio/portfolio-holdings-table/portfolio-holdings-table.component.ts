@@ -3,6 +3,7 @@ import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@
 import { Subject, catchError, forkJoin, map, merge, of, switchMap, takeUntil, timer } from 'rxjs';
 import { MarketDataService } from '../../../app/services/market-data.service';
 import { PortfolioAssetResponse, PortfolioService } from '../../../app/services/portfolio.service';
+import { UtilsService } from '../../../app/services/utils.service';
 
 interface PortfolioHoldingRow {
   assetId: string
@@ -61,7 +62,8 @@ export class PortfolioHoldingsTable implements OnInit, OnChanges, OnDestroy {
 
   constructor(
     private portfolioService: PortfolioService,
-    private marketDataService: MarketDataService
+    private marketDataService: MarketDataService,
+    private utilsService: UtilsService
   ) {}
 
   ngOnInit(): void {
@@ -86,24 +88,17 @@ export class PortfolioHoldingsTable implements OnInit, OnChanges, OnDestroy {
   }
 
   formatQuantity(quantity: number): string {
-    return quantity.toLocaleString('en-US', {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 8
+    return this.utilsService.formatQuantity(quantity, {
+      minimumFractionDigits: 2
     })
   }
 
   formatPrice(price: number): string {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2
-    }).format(price)
+    return this.utilsService.formatUsd(price)
   }
 
   formatProfitPercentage(percentage: number): string {
-    const sign = percentage > 0 ? '+' : ''
-    return `${sign}${percentage.toFixed(2)}%`
+    return this.utilsService.formatPercentage(percentage, { decimals: 2, includeSign: true })
   }
 
   getAssetTicker(symbol: string): string {
@@ -150,7 +145,7 @@ export class PortfolioHoldingsTable implements OnInit, OnChanges, OnDestroy {
 
         const rowRequests = assets.map((asset) =>
           this.marketDataService.getPrice(asset.symbol).pipe(
-            map((marketPrice) => this.toRow(asset, this.parseNumeric(marketPrice.price))),
+            map((marketPrice) => this.toRow(asset, this.utilsService.parseNumeric(marketPrice.price))),
             catchError(() => of(this.toRow(asset, 0)))
           )
         )
@@ -162,8 +157,8 @@ export class PortfolioHoldingsTable implements OnInit, OnChanges, OnDestroy {
   }
 
   private toRow(asset: PortfolioAssetResponse, currentPrice: number): PortfolioHoldingRow {
-    const quantity = this.parseNumeric(asset.quantity)
-    const avgPrice = this.parseNumeric(asset.avgPrice)
+    const quantity = this.utilsService.parseNumeric(asset.quantity)
+    const avgPrice = this.utilsService.parseNumeric(asset.avgPrice)
     const profitPercentage = avgPrice <= 0
       ? 0
       : ((currentPrice - avgPrice) / avgPrice) * 100
@@ -177,10 +172,5 @@ export class PortfolioHoldingsTable implements OnInit, OnChanges, OnDestroy {
       currentPrice,
       profitPercentage
     }
-  }
-
-  private parseNumeric(value: number | string): number {
-    const parsed = typeof value === 'number' ? value : Number(value)
-    return Number.isFinite(parsed) ? parsed : 0
   }
 }

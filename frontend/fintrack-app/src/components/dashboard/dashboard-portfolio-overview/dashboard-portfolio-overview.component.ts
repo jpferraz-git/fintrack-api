@@ -4,6 +4,7 @@ import { RouterLink } from '@angular/router';
 import { catchError, forkJoin, map, of, switchMap, takeUntil, timer, Subject } from 'rxjs';
 import { MarketDataService } from '../../../app/services/market-data.service';
 import { PortfolioAssetResponse, PortfolioService } from '../../../app/services/portfolio.service';
+import { UtilsService } from '../../../app/services/utils.service';
 
 interface PortfolioOverviewRow {
   symbol: string
@@ -46,7 +47,8 @@ export class DashboardPortfolioOverview implements OnInit, OnDestroy {
 
   constructor(
     private portfolioService: PortfolioService,
-    private marketDataService: MarketDataService
+    private marketDataService: MarketDataService,
+    private utilsService: UtilsService
   ) {}
 
   ngOnInit(): void {
@@ -84,16 +86,11 @@ export class DashboardPortfolioOverview implements OnInit, OnDestroy {
   }
 
   formatCurrency(value: number): string {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2
-    }).format(value);
+    return this.utilsService.formatUsd(value);
   }
 
   formatAllocation(value: number): string {
-    return `${value.toFixed(1)}%`;
+    return this.utilsService.formatPercentage(value, { decimals: 1 });
   }
 
   trackBySymbol(index: number, row: PortfolioOverviewRow): string {
@@ -131,7 +128,7 @@ export class DashboardPortfolioOverview implements OnInit, OnDestroy {
 
         const requests = assets.map((asset) =>
           this.marketDataService.getPrice(asset.symbol).pipe(
-            map((priceResponse) => this.toRawRow(asset, this.parseNumber(priceResponse.price))),
+            map((priceResponse) => this.toRawRow(asset, this.utilsService.parseNumeric(priceResponse.price))),
             catchError(() => of(this.toRawRow(asset, 0)))
           )
         );
@@ -145,7 +142,7 @@ export class DashboardPortfolioOverview implements OnInit, OnDestroy {
   }
 
   private toRawRow(asset: PortfolioAssetResponse, currentPrice: number): PortfolioOverviewRow {
-    const quantity = this.parseNumber(asset.quantity);
+    const quantity = this.utilsService.parseNumeric(asset.quantity);
     const code = this.toCode(asset.symbol);
     const icon = this.iconByCode[code] ?? code.toLowerCase();
 
@@ -174,10 +171,5 @@ export class DashboardPortfolioOverview implements OnInit, OnDestroy {
 
   private toCode(symbol: string): string {
     return symbol.endsWith('USDT') ? symbol.slice(0, -4).toUpperCase() : symbol.toUpperCase();
-  }
-
-  private parseNumber(value: number | string): number {
-    const parsed = typeof value === 'number' ? value : Number(value);
-    return Number.isFinite(parsed) ? parsed : 0;
   }
 }
