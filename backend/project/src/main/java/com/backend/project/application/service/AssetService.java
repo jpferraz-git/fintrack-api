@@ -35,7 +35,7 @@ public class AssetService {
 
     public Result<AssetResponseDTO> create(AssetRequestDTO asset){
         try {
-            AssetEntity entity = assetMapper.toEntity(assetMapper.toModel(asset));
+            AssetEntity entity = assetMapper.toEntity(asset);
             entity.setUserId(getAuthenticatedUser());
             entity.setSymbol(normalizeSymbol(asset.symbol()));
             entity.setType(resolveType(asset.type()));
