@@ -12,7 +12,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 @Tag(name = "Asset", description = "Operations for managing financial assets")
 public interface AssetControllerSwagger {
@@ -22,7 +23,7 @@ public interface AssetControllerSwagger {
             @ApiResponse(responseCode = "200", description = "Assets retrieved successfully",
                     content = @Content(array = @ArraySchema(schema = @Schema(implementation = AssetResponseDTO.class))))
     })
-    ResponseEntity<List<AssetResponseDTO>> findAll();
+    ResponseEntity<Page<AssetResponseDTO>> findAll(Pageable pageable);
 
     @Operation(summary = "Create an asset", description = "Creates a new asset from the provided payload")
     @ApiResponses(value = {

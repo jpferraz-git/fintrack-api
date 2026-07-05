@@ -16,7 +16,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 
 import static com.backend.project.interfaces.controllers.utils.Normalizer.resolveStatus;
 
@@ -31,8 +33,8 @@ public class AssetController {
     }
 
     @GetMapping
-    public ResponseEntity<List<AssetResponseDTO>> findAll() {
-        return ResponseEntity.ok(assetService.findAll());
+    public ResponseEntity<Page<AssetResponseDTO>> findAll(@PageableDefault(size = 20) Pageable pageable) {
+        return ResponseEntity.ok(assetService.findAll(pageable));
     }
 
     @PostMapping

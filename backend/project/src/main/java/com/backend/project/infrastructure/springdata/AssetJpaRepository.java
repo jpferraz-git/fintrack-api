@@ -7,6 +7,9 @@ import org.springframework.data.repository.query.Param;
 
 import java.math.BigDecimal;
 import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 import java.util.UUID;
 
 public interface AssetJpaRepository extends JpaRepository<AssetEntity, UUID> {
@@ -26,7 +29,7 @@ public interface AssetJpaRepository extends JpaRepository<AssetEntity, UUID> {
     boolean existsBySymbolAndUserId(@Param("symbol") String symbol, @Param("userId") UUID userId);
 
     @Query("SELECT a FROM AssetEntity a WHERE a.userId.id = :userId")
-    List<AssetEntity> findAllByUserId(@Param("userId") UUID userId);
+    Page<AssetEntity> findAllByUserId(@Param("userId") UUID userId, Pageable pageable);
 
     @Query("SELECT SUM(a.quantity) FROM AssetEntity a WHERE a.userId.id = :userId")
     BigDecimal getQuantityByUserId(@Param("userId") UUID userId);

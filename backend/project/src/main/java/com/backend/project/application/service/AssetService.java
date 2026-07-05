@@ -15,7 +15,9 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 import java.util.UUID;
 
 @Service
@@ -56,9 +58,11 @@ public class AssetService {
             AssetEntity assetEntity = assetRepository.findBySymbolAndUserId(normalizedCurrentSymbol, userId);
             assetEntity.setSymbol(normalizedNewSymbol);
             assetEntity.setType(resolveType(asset.type()));
-            assetEntity.setQuantity(
-                    calculateQuantityByInvestment(normalizedNewSymbol, asset.quantity())
-            );
+            Result<BigDecimal> quantityResult = calculateQuantityByInvestment(normalizedNewSymbol, asset.quantity());
+            if (quantityResult.isFailure()) {
+                return Result.fail(quantityResult.getMessage());
+            }
+            assetEntity.setQuantity(quantityResult.getValue());
             assetEntity.setAvgPrice(asset.avgPrice());
             AssetEntity updated = assetRepository.update(assetEntity);
             return Result.ok(assetMapper.toResponse(updated));
@@ -76,10 +80,9 @@ public class AssetService {
         }
     }
 
-    public List<AssetResponseDTO> findAll(){
-        return assetRepository.findAllByUserId(getAuthenticatedUserId()).stream()
-                .map(assetMapper::toResponse)
-                .toList();
+    public Page<AssetResponseDTO> findAll(Pageable pageable){
+        return assetRepository.findAllByUserId(getAuthenticatedUserId(), pageable)
+                .map(assetMapper::toResponse);
     }
 
     public Result<BigDecimal> calculateQuantityByInvestment(String symbol, BigDecimal investedValue) {
