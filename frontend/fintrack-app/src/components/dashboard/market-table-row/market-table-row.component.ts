@@ -1,6 +1,6 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core'
-import { Subject, catchError, exhaustMap, forkJoin, of, takeUntil, timer } from 'rxjs'
-import { MarketDataService } from '../../../app/services/market-data.service'
+import { Subject, takeUntil } from 'rxjs'
+import { MarketStreamService } from '../../../app/services/market-stream.service'
 import { UtilsService } from '../../../app/services/utils.service'
 
 @Component({
@@ -31,7 +31,7 @@ export class MarketTableRowComponent implements OnInit, OnDestroy {
   }
 
   constructor(
-    private marketDataService: MarketDataService,
+    private marketStreamService: MarketStreamService,
     private utilsService: UtilsService
   ) {}
 
@@ -50,20 +50,14 @@ export class MarketTableRowComponent implements OnInit, OnDestroy {
   }
 
   private startPolling(): void {
-    timer(0, 1000)
-      .pipe(
-        exhaustMap(() =>
-          forkJoin({
-            price: this.marketDataService.getPrice(this.symbol),
-            ticker24h: this.marketDataService.get24hTicker(this.symbol)
-          }).pipe(catchError(() => of(null)))
-        ),
-        takeUntil(this.destroy$)
-      )
+    this.marketStreamService.getStream(this.symbol)
+      .pipe(takeUntil(this.destroy$))
       .subscribe((marketData) => {
+        if (marketData === null) return;
+        
         this.loading = false
 
-        if (!marketData) {
+        if (!marketData || !marketData.price || !marketData.ticker24h) {
           this.price = '--'
           this.changePercent = '--'
           this.volume24h = '--'
