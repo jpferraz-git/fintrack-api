@@ -5,46 +5,44 @@ import com.backend.project.interfaces.dto.binance.price.BinancePriceResponseDTO;
 import com.backend.project.interfaces.dto.binance.ticker.Binance24hTickerRequestDTO;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Component;
-import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.client.RestClient;
 
 import java.util.List;
 
 @Component
 public class BinanceIntegration {
 
-    private final WebClient webClient;
+    private final RestClient restClient;
     private final BinanceParser binanceParser;
 
-    public BinanceIntegration(WebClient.Builder builder, BinanceParser binanceParser){
-        this.webClient = builder
+    public BinanceIntegration(RestClient.Builder builder, BinanceParser binanceParser){
+        this.restClient = builder
                 .baseUrl("https://api.binance.com/api/v3")
                 .build();
         this.binanceParser = binanceParser;
     }
 
     public BinancePriceResponseDTO getPrice(String symbol){
-        return webClient.get()
+        return restClient.get()
                 .uri(uriBuilder -> uriBuilder
                         .path("/ticker/price")
                         .queryParam("symbol", symbol)
                         .build())
                 .retrieve()
-                .bodyToMono(BinancePriceResponseDTO.class)
-                .block();
+                .body(BinancePriceResponseDTO.class);
     }
     public Binance24hTickerRequestDTO get24hTicker(String symbol){
-        return webClient.get()
+        return restClient.get()
                 .uri(uriBuilder -> uriBuilder
                         .path("/ticker/24hr")
                         .queryParam("symbol", symbol)
                         .build())
                 .retrieve()
-                .bodyToMono(Binance24hTickerRequestDTO.class)
-                .block();
+                .body(Binance24hTickerRequestDTO.class);
     }
 
     public List<BinanceKlinesRequestDTO> getKlines(String symbol, String interval, Integer limit){
-        List<List<Object>> rawKlines = webClient.get()
+        List<List<Object>> rawKlines = restClient.get()
                 .uri(uriBuilder -> uriBuilder
                         .path("/klines")
                         .queryParam("symbol", symbol)
@@ -52,8 +50,7 @@ public class BinanceIntegration {
                         .queryParam("limit", limit)
                         .build())
                 .retrieve()
-                .bodyToMono(new ParameterizedTypeReference<List<List<Object>>>() {})
-                .block();
+                .body(new ParameterizedTypeReference<List<List<Object>>>() {});
         return binanceParser.parseKlines(rawKlines);
     }
 
