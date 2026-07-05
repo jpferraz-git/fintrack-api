@@ -1,28 +1,16 @@
 package com.backend.project.interfaces.dto.asset;
 
-import com.backend.project.domain.model.AssetModel;
+
 import com.backend.project.infrastructure.entity.AssetEntity;
 import org.springframework.stereotype.Component;
 
 @Component
 public class AssetMapper {
 
-    public AssetEntity toEntity(AssetModel model){
+    public AssetEntity toEntity(AssetRequestDTO dto) {
         return new AssetEntity(
                 null,
                 null,
-                model.getSymbol(),
-                model.getType(),
-                model.getQuantity(),
-                model.getAvgPrice(),
-                null,
-                null
-        );
-    }
-    public AssetModel toModel(AssetRequestDTO dto) {
-        return new AssetModel(
-                null,
-                dto.fkUser(),
                 dto.symbol(),
                 dto.type(),
                 dto.quantity(),
