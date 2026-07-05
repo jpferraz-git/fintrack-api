@@ -62,7 +62,7 @@ public class BinanceController implements BinanceControllerSwagger {
         return ResponseEntity.status(resolveStatus(result.getMessage())).body(result);
     }
 
-    @GetMapping(value = "/klines", params = {"symbol", "interval", "limit"})
+    @GetMapping(value = "/klines", params = {"symbol", "interval"})
     public ResponseEntity<?> getKlines(@RequestParam String symbol, @RequestParam String interval, @RequestParam(defaultValue = "80") Integer limit) {
         Result<List<BinanceKlinesResponseDTO>> result = binanceService.getKlines(symbol, interval, limit);
         if (result.isOk()) {

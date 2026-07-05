@@ -39,7 +39,6 @@ public class UserController implements UserControllerSwagger {
     @PutMapping("/update")
     public ResponseEntity<?> updateUser(@RequestBody UserRequestDTO user) {
         Result<UserResponseDTO> result = userService.updateUser(user);
-        System.out.println(result.getValue());
         if (result.isOk()) {
             return ResponseEntity.ok(result.getValue());
         }

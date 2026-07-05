@@ -11,9 +11,17 @@ public final class Normalizer {
             return HttpStatus.INTERNAL_SERVER_ERROR;
         }
         String normalized = message.toLowerCase();
-        if (normalized.contains("not found") || normalized.contains("no klines")) {
+
+        if (normalized.contains("not found") || normalized.contains("no klines") || normalized.contains("does not exist")) {
             return HttpStatus.NOT_FOUND;
         }
+        if (normalized.contains("already exists") || normalized.contains("already in use")) {
+            return HttpStatus.CONFLICT;
+        }
+        if (normalized.contains("failed to retrieve")) {
+            return HttpStatus.BAD_GATEWAY;
+        }
+
         return HttpStatus.INTERNAL_SERVER_ERROR;
     }
 }

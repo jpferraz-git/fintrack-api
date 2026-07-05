@@ -10,7 +10,7 @@ import com.backend.project.interfaces.dto.authentication.LoginResponseDTO;
 import com.backend.project.interfaces.dto.register.RegisterDTO;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -24,11 +24,14 @@ public class AuthenticationService {
 
     private final RoleRepository roleRepository;
 
-    public AuthenticationService(UserRepository userRepository, AuthenticationManager authenticationManager, TokenService tokenService, RoleRepository roleRepository) {
+    private final PasswordEncoder passwordEncoder;
+
+    public AuthenticationService(UserRepository userRepository, AuthenticationManager authenticationManager, TokenService tokenService, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.authenticationManager = authenticationManager;
         this.tokenService = tokenService;
         this.roleRepository = roleRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public LoginResponseDTO login(AuthenticationDTO dto){
@@ -56,7 +59,7 @@ public class AuthenticationService {
         }
 
         try {
-            String encryptedPassword = new BCryptPasswordEncoder(12).encode(dto.password());
+            String encryptedPassword = passwordEncoder.encode(dto.password());
             Role role = dto.role() != null ? dto.role() : Role.USER;
             UserEntity newUser = new UserEntity(
                     dto.email(),
