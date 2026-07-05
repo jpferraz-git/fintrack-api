@@ -60,8 +60,6 @@ class AssetControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isConflict())
-                .andExpect(jsonPath("$.status").value("FAILURE"))
-                .andExpect(jsonPath("$.success").value(false))
                 .andExpect(jsonPath("$.message").value("Asset with symbol 'BTC' already exists."));
     }
 
@@ -82,8 +80,6 @@ class AssetControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$.status").value("FAILURE"))
-                .andExpect(jsonPath("$.success").value(false))
                 .andExpect(jsonPath("$.message").value("Asset with symbol 'XYZ' does not exist."));
     }
 
@@ -94,8 +90,6 @@ class AssetControllerTest {
 
         mockMvc.perform(delete("/asset").param("symbol", "XYZ"))
                 .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$.status").value("FAILURE"))
-                .andExpect(jsonPath("$.success").value(false))
                 .andExpect(jsonPath("$.message").value("Asset with symbol 'XYZ' does not exist."));
     }
 }

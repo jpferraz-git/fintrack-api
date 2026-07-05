@@ -20,7 +20,9 @@ import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 import java.util.UUID;
 
 @Service
@@ -46,7 +48,7 @@ public class TransactionService {
         try {
             UserEntity authenticatedUser = getAuthenticatedUser();
 
-            TransactionEntity entity = transactionMapper.toEntity(transactionMapper.toModel(transaction));
+            TransactionEntity entity = transactionMapper.toEntity(transaction);
             entity.setUserId(authenticatedUser);
             entity.setSymbol(normalizeSymbol(transaction.symbol()));
             entity.setType(resolveTransactionType(transaction.type()));
@@ -63,10 +65,9 @@ public class TransactionService {
         }
     }
 
-    public List<TransactionResponseDTO> findAll() {
-        return transactionRepository.findAllByUserId(getAuthenticatedUserId()).stream()
-                .map(transactionMapper::toResponse)
-                .toList();
+    public Page<TransactionResponseDTO> findAll(Pageable pageable) {
+        return transactionRepository.findAllByUserId(getAuthenticatedUserId(), pageable)
+                .map(transactionMapper::toResponse);
     }
 
     private UUID getAuthenticatedUserId() {

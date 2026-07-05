@@ -3,7 +3,9 @@ package com.backend.project.domain.repository;
 import com.backend.project.infrastructure.entity.AssetEntity;
 
 import java.math.BigDecimal;
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 import java.util.UUID;
 
 public interface AssetRepository {
@@ -14,7 +16,7 @@ public interface AssetRepository {
 
     AssetEntity update(AssetEntity asset);
     void deleteBySymbolAndUserId(String symbol, UUID userId);
-    List<AssetEntity> findAllByUserId(UUID userId);
+    Page<AssetEntity> findAllByUserId(UUID userId, Pageable pageable);
 
     BigDecimal getQuantityByUser(UUID userId);
     BigDecimal getAssetQuantityByUserAndSymbol(UUID userId, String symbol);

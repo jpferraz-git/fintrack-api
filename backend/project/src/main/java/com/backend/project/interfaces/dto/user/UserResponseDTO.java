@@ -9,7 +9,6 @@ public record UserResponseDTO(
     UUID userId,
     String name,
     String email,
-    String password,
     Role role,
     Instant createdAt,
     Instant updatedAt

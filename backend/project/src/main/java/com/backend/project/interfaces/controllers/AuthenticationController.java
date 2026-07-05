@@ -1,5 +1,8 @@
 package com.backend.project.interfaces.controllers;
 
+import static com.backend.project.interfaces.controllers.utils.Normalizer.errorResponse;
+
+
 import com.backend.project.application.Result;
 import com.backend.project.application.service.AuthenticationService;
 import com.backend.project.interfaces.dto.authentication.AuthenticationDTO;
@@ -37,6 +40,6 @@ public class AuthenticationController implements AuthenticationControllerSwagger
         if (result.isOk()) {
             return ResponseEntity.status(HttpStatus.CREATED).build();
         }
-        return ResponseEntity.status(resolveStatus(result.getMessage())).body(result);
+        return ResponseEntity.status(resolveStatus(result.getMessage())).body(errorResponse(result.getMessage()));
     }
 }

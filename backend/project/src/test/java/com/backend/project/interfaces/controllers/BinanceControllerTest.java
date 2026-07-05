@@ -102,14 +102,14 @@ class BinanceControllerTest {
                 new BigDecimal("3900000.00")
         );
 
-        when(binanceService.getKlines("BTCUSDT", "1m", 80)).thenReturn(Result.ok(response));
+        when(binanceService.getKlines("BTCUSDT", "1m", 80)).thenReturn(Result.ok(List.of(response)));
 
         mockMvc.perform(get("/binance/klines")
                         .param("symbol", "BTCUSDT")
                         .param("interval", "1m"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.open").value(64000.00))
-                .andExpect(jsonPath("$.close").value(65000.00));
+                .andExpect(jsonPath("$[0].open").value(64000.00))
+                .andExpect(jsonPath("$[0].close").value(65000.00));
     }
 
     @Test
@@ -135,8 +135,6 @@ class BinanceControllerTest {
 
         mockMvc.perform(get("/binance/price").param("symbol", "BTCUSDT"))
                 .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$.status").value("FAILURE"))
-                .andExpect(jsonPath("$.success").value(false))
                 .andExpect(jsonPath("$.message").value("Price not found"));
     }
 }

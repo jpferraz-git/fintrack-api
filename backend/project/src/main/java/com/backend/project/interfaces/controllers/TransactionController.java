@@ -1,5 +1,8 @@
 package com.backend.project.interfaces.controllers;
 
+import static com.backend.project.interfaces.controllers.utils.Normalizer.errorResponse;
+
+
 
 import com.backend.project.application.Result;
 import com.backend.project.application.service.TransactionService;
@@ -9,7 +12,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 
 import static com.backend.project.interfaces.controllers.utils.Normalizer.resolveStatus;
 
@@ -24,8 +29,8 @@ public class TransactionController {
     }
 
     @GetMapping
-    public ResponseEntity<List<TransactionResponseDTO>> findAll() {
-        return ResponseEntity.ok(transactionService.findAll());
+    public ResponseEntity<Page<TransactionResponseDTO>> findAll(@PageableDefault(size = 20) Pageable pageable) {
+        return ResponseEntity.ok(transactionService.findAll(pageable));
     }
 
     @PostMapping
@@ -34,7 +39,7 @@ public class TransactionController {
         if (result.isOk()) {
             return ResponseEntity.status(HttpStatus.CREATED).body(result.getValue());
         }
-        return ResponseEntity.status(resolveStatus(result.getMessage())).body(result);
+        return ResponseEntity.status(resolveStatus(result.getMessage())).body(errorResponse(result.getMessage()));
     }
 
 }

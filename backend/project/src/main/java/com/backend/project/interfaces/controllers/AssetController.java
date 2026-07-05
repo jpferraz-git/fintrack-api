@@ -1,5 +1,8 @@
 package com.backend.project.interfaces.controllers;
 
+import static com.backend.project.interfaces.controllers.utils.Normalizer.errorResponse;
+
+
 
 import com.backend.project.application.service.AssetService;
 import com.backend.project.application.Result;
@@ -12,7 +15,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.math.BigDecimal;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 
 import static com.backend.project.interfaces.controllers.utils.Normalizer.resolveStatus;
 
@@ -27,8 +33,8 @@ public class AssetController {
     }
 
     @GetMapping
-    public ResponseEntity<List<AssetResponseDTO>> findAll() {
-        return ResponseEntity.ok(assetService.findAll());
+    public ResponseEntity<Page<AssetResponseDTO>> findAll(@PageableDefault(size = 20) Pageable pageable) {
+        return ResponseEntity.ok(assetService.findAll(pageable));
     }
 
     @PostMapping
@@ -37,7 +43,7 @@ public class AssetController {
         if (result.isOk()) {
             return ResponseEntity.ok(result.getValue());
         }
-        return ResponseEntity.status(resolveStatus(result.getMessage())).body(result);
+        return ResponseEntity.status(resolveStatus(result.getMessage())).body(errorResponse(result.getMessage()));
     }
 
     @PutMapping("/{symbol}")
@@ -46,7 +52,7 @@ public class AssetController {
         if (result.isOk()) {
             return ResponseEntity.ok(result.getValue());
         }
-        return ResponseEntity.status(resolveStatus(result.getMessage())).body(result);
+        return ResponseEntity.status(resolveStatus(result.getMessage())).body(errorResponse(result.getMessage()));
     }
 
     @DeleteMapping
@@ -55,90 +61,60 @@ public class AssetController {
         if (result.isOk()) {
             return ResponseEntity.noContent().build();
         }
-        return ResponseEntity.status(resolveStatus(result.getMessage())).body(result);
+        return ResponseEntity.status(resolveStatus(result.getMessage())).body(errorResponse(result.getMessage()));
     }
 
     @PostMapping("/calculate-quantity")
     public ResponseEntity<?> calculateQuantityByInvestment(@RequestBody AssetQuantityCalculationRequestDTO dto) {
-        try {
-            return ResponseEntity.ok(
-                    new AssetCalculationResponseDTO(
-                            assetService.calculateQuantityByInvestment(dto.symbol(), dto.investedValue())
-                    )
-            );
-        } catch (Exception ex) {
-            Result<AssetCalculationResponseDTO> result = Result.fail(ex.getMessage());
-            return ResponseEntity.status(resolveStatus(result.getMessage())).body(result);
+        Result<BigDecimal> result = assetService.calculateQuantityByInvestment(dto.symbol(), dto.investedValue());
+        if (result.isOk()) {
+            return ResponseEntity.ok(new AssetCalculationResponseDTO(result.getValue()));
         }
+        return ResponseEntity.status(resolveStatus(result.getMessage())).body(errorResponse(result.getMessage()));
     }
 
     @PostMapping("/calculate-actual-value")
     public ResponseEntity<?> calculateActualValue(@RequestBody AssetActualValueRequestDTO dto) {
-        try {
-            return ResponseEntity.ok(
-                    new AssetCalculationResponseDTO(
-                            assetService.calculateActualValue(dto.symbol())
-                    )
-            );
-        } catch (Exception ex) {
-            Result<AssetCalculationResponseDTO> result = Result.fail(ex.getMessage());
-            return ResponseEntity.status(resolveStatus(result.getMessage())).body(result);
+        Result<BigDecimal> result = assetService.calculateActualValue(dto.symbol());
+        if (result.isOk()) {
+            return ResponseEntity.ok(new AssetCalculationResponseDTO(result.getValue()));
         }
+        return ResponseEntity.status(resolveStatus(result.getMessage())).body(errorResponse(result.getMessage()));
     }
 
     @PostMapping("/calculate-profit-percentage")
     public ResponseEntity<?> calculateProfitPercentage(@RequestBody AssetActualValueRequestDTO dto) {
-        try {
-            return ResponseEntity.ok(
-                    new AssetCalculationResponseDTO(
-                            assetService.calculateProfitPercentage(dto.symbol())
-                    )
-            );
-        } catch (Exception ex) {
-            Result<AssetCalculationResponseDTO> result = Result.fail(ex.getMessage());
-            return ResponseEntity.status(resolveStatus(result.getMessage())).body(result);
+        Result<BigDecimal> result = assetService.calculateProfitPercentage(dto.symbol());
+        if (result.isOk()) {
+            return ResponseEntity.ok(new AssetCalculationResponseDTO(result.getValue()));
         }
+        return ResponseEntity.status(resolveStatus(result.getMessage())).body(errorResponse(result.getMessage()));
     }
 
     @PostMapping("/calculate-profit-value")
     public ResponseEntity<?> calculateProfitValue(@RequestBody AssetActualValueRequestDTO dto) {
-        try {
-            return ResponseEntity.ok(
-                    new AssetCalculationResponseDTO(
-                            assetService.calculateProfitValue(dto.symbol())
-                    )
-            );
-        } catch (Exception ex) {
-            Result<AssetCalculationResponseDTO> result = Result.fail(ex.getMessage());
-            return ResponseEntity.status(resolveStatus(result.getMessage())).body(result);
+        Result<BigDecimal> result = assetService.calculateProfitValue(dto.symbol());
+        if (result.isOk()) {
+            return ResponseEntity.ok(new AssetCalculationResponseDTO(result.getValue()));
         }
+        return ResponseEntity.status(resolveStatus(result.getMessage())).body(errorResponse(result.getMessage()));
     }
 
     @GetMapping("/calculate-total-profit-percentage")
     public ResponseEntity<?> calculateTotalProfitPercentage() {
-        try {
-            return ResponseEntity.ok(
-                    new AssetCalculationResponseDTO(
-                            assetService.calculateTotalProfitPercentage()
-                    )
-            );
-        } catch (Exception ex) {
-            Result<AssetCalculationResponseDTO> result = Result.fail(ex.getMessage());
-            return ResponseEntity.status(resolveStatus(result.getMessage())).body(result);
+        Result<BigDecimal> result = assetService.calculateTotalProfitPercentage();
+        if (result.isOk()) {
+            return ResponseEntity.ok(new AssetCalculationResponseDTO(result.getValue()));
         }
+        return ResponseEntity.status(resolveStatus(result.getMessage())).body(errorResponse(result.getMessage()));
     }
 
     @GetMapping("/calculate-total-profit-value")
     public ResponseEntity<?> calculateTotalProfitValue() {
-        try {
-            return ResponseEntity.ok(
-                    new AssetCalculationResponseDTO(
-                            assetService.calculateTotalProfitValue()
-                    )
-            );
-        } catch (Exception ex) {
-            Result<AssetCalculationResponseDTO> result = Result.fail(ex.getMessage());
-            return ResponseEntity.status(resolveStatus(result.getMessage())).body(result);
+        Result<BigDecimal> result = assetService.calculateTotalProfitValue();
+        if (result.isOk()) {
+            return ResponseEntity.ok(new AssetCalculationResponseDTO(result.getValue()));
         }
+        return ResponseEntity.status(resolveStatus(result.getMessage())).body(errorResponse(result.getMessage()));
     }
 }

@@ -12,7 +12,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 
 @Service
@@ -32,7 +33,7 @@ public class UserService {
 
     public Result<UserResponseDTO> create(UserRequestDTO user) {
         try {
-            UserEntity saved = userMapper.toEntity(userMapper.toModel(user));
+            UserEntity saved = userMapper.toEntity(user);
             saved.setPassword(passwordEncoder.encode(saved.getPassword()));
             saved.setRole(roleRepository.findByName(user.role()));
             saved = userRepository.create(saved);
@@ -83,10 +84,9 @@ public class UserService {
         }
     }
 
-    public List<UserResponseDTO> findAll() {
-        return userRepository.findAll().stream()
-                .map(userMapper::toResponse)
-                .toList();
+    public Page<UserResponseDTO> findAll(Pageable pageable) {
+        return userRepository.findAll(pageable)
+                .map(userMapper::toResponse);
     }
 
     private void applyUpdates(UserEntity user, UserRequestDTO dto) {

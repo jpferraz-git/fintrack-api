@@ -10,7 +10,9 @@ import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 import java.util.UUID;
 
 @Component
@@ -105,8 +107,8 @@ public class AssetGateway implements AssetRepository {
     }
 
     @Override
-    public List<AssetEntity> findAllByUserId(UUID userId) {
-        return jpaRepository.findAllByUserId(userId);
+    public Page<AssetEntity> findAllByUserId(UUID userId, Pageable pageable) {
+        return jpaRepository.findAllByUserId(userId, pageable);
     }
 
     @Override

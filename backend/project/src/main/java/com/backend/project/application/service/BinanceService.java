@@ -17,11 +17,13 @@ import java.util.Optional;
 @Service
 public class BinanceService {
 
-    private final BinanceIntegration binanceIntegration;
+    private final BinanceCacheService binanceCacheService;
+    private final BinanceIntegration binanceIntegration; // kept for klines
     private final Binance24hTickerMapper binance24hTickerMapper;
     private final BinanceKlinesMapper binanceKlinesMapper;
 
-    public BinanceService(BinanceIntegration binanceIntegration, Binance24hTickerMapper binance24hTickerMapper, BinanceKlinesMapper binanceKlinesMapper) {
+    public BinanceService(BinanceCacheService binanceCacheService, BinanceIntegration binanceIntegration, Binance24hTickerMapper binance24hTickerMapper, BinanceKlinesMapper binanceKlinesMapper) {
+        this.binanceCacheService = binanceCacheService;
         this.binanceIntegration = binanceIntegration;
         this.binance24hTickerMapper = binance24hTickerMapper;
         this.binanceKlinesMapper = binanceKlinesMapper;
@@ -43,7 +45,7 @@ public class BinanceService {
     }
 
     public Result<BinancePriceResponseDTO> getPrice(String symbol) {
-        Optional<BinancePriceResponseDTO> price = Optional.ofNullable(binanceIntegration.getPrice(symbol));
+        Optional<BinancePriceResponseDTO> price = Optional.ofNullable(binanceCacheService.getPrice(symbol));
         return price.map(Result::ok).orElseGet(() -> Result.fail("Price not found"));
     }
 
@@ -64,7 +66,7 @@ public class BinanceService {
 
     public Result<Binance24hTickerResponseDTO> get24hPrice(String symbol){
         try {
-            var ticker = binanceIntegration.get24hTicker(symbol);
+            var ticker = binanceCacheService.get24hTicker(symbol);
             if (ticker == null) {
                 return Result.fail("24h ticker not found");
             }

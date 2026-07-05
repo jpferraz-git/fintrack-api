@@ -8,7 +8,9 @@ import com.backend.project.infrastructure.springdata.UserJpaRepository;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 import java.util.UUID;
 
 @Component
@@ -21,8 +23,8 @@ public class UserGateway implements UserRepository {
     }
 
     @Override
-    public List<UserEntity> findAll() {
-        return jpaRepository.findAll();
+    public Page<UserEntity> findAll(Pageable pageable) {
+        return jpaRepository.findAll(pageable);
     }
 
     @Override

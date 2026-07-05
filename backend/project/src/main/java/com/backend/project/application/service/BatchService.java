@@ -9,7 +9,8 @@ import com.backend.project.interfaces.dto.batch.BatchRequestDTO;
 import com.backend.project.interfaces.dto.batch.BatchResponseDTO;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 @Service
 public class BatchService {
@@ -25,7 +26,7 @@ public class BatchService {
     public Result<BatchResponseDTO> create(BatchRequestDTO batch) {
         try {
             BatchEntity saved = batchRepository.create(
-                    batchMapper.toEntity(batchMapper.toModel(batch))
+                    batchMapper.toEntity(batch)
             );
             return Result.ok(batchMapper.toResponse(saved));
         } catch (Exception ex) {
@@ -33,9 +34,8 @@ public class BatchService {
         }
     }
 
-    public List<BatchResponseDTO> findAll() {
-        return batchRepository.findAll().stream()
-                .map(batchMapper::toResponse)
-                .toList();
+    public Page<BatchResponseDTO> findAll(Pageable pageable) {
+        return batchRepository.findAll(pageable)
+                .map(batchMapper::toResponse);
     }
 }

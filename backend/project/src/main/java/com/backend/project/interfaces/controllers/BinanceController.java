@@ -1,5 +1,8 @@
 package com.backend.project.interfaces.controllers;
 
+import static com.backend.project.interfaces.controllers.utils.Normalizer.errorResponse;
+
+
 import com.backend.project.application.Result;
 import com.backend.project.application.service.BinanceService;
 import com.backend.project.interfaces.dto.binance.klines.BinanceKlinesResponseDTO;
@@ -31,7 +34,7 @@ public class BinanceController implements BinanceControllerSwagger {
         if (result.isOk()) {
             return ResponseEntity.ok(result.getValue());
         }
-        return ResponseEntity.status(resolveStatus(result.getMessage())).body(result);
+        return ResponseEntity.status(resolveStatus(result.getMessage())).body(errorResponse(result.getMessage()));
     }
 
     @GetMapping(value = "/price", params = "symbol")
@@ -40,7 +43,7 @@ public class BinanceController implements BinanceControllerSwagger {
         if (result.isOk()) {
             return ResponseEntity.ok(result.getValue());
         }
-        return ResponseEntity.status(resolveStatus(result.getMessage())).body(result);
+        return ResponseEntity.status(resolveStatus(result.getMessage())).body(errorResponse(result.getMessage()));
     }
 
 
@@ -50,7 +53,7 @@ public class BinanceController implements BinanceControllerSwagger {
         if (result.isOk()) {
             return ResponseEntity.ok(result.getValue());
         }
-        return ResponseEntity.status(resolveStatus(result.getMessage())).body(result);
+        return ResponseEntity.status(resolveStatus(result.getMessage())).body(errorResponse(result.getMessage()));
     }
 
     @GetMapping(value = "/24h", params = "symbol")
@@ -59,16 +62,16 @@ public class BinanceController implements BinanceControllerSwagger {
         if (result.isOk()) {
             return ResponseEntity.ok(result.getValue());
         }
-        return ResponseEntity.status(resolveStatus(result.getMessage())).body(result);
+        return ResponseEntity.status(resolveStatus(result.getMessage())).body(errorResponse(result.getMessage()));
     }
 
-    @GetMapping(value = "/klines", params = {"symbol", "interval", "limit"})
+    @GetMapping(value = "/klines", params = {"symbol", "interval"})
     public ResponseEntity<?> getKlines(@RequestParam String symbol, @RequestParam String interval, @RequestParam(defaultValue = "80") Integer limit) {
         Result<List<BinanceKlinesResponseDTO>> result = binanceService.getKlines(symbol, interval, limit);
         if (result.isOk()) {
             return ResponseEntity.ok(result.getValue());
         }
-        return ResponseEntity.status(resolveStatus(result.getMessage())).body(result);
+        return ResponseEntity.status(resolveStatus(result.getMessage())).body(errorResponse(result.getMessage()));
     }
 
 }
