@@ -108,8 +108,8 @@ class BinanceControllerTest {
                         .param("symbol", "BTCUSDT")
                         .param("interval", "1m"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.open").value(64000.00))
-                .andExpect(jsonPath("$.close").value(65000.00));
+                .andExpect(jsonPath("$[0].open").value(64000.00))
+                .andExpect(jsonPath("$[0].close").value(65000.00));
     }
 
     @Test
