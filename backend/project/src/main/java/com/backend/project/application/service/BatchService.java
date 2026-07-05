@@ -25,7 +25,7 @@ public class BatchService {
     public Result<BatchResponseDTO> create(BatchRequestDTO batch) {
         try {
             BatchEntity saved = batchRepository.create(
-                    batchMapper.toEntity(batchMapper.toModel(batch))
+                    batchMapper.toEntity(batch)
             );
             return Result.ok(batchMapper.toResponse(saved));
         } catch (Exception ex) {
