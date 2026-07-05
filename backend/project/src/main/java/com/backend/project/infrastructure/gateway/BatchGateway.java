@@ -8,7 +8,9 @@ import com.backend.project.infrastructure.entity.BatchEntity;
 import com.backend.project.infrastructure.springdata.BatchJpaRepository;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 import java.util.UUID;
 
 @Component
@@ -46,7 +48,7 @@ public class BatchGateway implements BatchRepository {
 
 
     @Override
-    public List<BatchEntity> findAll() {
-        return jpaRepository.findAll();
+    public Page<BatchEntity> findAll(Pageable pageable) {
+        return jpaRepository.findAll(pageable);
     }
 }
