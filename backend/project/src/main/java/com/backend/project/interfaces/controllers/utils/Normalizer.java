@@ -21,6 +21,9 @@ public final class Normalizer {
         if (normalized.contains("failed to retrieve")) {
             return HttpStatus.BAD_GATEWAY;
         }
+        if (normalized.contains("invalid") || normalized.contains("required") || normalized.contains("must be") || normalized.contains("cannot be") || normalized.contains("blank")) {
+            return HttpStatus.BAD_REQUEST;
+        }
 
         return HttpStatus.INTERNAL_SERVER_ERROR;
     }
