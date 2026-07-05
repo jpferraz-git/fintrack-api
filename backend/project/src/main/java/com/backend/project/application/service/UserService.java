@@ -32,7 +32,7 @@ public class UserService {
 
     public Result<UserResponseDTO> create(UserRequestDTO user) {
         try {
-            UserEntity saved = userMapper.toEntity(userMapper.toModel(user));
+            UserEntity saved = userMapper.toEntity(user);
             saved.setPassword(passwordEncoder.encode(saved.getPassword()));
             saved.setRole(roleRepository.findByName(user.role()));
             saved = userRepository.create(saved);

@@ -24,4 +24,12 @@ public final class Normalizer {
 
         return HttpStatus.INTERNAL_SERVER_ERROR;
     }
+
+    public static com.backend.project.interfaces.dto.error.ErrorResponseDTO errorResponse(String message) {
+        return new com.backend.project.interfaces.dto.error.ErrorResponseDTO(
+                resolveStatus(message).value(),
+                message,
+                java.time.Instant.now()
+        );
+    }
 }

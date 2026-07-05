@@ -82,79 +82,103 @@ public class AssetService {
                 .toList();
     }
 
-    public BigDecimal calculateQuantityByInvestment(String symbol, BigDecimal investedValue) {
-        BigDecimal actualCriptoPrice = getCurrentMarketPrice(symbol);
-        BigDecimal quantity = investedValue.divide(actualCriptoPrice, 18, RoundingMode.HALF_DOWN);
-        return new BigDecimal(quantity.toPlainString());
-    }
-
-    public BigDecimal calculateActualValue(String symbol) {
-        UUID userId = getAuthenticatedUserId();
-        String normalizedSymbol = normalizeSymbol(symbol);
-        BigDecimal actualCriptoPrice = getCurrentMarketPrice(normalizedSymbol);
-        BigDecimal userQuantity = assetRepository.getAssetQuantityByUserAndSymbol(userId, normalizedSymbol);
-        return actualCriptoPrice.multiply(userQuantity);
-    }
-
-    public BigDecimal calculateProfitPercentage(String symbol) {
-        UUID userId = getAuthenticatedUserId();
-        String normalizedSymbol = normalizeSymbol(symbol);
-        BigDecimal marketPrice = getCurrentMarketPrice(normalizedSymbol);
-        return assetRepository.getUserProfitPercentage(userId, normalizedSymbol, marketPrice);
-    }
-
-    public BigDecimal calculateProfitValue(String symbol) {
-        UUID userId = getAuthenticatedUserId();
-        String normalizedSymbol = normalizeSymbol(symbol);
-        BigDecimal marketPrice = getCurrentMarketPrice(normalizedSymbol);
-        return assetRepository.getUserProfitValue(userId, normalizedSymbol, marketPrice);
-    }
-
-    public BigDecimal calculateTotalProfitPercentage() {
-        UUID userId = getAuthenticatedUserId();
-        List<AssetEntity> userAssets = assetRepository.findAllByUserId(userId);
-
-        if (userAssets.isEmpty()) {
-            return BigDecimal.ZERO;
+    public Result<BigDecimal> calculateQuantityByInvestment(String symbol, BigDecimal investedValue) {
+        try {
+            BigDecimal actualCriptoPrice = getCurrentMarketPrice(symbol);
+            BigDecimal quantity = investedValue.divide(actualCriptoPrice, 18, RoundingMode.HALF_DOWN);
+            return Result.ok(new BigDecimal(quantity.toPlainString()));
+        } catch (Exception ex) {
+            return Result.fail(ex.getMessage());
         }
-
-        BigDecimal totalInvestedValue = BigDecimal.ZERO;
-        BigDecimal totalCurrentValue = BigDecimal.ZERO;
-
-        for (AssetEntity asset : userAssets) {
-            BigDecimal currentPrice = getCurrentMarketPrice(asset.getSymbol());
-            BigDecimal investedValue = asset.getQuantity().multiply(asset.getAvgPrice());
-            BigDecimal currentValue = asset.getQuantity().multiply(currentPrice);
-
-            totalInvestedValue = totalInvestedValue.add(investedValue);
-            totalCurrentValue = totalCurrentValue.add(currentValue);
-        }
-
-        if (totalInvestedValue.compareTo(BigDecimal.ZERO) == 0) {
-            return BigDecimal.ZERO;
-        }
-
-        BigDecimal totalProfitValue = totalCurrentValue.subtract(totalInvestedValue);
-        return totalProfitValue
-                .divide(totalInvestedValue, 8, RoundingMode.HALF_UP)
-                .multiply(BigDecimal.valueOf(100));
     }
 
-    public BigDecimal calculateTotalProfitValue() {
-        UUID userId = getAuthenticatedUserId();
-        List<AssetEntity> userAssets = assetRepository.findAllByUserId(userId);
-
-        BigDecimal totalProfitValue = BigDecimal.ZERO;
-        for (AssetEntity asset : userAssets) {
-            BigDecimal currentPrice = getCurrentMarketPrice(asset.getSymbol());
-            BigDecimal positionProfit = currentPrice
-                    .subtract(asset.getAvgPrice())
-                    .multiply(asset.getQuantity());
-
-            totalProfitValue = totalProfitValue.add(positionProfit);
+    public Result<BigDecimal> calculateActualValue(String symbol) {
+        try {
+            UUID userId = getAuthenticatedUserId();
+            String normalizedSymbol = normalizeSymbol(symbol);
+            BigDecimal actualCriptoPrice = getCurrentMarketPrice(normalizedSymbol);
+            BigDecimal userQuantity = assetRepository.getAssetQuantityByUserAndSymbol(userId, normalizedSymbol);
+            return Result.ok(actualCriptoPrice.multiply(userQuantity));
+        } catch (Exception ex) {
+            return Result.fail(ex.getMessage());
         }
+    }
 
-        return totalProfitValue;
+    public Result<BigDecimal> calculateProfitPercentage(String symbol) {
+        try {
+            UUID userId = getAuthenticatedUserId();
+            String normalizedSymbol = normalizeSymbol(symbol);
+            BigDecimal marketPrice = getCurrentMarketPrice(normalizedSymbol);
+            return Result.ok(assetRepository.getUserProfitPercentage(userId, normalizedSymbol, marketPrice));
+        } catch (Exception ex) {
+            return Result.fail(ex.getMessage());
+        }
+    }
+
+    public Result<BigDecimal> calculateProfitValue(String symbol) {
+        try {
+            UUID userId = getAuthenticatedUserId();
+            String normalizedSymbol = normalizeSymbol(symbol);
+            BigDecimal marketPrice = getCurrentMarketPrice(normalizedSymbol);
+            return Result.ok(assetRepository.getUserProfitValue(userId, normalizedSymbol, marketPrice));
+        } catch (Exception ex) {
+            return Result.fail(ex.getMessage());
+        }
+    }
+
+    public Result<BigDecimal> calculateTotalProfitPercentage() {
+        try {
+            UUID userId = getAuthenticatedUserId();
+            List<AssetEntity> userAssets = assetRepository.findAllByUserId(userId);
+
+            if (userAssets.isEmpty()) {
+                return Result.ok(BigDecimal.ZERO);
+            }
+
+            BigDecimal totalInvestedValue = BigDecimal.ZERO;
+            BigDecimal totalCurrentValue = BigDecimal.ZERO;
+
+            for (AssetEntity asset : userAssets) {
+                BigDecimal currentPrice = getCurrentMarketPrice(asset.getSymbol());
+                BigDecimal investedValue = asset.getQuantity().multiply(asset.getAvgPrice());
+                BigDecimal currentValue = asset.getQuantity().multiply(currentPrice);
+
+                totalInvestedValue = totalInvestedValue.add(investedValue);
+                totalCurrentValue = totalCurrentValue.add(currentValue);
+            }
+
+            if (totalInvestedValue.compareTo(BigDecimal.ZERO) == 0) {
+                return Result.ok(BigDecimal.ZERO);
+            }
+
+            BigDecimal totalProfitValue = totalCurrentValue.subtract(totalInvestedValue);
+            return Result.ok(totalProfitValue
+                    .divide(totalInvestedValue, 8, RoundingMode.HALF_UP)
+                    .multiply(BigDecimal.valueOf(100)));
+        } catch (Exception ex) {
+            return Result.fail(ex.getMessage());
+        }
+    }
+
+    public Result<BigDecimal> calculateTotalProfitValue() {
+        try {
+            UUID userId = getAuthenticatedUserId();
+            List<AssetEntity> userAssets = assetRepository.findAllByUserId(userId);
+
+            BigDecimal totalProfitValue = BigDecimal.ZERO;
+            for (AssetEntity asset : userAssets) {
+                BigDecimal currentPrice = getCurrentMarketPrice(asset.getSymbol());
+                BigDecimal positionProfit = currentPrice
+                        .subtract(asset.getAvgPrice())
+                        .multiply(asset.getQuantity());
+
+                totalProfitValue = totalProfitValue.add(positionProfit);
+            }
+
+            return Result.ok(totalProfitValue);
+        } catch (Exception ex) {
+            return Result.fail(ex.getMessage());
+        }
     }
 
     private BigDecimal getCurrentMarketPrice(String symbol) {

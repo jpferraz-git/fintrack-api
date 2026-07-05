@@ -79,8 +79,6 @@ class UserControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isConflict())
-                .andExpect(jsonPath("$.status").value("FAILURE"))
-                .andExpect(jsonPath("$.success").value(false))
                 .andExpect(jsonPath("$.message").value("User with email 'joao@test.com' already exists."));
     }
 }

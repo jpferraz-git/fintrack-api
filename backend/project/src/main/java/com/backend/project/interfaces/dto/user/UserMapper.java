@@ -1,6 +1,6 @@
 package com.backend.project.interfaces.dto.user;
 
-import com.backend.project.domain.model.UserModel;
+
 import com.backend.project.domain.repository.RoleRepository;
 import com.backend.project.infrastructure.entity.UserEntity;
 import org.springframework.stereotype.Component;
@@ -13,25 +13,13 @@ public class UserMapper {
         this.roleRepository = roleRepository;
     }
 
-    public UserEntity toEntity(UserModel model){
+    public UserEntity toEntity(UserRequestDTO dto){
         return new UserEntity(
-                null,
-                model.getName(),
-                model.getEmail(),
-                model.getPassword(),
-                roleRepository.findByName(model.getRole()),
-                null,
-                null
-        );
-
-    }
-    public UserModel toModel(UserRequestDTO dto){
-        return new UserModel(
                 null,
                 dto.name(),
                 dto.email(),
                 dto.password(),
-                dto.role(),
+                roleRepository.findByName(dto.role()),
                 null,
                 null
         );

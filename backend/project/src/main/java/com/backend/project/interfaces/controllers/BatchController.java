@@ -1,5 +1,8 @@
 package com.backend.project.interfaces.controllers;
 
+import static com.backend.project.interfaces.controllers.utils.Normalizer.errorResponse;
+
+
 
 import com.backend.project.application.Result;
 import com.backend.project.application.service.BatchService;
@@ -34,7 +37,7 @@ public class BatchController {
         if (result.isOk()) {
             return ResponseEntity.status(HttpStatus.CREATED).body(result.getValue());
         }
-        return ResponseEntity.status(resolveStatus(result.getMessage())).body(result);
+        return ResponseEntity.status(resolveStatus(result.getMessage())).body(errorResponse(result.getMessage()));
     }
 
 }

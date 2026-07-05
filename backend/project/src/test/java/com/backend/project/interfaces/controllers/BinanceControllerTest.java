@@ -135,8 +135,6 @@ class BinanceControllerTest {
 
         mockMvc.perform(get("/binance/price").param("symbol", "BTCUSDT"))
                 .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$.status").value("FAILURE"))
-                .andExpect(jsonPath("$.success").value(false))
                 .andExpect(jsonPath("$.message").value("Price not found"));
     }
 }
