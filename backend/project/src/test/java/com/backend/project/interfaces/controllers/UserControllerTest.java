@@ -51,7 +51,6 @@ class UserControllerTest {
                 UUID.randomUUID(),
                 "Joao",
                 "joao@test.com",
-                "encoded-password",
                 Role.USER,
                 Instant.now(),
                 Instant.now()
