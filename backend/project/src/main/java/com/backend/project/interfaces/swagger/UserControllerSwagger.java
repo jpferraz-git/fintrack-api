@@ -12,7 +12,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 @Tag(name = "User", description = "Operations for managing users")
 public interface UserControllerSwagger {
@@ -22,7 +23,7 @@ public interface UserControllerSwagger {
             @ApiResponse(responseCode = "200", description = "Users retrieved successfully",
                     content = @Content(array = @ArraySchema(schema = @Schema(implementation = UserResponseDTO.class))))
     })
-    ResponseEntity<List<UserResponseDTO>> findAll();
+    ResponseEntity<Page<UserResponseDTO>> findAll(Pageable pageable);
 
     @Operation(summary = "Create a user", description = "Creates a new user from the provided payload")
     @ApiResponses(value = {
