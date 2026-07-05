@@ -8,7 +8,9 @@ import com.backend.project.infrastructure.springdata.TransactionJpaRepository;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 import java.util.UUID;
 
 @Component
@@ -30,7 +32,7 @@ public class TransactionGateway implements TransactionRepository {
     }
 
     @Override
-    public List<TransactionEntity> findAllByUserId(UUID userId) {
-        return jpaRepository.findAllByUserId(userId);
+    public Page<TransactionEntity> findAllByUserId(UUID userId, Pageable pageable) {
+        return jpaRepository.findAllByUserId(userId, pageable);
     }
 }
