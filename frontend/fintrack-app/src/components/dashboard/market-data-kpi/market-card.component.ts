@@ -1,7 +1,7 @@
 import { Component, Input, OnDestroy, OnInit, ChangeDetectorRef } from '@angular/core';
 import { UpperCasePipe } from '@angular/common';
-import { Subject, catchError, exhaustMap, forkJoin, of, takeUntil, timer } from 'rxjs';
-import { MarketDataService } from '../../../app/services/market-data.service';
+import { Subject, takeUntil } from 'rxjs';
+import { MarketStreamService } from '../../../app/services/market-stream.service';
 import { UtilsService } from '../../../app/services/utils.service';
 
 @Component({
@@ -26,7 +26,7 @@ export class MarketCardComponent implements OnInit, OnDestroy {
   loading = true;
 
   constructor(
-    private marketDataService: MarketDataService,
+    private marketStreamService: MarketStreamService,
     private cd: ChangeDetectorRef,
     private utilsService: UtilsService
   ) {}
@@ -43,17 +43,13 @@ export class MarketCardComponent implements OnInit, OnDestroy {
   private startPolling(): void {
     this.loading = true;
 
-    timer(0, 2000)
-      .pipe(
-        exhaustMap(() => forkJoin({
-          price: this.marketDataService.getPrice(this.symbol),
-          klines: this.marketDataService.getKlines(this.symbol, '1m')
-        }).pipe(catchError(() => of(null)))),
-        takeUntil(this.destroy$)
-      )
+    this.marketStreamService.getStream(this.symbol)
+      .pipe(takeUntil(this.destroy$))
       .subscribe((ticker) => {
+        if (ticker === null) return; // ignore initial null if present
+        
         this.loading = false;
-        if (!ticker) {
+        if (!ticker || !ticker.price) {
           this.isOffline = true;
           this.price = '--';
           this.volume = 'Vol: --';
@@ -78,7 +74,7 @@ export class MarketCardComponent implements OnInit, OnDestroy {
 
         this.trendUp = this.resolveTrendDirection(
           latestKline,
-          previousKline,
+          previousKline || undefined,
           ticker.price.price,
           this.trendUp
         );
