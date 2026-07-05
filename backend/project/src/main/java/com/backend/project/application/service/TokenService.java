@@ -4,8 +4,8 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
-import com.backend.project.domain.model.UserModel;
 import com.backend.project.infrastructure.entity.UserEntity;
+import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +18,15 @@ public class TokenService {
 
     @Value("${api.security.token.secret}")
     private String secret;
+
+    @PostConstruct
+    void validateSecret() {
+        if (secret == null || secret.isBlank()) {
+            throw new IllegalStateException(
+                    "JWT_SECRET environment variable is not set. "
+                    + "The application cannot start without a valid JWT secret.");
+        }
+    }
 
     private Instant genExpirationDate(){
         return LocalDateTime.now().plusHours(3).toInstant(ZoneOffset.of("-03:00"));
