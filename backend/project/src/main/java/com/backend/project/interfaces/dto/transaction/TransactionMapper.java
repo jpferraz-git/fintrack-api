@@ -1,29 +1,16 @@
 package com.backend.project.interfaces.dto.transaction;
 
-import com.backend.project.domain.model.TransactionModel;
+
 import com.backend.project.infrastructure.entity.TransactionEntity;
 import org.springframework.stereotype.Component;
 
 @Component
 public class TransactionMapper {
 
-    public TransactionEntity toEntity(TransactionModel model){
+    public TransactionEntity toEntity(TransactionRequestDTO dto) {
         return new TransactionEntity(
-                model.getId(),
                 null,
-                model.getSymbol(),
-                model.getType(),
-                model.getQuantity(),
-                model.getPrice(),
                 null,
-                null
-        );
-    }
-
-    public TransactionModel toModel(TransactionRequestDTO dto){
-        return new TransactionModel(
-                null,
-                dto.fkUser(),
                 dto.symbol(),
                 dto.type(),
                 dto.quantity(),
