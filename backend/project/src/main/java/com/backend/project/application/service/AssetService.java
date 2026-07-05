@@ -15,6 +15,10 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ConcurrentHashMap;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -141,8 +145,12 @@ public class AssetService {
             BigDecimal totalInvestedValue = BigDecimal.ZERO;
             BigDecimal totalCurrentValue = BigDecimal.ZERO;
 
+            Map<String, BigDecimal> pricesMap = fetchPricesConcurrently(userAssets);
+
             for (AssetEntity asset : userAssets) {
-                BigDecimal currentPrice = getCurrentMarketPrice(asset.getSymbol());
+                BigDecimal currentPrice = pricesMap.get(asset.getSymbol());
+                if (currentPrice == null) continue;
+
                 BigDecimal investedValue = asset.getQuantity().multiply(asset.getAvgPrice());
                 BigDecimal currentValue = asset.getQuantity().multiply(currentPrice);
 
@@ -169,8 +177,13 @@ public class AssetService {
             List<AssetEntity> userAssets = assetRepository.findAllByUserId(userId);
 
             BigDecimal totalProfitValue = BigDecimal.ZERO;
+            
+            Map<String, BigDecimal> pricesMap = fetchPricesConcurrently(userAssets);
+
             for (AssetEntity asset : userAssets) {
-                BigDecimal currentPrice = getCurrentMarketPrice(asset.getSymbol());
+                BigDecimal currentPrice = pricesMap.get(asset.getSymbol());
+                if (currentPrice == null) continue;
+
                 BigDecimal positionProfit = currentPrice
                         .subtract(asset.getAvgPrice())
                         .multiply(asset.getQuantity());
@@ -182,6 +195,24 @@ public class AssetService {
         } catch (Exception ex) {
             return Result.fail(ex.getMessage());
         }
+    }
+
+    private Map<String, BigDecimal> fetchPricesConcurrently(List<AssetEntity> userAssets) {
+        Map<String, BigDecimal> currentPrices = new ConcurrentHashMap<>();
+        List<CompletableFuture<Void>> futures = userAssets.stream()
+                .map(AssetEntity::getSymbol)
+                .distinct()
+                .map(symbol -> CompletableFuture.runAsync(() -> {
+                    try {
+                        currentPrices.put(symbol, getCurrentMarketPrice(symbol));
+                    } catch (Exception ignored) {
+                        // If one price fails, skip it for the total calculation
+                    }
+                }))
+                .toList();
+
+        CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
+        return currentPrices;
     }
 
     private BigDecimal getCurrentMarketPrice(String symbol) {
