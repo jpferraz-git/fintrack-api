@@ -46,7 +46,7 @@ public class TransactionService {
         try {
             UserEntity authenticatedUser = getAuthenticatedUser();
 
-            TransactionEntity entity = transactionMapper.toEntity(transactionMapper.toModel(transaction));
+            TransactionEntity entity = transactionMapper.toEntity(transaction);
             entity.setUserId(authenticatedUser);
             entity.setSymbol(normalizeSymbol(transaction.symbol()));
             entity.setType(resolveTransactionType(transaction.type()));
