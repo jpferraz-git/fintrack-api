@@ -99,38 +99,39 @@ public class AssetService {
         }
     }
 
-    public Result<BigDecimal> calculateActualValue(String symbol) {
+    @FunctionalInterface
+    private interface AssetCalculation {
+        BigDecimal calculate(UUID userId, String normalizedSymbol, BigDecimal marketPrice);
+    }
+
+    private Result<BigDecimal> performAssetCalculation(String symbol, AssetCalculation calculation) {
         try {
             UUID userId = getAuthenticatedUserId();
             String normalizedSymbol = normalizeSymbol(symbol);
-            BigDecimal actualCriptoPrice = getCurrentMarketPrice(normalizedSymbol);
-            BigDecimal userQuantity = assetRepository.getAssetQuantityByUserAndSymbol(userId, normalizedSymbol);
-            return Result.ok(actualCriptoPrice.multiply(userQuantity));
+            BigDecimal marketPrice = getCurrentMarketPrice(normalizedSymbol);
+            return Result.ok(calculation.calculate(userId, normalizedSymbol, marketPrice));
         } catch (Exception ex) {
             return Result.fail(ex.getMessage());
         }
+    }
+
+    public Result<BigDecimal> calculateActualValue(String symbol) {
+        return performAssetCalculation(symbol, (userId, normalizedSymbol, marketPrice) -> {
+            BigDecimal userQuantity = assetRepository.getAssetQuantityByUserAndSymbol(userId, normalizedSymbol);
+            return marketPrice.multiply(userQuantity);
+        });
     }
 
     public Result<BigDecimal> calculateProfitPercentage(String symbol) {
-        try {
-            UUID userId = getAuthenticatedUserId();
-            String normalizedSymbol = normalizeSymbol(symbol);
-            BigDecimal marketPrice = getCurrentMarketPrice(normalizedSymbol);
-            return Result.ok(assetRepository.getUserProfitPercentage(userId, normalizedSymbol, marketPrice));
-        } catch (Exception ex) {
-            return Result.fail(ex.getMessage());
-        }
+        return performAssetCalculation(symbol, (userId, normalizedSymbol, marketPrice) -> 
+            assetRepository.getUserProfitPercentage(userId, normalizedSymbol, marketPrice)
+        );
     }
 
     public Result<BigDecimal> calculateProfitValue(String symbol) {
-        try {
-            UUID userId = getAuthenticatedUserId();
-            String normalizedSymbol = normalizeSymbol(symbol);
-            BigDecimal marketPrice = getCurrentMarketPrice(normalizedSymbol);
-            return Result.ok(assetRepository.getUserProfitValue(userId, normalizedSymbol, marketPrice));
-        } catch (Exception ex) {
-            return Result.fail(ex.getMessage());
-        }
+        return performAssetCalculation(symbol, (userId, normalizedSymbol, marketPrice) -> 
+            assetRepository.getUserProfitValue(userId, normalizedSymbol, marketPrice)
+        );
     }
 
     public Result<BigDecimal> calculateTotalProfitPercentage() {
