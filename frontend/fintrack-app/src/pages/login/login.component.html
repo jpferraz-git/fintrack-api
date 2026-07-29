@@ -9,13 +9,12 @@
     title="Login"
     subtitle=""
   >
-    <form class="auth-form" novalidate card-body (ngSubmit)="login()">
+    <form class="auth-form" novalidate card-body [formGroup]="loginForm" (ngSubmit)="login()">
       <app-form-input
         label="Email Address"
         id="login-email"
         type="email"
-        name="email"
-        [(value)]="email"
+        formControlName="email"
         placeholder="name@institution.com"
         autocomplete="email"
         [required]="true"
@@ -29,8 +28,7 @@
         label="Password"
         id="login-password"
         type="password"
-        name="password"
-        [(value)]="password"
+        formControlName="password"
         placeholder="********"
         autocomplete="current-password"
         [required]="true"
