@@ -15,5 +15,5 @@ public interface BatchRepository {
     BatchEntity create(BatchEntity batch);
     BatchEntity getReferenceById(UUID id);
     BatchEntity findByFileName(String fileName);
-    Page<BatchEntity> findAll(Pageable pageable);
+    Page<BatchEntity> findAllByUserId(UUID userId, Pageable pageable);
 }

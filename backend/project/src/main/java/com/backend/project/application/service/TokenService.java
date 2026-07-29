@@ -8,7 +8,9 @@ import com.backend.project.infrastructure.entity.UserEntity;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-
+import org.springframework.beans.factory.annotation.Autowired;
+import com.backend.project.infrastructure.springdata.RevokedTokenJpaRepository;
+import com.backend.project.infrastructure.entity.RevokedTokenEntity;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
@@ -29,7 +31,11 @@ public class TokenService {
     }
 
     private Instant genExpirationDate(){
-        return LocalDateTime.now().plusHours(3).toInstant(ZoneOffset.of("-03:00"));
+        return LocalDateTime.now().plusMinutes(15).toInstant(ZoneOffset.of("-03:00"));
+    }
+
+    private Instant genRefreshExpirationDate(){
+        return LocalDateTime.now().plusDays(7).toInstant(ZoneOffset.of("-03:00"));
     }
 
     public String validateToken(String token){
@@ -41,22 +47,48 @@ public class TokenService {
                     .verify(token)
                     .getSubject();
         } catch (JWTVerificationException exception){
-            return "";
+            return null;
         }
     }
 
     public String generateToken(UserEntity user){
         try {
             Algorithm algorithm = Algorithm.HMAC256(secret);
-            String token = JWT.create()
+            return JWT.create()
                     .withIssuer("auth-api")
                     .withSubject(user.getEmail())
                     .withExpiresAt(genExpirationDate())
                     .sign(algorithm);
-            return token;
         } catch (JWTCreationException exception){
             throw new RuntimeException("Error generating token", exception);
         }
+    }
+
+    public String generateRefreshToken(UserEntity user){
+        try {
+            Algorithm algorithm = Algorithm.HMAC256(secret);
+            return JWT.create()
+                    .withIssuer("auth-api")
+                    .withSubject(user.getEmail())
+                    .withClaim("typ", "Refresh")
+                    .withExpiresAt(genRefreshExpirationDate())
+                    .sign(algorithm);
+        } catch (JWTCreationException exception){
+            throw new RuntimeException("Error generating refresh token", exception);
+        }
+    }
+
+    @Autowired
+    private RevokedTokenJpaRepository revokedTokenRepository;
+
+    public void revokeToken(String token) {
+        if (token != null && !token.isBlank()) {
+            revokedTokenRepository.save(new RevokedTokenEntity(token, Instant.now()));
+        }
+    }
+
+    public boolean isTokenRevoked(String token) {
+        return revokedTokenRepository.existsById(token);
     }
 }
 

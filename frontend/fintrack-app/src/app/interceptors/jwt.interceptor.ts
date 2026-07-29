@@ -10,18 +10,14 @@ constructor(private authService: AuthService) {}
 
 intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
-    const token = this.authService.getToken();
-
     const isAuthRequest = req.url.includes('/login') || req.url.includes('/signup');
     
-    if (isAuthRequest || !token) {
+    if (isAuthRequest) {
         return next.handle(req);
     }
 
     const authReq = req.clone({
-        setHeaders: {
-            Authorization: `Bearer ${token}`
-        }
+        withCredentials: true
     });
 
     return next.handle(authReq);

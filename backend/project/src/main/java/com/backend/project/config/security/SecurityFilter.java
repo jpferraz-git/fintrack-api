@@ -51,13 +51,24 @@ public class SecurityFilter extends OncePerRequestFilter {
 
     private String recoverToken(HttpServletRequest request) {
         var authHeader = request.getHeader("Authorization");
-        if (authHeader == null) {
-            return null;
+        String token = null;
+        if (authHeader != null && authHeader.toLowerCase(Locale.ROOT).startsWith("bearer ")) {
+            token = authHeader.substring("Bearer ".length()).trim();
+        } else if (request.getCookies() != null) {
+            for (jakarta.servlet.http.Cookie cookie : request.getCookies()) {
+                if ("accessToken".equals(cookie.getName())) {
+                    token = cookie.getValue();
+                    break;
+                }
+            }
         }
-        if (!authHeader.toLowerCase(Locale.ROOT).startsWith("bearer ")) {
-            return null;
+        
+        if (token != null && !token.isBlank()) {
+            if (tokenService.isTokenRevoked(token)) {
+                return null;
+            }
+            return token;
         }
-        var token = authHeader.substring("Bearer ".length()).trim();
-        return token.isEmpty() ? null : token;
+        return null;
     }
 }

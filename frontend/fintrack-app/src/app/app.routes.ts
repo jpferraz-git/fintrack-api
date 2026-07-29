@@ -7,12 +7,14 @@ import { PortfolioPage } from '../pages/portfolio/portfolio.component';
 import { SettingsPage } from '../pages/settings/settings.component';
 import { SignupPage } from '../pages/signup/signup.component';
 
+import { authGuard } from './core/guards/auth.guard';
+
 export const routes: Routes = [
 	{ path: '', pathMatch: 'full', redirectTo: 'dashboard' },
-	{ path: 'dashboard', component: DashboardPage },
-	{ path: 'portfolio', component: PortfolioPage },
-	{ path: 'alerts', component: AlertsPage },
-	{ path: 'settings', component: SettingsPage },
+	{ path: 'dashboard', component: DashboardPage, canActivate: [authGuard] },
+	{ path: 'portfolio', component: PortfolioPage, canActivate: [authGuard] },
+	{ path: 'alerts', component: AlertsPage, canActivate: [authGuard] },
+	{ path: 'settings', component: SettingsPage, canActivate: [authGuard] },
 	{ path: 'forgot-password', component: ForgotPasswordPage },
 	{ path: 'login', component: LoginPage },
 	{ path: 'signup', component: SignupPage },

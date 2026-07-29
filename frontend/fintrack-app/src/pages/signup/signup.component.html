@@ -8,13 +8,12 @@
     layout-card
     title="Sign Up"
   >
-    <form class="auth-form" novalidate card-body (submit)="onSignupSubmit($event)">
+    <form class="auth-form" novalidate card-body [formGroup]="signupForm" (ngSubmit)="onSignupSubmit($event)">
       <app-form-input
         label="Name"
         id="full-name"
         type="text"
-        name="fullName"
-        [(value)]="name"
+        formControlName="name"
         placeholder="John Doe"
         autocomplete="name"
       >
@@ -27,8 +26,7 @@
         label="Email"
         id="email"
         type="email"
-        name="email"
-        [(value)]="email"
+        formControlName="email"
         placeholder="name@institution.com"
         autocomplete="email"
       >
@@ -43,8 +41,7 @@
             label="Password"
             id="password"
             [type]="showPassword ? 'text' : 'password'"
-            name="password"
-            [(value)]="password"
+            formControlName="password"
             placeholder="********"
             autocomplete="new-password"
             [required]="true"
@@ -64,8 +61,7 @@
             label="Confirm"
             id="confirm-password"
             [type]="showConfirmPassword ? 'text' : 'password'"
-            name="confirmPassword"
-            [(value)]="confirmPassword"
+            formControlName="confirmPassword"
             placeholder="********"
             autocomplete="new-password"
             [required]="true"

@@ -12,6 +12,8 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import com.backend.project.interfaces.dto.authentication.AuthResultDTO;
+import org.springframework.security.core.AuthenticationException;
 
 @Service
 public class AuthenticationService {
@@ -34,23 +36,54 @@ public class AuthenticationService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public LoginResponseDTO login(AuthenticationDTO dto){
-        var usernamePassword = new UsernamePasswordAuthenticationToken(dto.email(), dto.password());
-        var auth = this.authenticationManager.authenticate(usernamePassword);
-        Object principal = auth.getPrincipal();
-        if (!(principal instanceof UserEntity user)) {
-            throw new IllegalStateException("Authenticated principal is not a valid user.");
+    public AuthResultDTO login(AuthenticationDTO dto){
+        UserEntity userEntity = (UserEntity) userRepository.findByEmail(dto.email());
+        if (userEntity != null) {
+            if (!userEntity.isAccountNonLocked()) {
+                throw new IllegalStateException("Account is temporarily locked. Try again later.");
+            }
         }
-        var token = tokenService.generateToken(user);
-        return new LoginResponseDTO(
-                token,
-                new LoginResponseDTO.LoginUserResponseDTO(
-                        user.getName(),
-                        user.getEmail(),
-                        user.getCreatedAt(),
-                        user.getUpdatedAt()
-                )
-        );
+
+        try {
+            var usernamePassword = new UsernamePasswordAuthenticationToken(dto.email(), dto.password());
+            var auth = this.authenticationManager.authenticate(usernamePassword);
+            Object principal = auth.getPrincipal();
+            if (!(principal instanceof UserEntity user)) {
+                throw new IllegalStateException("Authenticated principal is not a valid user.");
+            }
+            
+            // Sucesso: resetar lockout
+            if (userEntity != null) {
+                userEntity.setFailedLoginAttempts(0);
+                userEntity.setLockoutTime(null);
+                userRepository.update(userEntity);
+            }
+
+            var accessToken = tokenService.generateToken(user);
+            var refreshToken = tokenService.generateRefreshToken(user);
+
+            return new AuthResultDTO(
+                    accessToken,
+                    refreshToken,
+                    new LoginResponseDTO(
+                            new LoginResponseDTO.LoginUserResponseDTO(
+                                    user.getName(),
+                                    user.getEmail(),
+                                    user.getCreatedAt(),
+                                    user.getUpdatedAt()
+                            )
+                    )
+            );
+        } catch (AuthenticationException e) {
+            if (userEntity != null) {
+                userEntity.setFailedLoginAttempts(userEntity.getFailedLoginAttempts() + 1);
+                if (userEntity.getFailedLoginAttempts() >= 5) {
+                    userEntity.setLockoutTime(java.time.Instant.now().plus(java.time.Duration.ofMinutes(15)));
+                }
+                userRepository.update(userEntity);
+            }
+            throw e;
+        }
     }
     
     public Result<String> register(RegisterDTO dto){
@@ -60,7 +93,7 @@ public class AuthenticationService {
 
         try {
             String encryptedPassword = passwordEncoder.encode(dto.password());
-            Role role = dto.role() != null ? dto.role() : Role.USER;
+            Role role = Role.USER;
             UserEntity newUser = new UserEntity(
                     dto.email(),
                     encryptedPassword,
@@ -80,5 +113,42 @@ public class AuthenticationService {
         }
         return email;
     }
-    
+    public AuthResultDTO refreshToken(String refreshToken) {
+        String email = tokenService.validateToken(refreshToken);
+        if (email == null || tokenService.isTokenRevoked(refreshToken)) {
+            throw new IllegalStateException("Invalid or expired refresh token");
+        }
+
+        UserEntity userEntity = (UserEntity) userRepository.findByEmail(email);
+        if (userEntity == null || !userEntity.isAccountNonLocked()) {
+            throw new IllegalStateException("User not found or account locked");
+        }
+
+        var newAccessToken = tokenService.generateToken(userEntity);
+        var newRefreshToken = tokenService.generateRefreshToken(userEntity);
+
+        tokenService.revokeToken(refreshToken);
+
+        return new AuthResultDTO(
+                newAccessToken,
+                newRefreshToken,
+                new LoginResponseDTO(
+                        new LoginResponseDTO.LoginUserResponseDTO(
+                                userEntity.getName(),
+                                userEntity.getEmail(),
+                                userEntity.getCreatedAt(),
+                                userEntity.getUpdatedAt()
+                        )
+                )
+        );
+    }
+
+    public void logout(String accessToken, String refreshToken) {
+        if (accessToken != null) {
+            tokenService.revokeToken(accessToken);
+        }
+        if (refreshToken != null) {
+            tokenService.revokeToken(refreshToken);
+        }
+    }
 }

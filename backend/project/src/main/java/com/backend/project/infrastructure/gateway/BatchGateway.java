@@ -48,7 +48,7 @@ public class BatchGateway implements BatchRepository {
 
 
     @Override
-    public Page<BatchEntity> findAll(Pageable pageable) {
-        return jpaRepository.findAll(pageable);
+    public Page<BatchEntity> findAllByUserId(UUID userId, Pageable pageable) {
+        return jpaRepository.findAllByUserId(userId, pageable);
     }
 }

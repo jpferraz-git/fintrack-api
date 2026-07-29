@@ -10,7 +10,6 @@ interface LoginRequest {
 }
 
 interface LoginResponse {
-    token: string
     user: UserProfileResponse
 }
 
@@ -40,26 +39,12 @@ export class AuthService {
         return this.http.post<LoginResponse>(`${environment.apiUrl}/auth/login`, body)
             .pipe(
                 tap(response => {
-                    this.saveToken(response.token)
                     this.setUser(response.user)
                 })
             )
     }
 
-    saveToken(token: string): void {
-        if (!this.isBrowserStorageAvailable()) {
-            return
-        }
 
-        localStorage.setItem(this.tokenKey, token)
-    }
-
-    getToken(): string | null {
-        if (!this.isBrowserStorageAvailable()) {
-            return null
-        }
-        return localStorage.getItem(this.tokenKey)
-    }
 
     getUser() {
         return this.utilsService.getStoredUser<UserProfileResponse>()
@@ -74,11 +59,15 @@ export class AuthService {
     }
 
     logout(): void {
+        this.http.post(`${environment.apiUrl}/auth/logout`, {}, { withCredentials: true }).subscribe({
+            next: () => console.log('Logged out from server'),
+            error: err => console.error('Error logging out from server', err)
+        })
+
         if (!this.isBrowserStorageAvailable()) {
             return
         }
 
-        localStorage.removeItem(this.tokenKey)
         localStorage.removeItem('user')
     }
 

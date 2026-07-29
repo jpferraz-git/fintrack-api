@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Instant;
 
 public record LoginResponseDTO(
-        String token,
         LoginUserResponseDTO user) {
 
     public record LoginUserResponseDTO(
