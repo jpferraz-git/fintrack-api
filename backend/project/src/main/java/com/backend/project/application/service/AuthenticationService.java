@@ -12,6 +12,8 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import com.backend.project.interfaces.dto.authentication.AuthResultDTO;
+import org.springframework.security.core.AuthenticationException;
 
 @Service
 public class AuthenticationService {
@@ -34,7 +36,7 @@ public class AuthenticationService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public com.backend.project.interfaces.dto.authentication.AuthResultDTO login(AuthenticationDTO dto){
+    public AuthResultDTO login(AuthenticationDTO dto){
         UserEntity userEntity = (UserEntity) userRepository.findByEmail(dto.email());
         if (userEntity != null) {
             if (!userEntity.isAccountNonLocked()) {
@@ -60,7 +62,7 @@ public class AuthenticationService {
             var accessToken = tokenService.generateToken(user);
             var refreshToken = tokenService.generateRefreshToken(user);
 
-            return new com.backend.project.interfaces.dto.authentication.AuthResultDTO(
+            return new AuthResultDTO(
                     accessToken,
                     refreshToken,
                     new LoginResponseDTO(
@@ -72,7 +74,7 @@ public class AuthenticationService {
                             )
                     )
             );
-        } catch (org.springframework.security.core.AuthenticationException e) {
+        } catch (AuthenticationException e) {
             if (userEntity != null) {
                 userEntity.setFailedLoginAttempts(userEntity.getFailedLoginAttempts() + 1);
                 if (userEntity.getFailedLoginAttempts() >= 5) {
@@ -111,7 +113,7 @@ public class AuthenticationService {
         }
         return email;
     }
-    public com.backend.project.interfaces.dto.authentication.AuthResultDTO refreshToken(String refreshToken) {
+    public AuthResultDTO refreshToken(String refreshToken) {
         String email = tokenService.validateToken(refreshToken);
         if (email == null || tokenService.isTokenRevoked(refreshToken)) {
             throw new IllegalStateException("Invalid or expired refresh token");
@@ -127,7 +129,7 @@ public class AuthenticationService {
 
         tokenService.revokeToken(refreshToken);
 
-        return new com.backend.project.interfaces.dto.authentication.AuthResultDTO(
+        return new AuthResultDTO(
                 newAccessToken,
                 newRefreshToken,
                 new LoginResponseDTO(

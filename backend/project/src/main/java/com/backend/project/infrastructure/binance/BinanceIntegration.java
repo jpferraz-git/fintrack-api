@@ -8,7 +8,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 
 import java.util.List;
-
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import org.springframework.http.client.JdkClientHttpRequestFactory;
+import java.time.Duration;
 @Component
 public class BinanceIntegration {
 
@@ -16,8 +18,8 @@ public class BinanceIntegration {
     private final BinanceParser binanceParser;
 
     public BinanceIntegration(RestClient.Builder builder, BinanceParser binanceParser){
-        var factory = new org.springframework.http.client.JdkClientHttpRequestFactory();
-        factory.setReadTimeout(java.time.Duration.ofSeconds(5));
+        var factory = new JdkClientHttpRequestFactory();
+        factory.setReadTimeout(Duration.ofSeconds(5));
         
         this.restClient = builder
                 .requestFactory(factory)
@@ -26,7 +28,7 @@ public class BinanceIntegration {
         this.binanceParser = binanceParser;
     }
 
-    @io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker(name = "binance")
+    @CircuitBreaker(name = "binance")
     public BinancePriceResponseDTO getPrice(String symbol){
         return restClient.get()
                 .uri(uriBuilder -> uriBuilder
@@ -37,7 +39,7 @@ public class BinanceIntegration {
                 .body(BinancePriceResponseDTO.class);
     }
     
-    @io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker(name = "binance")
+    @CircuitBreaker(name = "binance")
     public Binance24hTickerRequestDTO get24hTicker(String symbol){
         return restClient.get()
                 .uri(uriBuilder -> uriBuilder
@@ -48,7 +50,7 @@ public class BinanceIntegration {
                 .body(Binance24hTickerRequestDTO.class);
     }
 
-    @io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker(name = "binance")
+    @CircuitBreaker(name = "binance")
     public List<BinanceKlinesRequestDTO> getKlines(String symbol, String interval, Integer limit){
         List<List<Object>> rawKlines = restClient.get()
                 .uri(uriBuilder -> uriBuilder

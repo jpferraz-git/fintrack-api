@@ -8,7 +8,9 @@ import com.backend.project.infrastructure.entity.UserEntity;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-
+import org.springframework.beans.factory.annotation.Autowired;
+import com.backend.project.infrastructure.springdata.RevokedTokenJpaRepository;
+import com.backend.project.infrastructure.entity.RevokedTokenEntity;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
@@ -76,12 +78,12 @@ public class TokenService {
         }
     }
 
-    @org.springframework.beans.factory.annotation.Autowired
-    private com.backend.project.infrastructure.springdata.RevokedTokenJpaRepository revokedTokenRepository;
+    @Autowired
+    private RevokedTokenJpaRepository revokedTokenRepository;
 
     public void revokeToken(String token) {
         if (token != null && !token.isBlank()) {
-            revokedTokenRepository.save(new com.backend.project.infrastructure.entity.RevokedTokenEntity(token, Instant.now()));
+            revokedTokenRepository.save(new RevokedTokenEntity(token, Instant.now()));
         }
     }
 
