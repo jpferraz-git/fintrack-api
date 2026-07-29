@@ -60,7 +60,7 @@ public class AuthenticationService {
 
         try {
             String encryptedPassword = passwordEncoder.encode(dto.password());
-            Role role = dto.role() != null ? dto.role() : Role.USER;
+            Role role = Role.USER;
             UserEntity newUser = new UserEntity(
                     dto.email(),
                     encryptedPassword,
