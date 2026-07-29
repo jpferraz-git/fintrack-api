@@ -24,6 +24,10 @@ public class BatchEntity {
     @Column(name = "id", updatable = false, nullable = false)
     private UUID id;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "fk_user", nullable = false)
+    private UserEntity userId;
+
     @CreationTimestamp
     @Column(name = "upload_date", updatable = false)
     private String uploadDate;
