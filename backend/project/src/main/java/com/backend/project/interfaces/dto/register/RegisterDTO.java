@@ -5,7 +5,6 @@ import com.backend.project.domain.model.Role;
 public record RegisterDTO (
         String name,
         String email,
-        String password,
-        Role role
+        String password
 ){
 }
