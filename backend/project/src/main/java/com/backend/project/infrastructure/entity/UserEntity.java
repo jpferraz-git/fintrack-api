@@ -30,6 +30,8 @@ public class UserEntity implements UserDetails {
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id", updatable = false, nullable = false)
     private UUID id;
+    
+    @Convert(converter = com.backend.project.infrastructure.security.StringCryptoConverter.class)
     private String name;
 
     @Email
@@ -48,6 +50,18 @@ public class UserEntity implements UserDetails {
     @Column(name = "updated_at")
     private Instant updatedAt;
 
+    @Column(name = "failed_login_attempts")
+    private int failedLoginAttempts = 0;
+
+    @Column(name = "lockout_time")
+    private Instant lockoutTime;
+
+    @Column(name = "mfa_enabled")
+    private boolean mfaEnabled = false;
+
+    @Column(name = "mfa_secret")
+    private String mfaSecret;
+
     public UserEntity(String email, String password, RoleEntity role) {
         this.email = email;
         this.password = password;
@@ -61,7 +75,8 @@ public class UserEntity implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        return UserDetails.super.isAccountNonLocked();
+        if (lockoutTime == null) return true;
+        return Instant.now().isAfter(lockoutTime);
     }
 
     @Override
