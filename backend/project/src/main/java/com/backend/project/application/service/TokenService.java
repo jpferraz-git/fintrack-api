@@ -29,7 +29,11 @@ public class TokenService {
     }
 
     private Instant genExpirationDate(){
-        return LocalDateTime.now().plusHours(3).toInstant(ZoneOffset.of("-03:00"));
+        return LocalDateTime.now().plusMinutes(15).toInstant(ZoneOffset.of("-03:00"));
+    }
+
+    private Instant genRefreshExpirationDate(){
+        return LocalDateTime.now().plusDays(7).toInstant(ZoneOffset.of("-03:00"));
     }
 
     public String validateToken(String token){
@@ -41,22 +45,48 @@ public class TokenService {
                     .verify(token)
                     .getSubject();
         } catch (JWTVerificationException exception){
-            return "";
+            return null;
         }
     }
 
     public String generateToken(UserEntity user){
         try {
             Algorithm algorithm = Algorithm.HMAC256(secret);
-            String token = JWT.create()
+            return JWT.create()
                     .withIssuer("auth-api")
                     .withSubject(user.getEmail())
                     .withExpiresAt(genExpirationDate())
                     .sign(algorithm);
-            return token;
         } catch (JWTCreationException exception){
             throw new RuntimeException("Error generating token", exception);
         }
+    }
+
+    public String generateRefreshToken(UserEntity user){
+        try {
+            Algorithm algorithm = Algorithm.HMAC256(secret);
+            return JWT.create()
+                    .withIssuer("auth-api")
+                    .withSubject(user.getEmail())
+                    .withClaim("typ", "Refresh")
+                    .withExpiresAt(genRefreshExpirationDate())
+                    .sign(algorithm);
+        } catch (JWTCreationException exception){
+            throw new RuntimeException("Error generating refresh token", exception);
+        }
+    }
+
+    @org.springframework.beans.factory.annotation.Autowired
+    private com.backend.project.infrastructure.springdata.RevokedTokenJpaRepository revokedTokenRepository;
+
+    public void revokeToken(String token) {
+        if (token != null && !token.isBlank()) {
+            revokedTokenRepository.save(new com.backend.project.infrastructure.entity.RevokedTokenEntity(token, Instant.now()));
+        }
+    }
+
+    public boolean isTokenRevoked(String token) {
+        return revokedTokenRepository.existsById(token);
     }
 }
 
