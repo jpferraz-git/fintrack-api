@@ -1,6 +1,6 @@
 package com.backend.project.application.service;
 
-import com.backend.project.application.Result;
+import com.backend.project.domain.utils.Result;
 import com.backend.project.domain.repository.AssetRepository;
 import com.backend.project.domain.repository.UserRepository;
 import com.backend.project.infrastructure.entity.AssetEntity;
