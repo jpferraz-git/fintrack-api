@@ -5,7 +5,7 @@ import static com.backend.project.interfaces.controllers.utils.Normalizer.errorR
 
 
 import com.backend.project.application.service.AssetService;
-import com.backend.project.application.Result;
+import com.backend.project.domain.utils.Result;
 import com.backend.project.interfaces.dto.asset.AssetActualValueRequestDTO;
 import com.backend.project.interfaces.dto.asset.AssetCalculationResponseDTO;
 import com.backend.project.interfaces.dto.asset.AssetQuantityCalculationRequestDTO;
@@ -32,7 +32,7 @@ public class AssetController {
         this.assetService = assetService;
     }
 
-    @GetMapping
+    @GettMapping
     public ResponseEntity<Page<AssetResponseDTO>> findAll(@PageableDefault(size = 20) Pageable pageable) {
         return ResponseEntity.ok(assetService.findAll(pageable));
     }
