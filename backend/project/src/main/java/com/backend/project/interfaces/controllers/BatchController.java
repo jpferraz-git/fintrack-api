@@ -4,7 +4,7 @@ import static com.backend.project.interfaces.controllers.utils.Normalizer.errorR
 
 
 
-import com.backend.project.application.Result;
+import com.backend.project.domain.utils.Result;
 import com.backend.project.application.service.BatchService;
 import com.backend.project.interfaces.dto.batch.BatchRequestDTO;
 import com.backend.project.interfaces.dto.batch.BatchResponseDTO;
