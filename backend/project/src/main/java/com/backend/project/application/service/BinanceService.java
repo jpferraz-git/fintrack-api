@@ -1,6 +1,6 @@
 package com.backend.project.application.service;
 
-import com.backend.project.application.Result;
+import com.backend.project.domain.utils.Result;
 import com.backend.project.infrastructure.binance.BinanceIntegration;
 import com.backend.project.interfaces.dto.binance.klines.BinanceKlinesMapper;
 import com.backend.project.interfaces.dto.binance.klines.BinanceKlinesRequestDTO;
