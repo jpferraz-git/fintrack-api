@@ -1,6 +1,6 @@
 package com.backend.project.application.service;
 
-import com.backend.project.application.Result;
+import com.backend.project.domain.utils.Result;
 import com.backend.project.domain.model.Role;
 import com.backend.project.domain.repository.RoleRepository;
 import com.backend.project.domain.repository.UserRepository;
