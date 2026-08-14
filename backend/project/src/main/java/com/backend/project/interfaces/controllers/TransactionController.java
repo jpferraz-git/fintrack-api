@@ -18,9 +18,11 @@ import org.springframework.data.web.PageableDefault;
 
 import static com.backend.project.interfaces.controllers.utils.Normalizer.resolveStatus;
 
+import com.backend.project.interfaces.swagger.TransactionControllerSwagger;
+
 @RestController
 @RequestMapping("/transaction")
-public class TransactionController {
+public class TransactionController implements TransactionControllerSwagger {
 
     private final TransactionService transactionService;
 

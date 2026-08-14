@@ -18,9 +18,11 @@ import org.springframework.data.web.PageableDefault;
 
 import static com.backend.project.interfaces.controllers.utils.Normalizer.resolveStatus;
 
+import com.backend.project.interfaces.swagger.BatchControllerSwagger;
+
 @RestController
 @RequestMapping("/batch")
-public class BatchController {
+public class BatchController implements BatchControllerSwagger {
 
     private final BatchService batchService;
 
