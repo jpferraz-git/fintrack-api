@@ -1,4 +1,4 @@
-# FinTrack API
+# Fintrack API
 
 Cryptocurrency investment tracking application.
 
